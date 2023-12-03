@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import FallbackRenderer from './components/FallbackRenderer';
 import Router from './router';
+import { Toaster } from '@/components/ui/toaster';
 
 import './App.css';
 
@@ -17,6 +18,7 @@ function App() {
           <Router />
         </ErrorBoundary>
       </BrowserRouter>
+      <Toaster />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
