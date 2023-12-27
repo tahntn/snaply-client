@@ -29,10 +29,20 @@ const LoginPage = Loadable(
   })
 );
 
+const SignupPage = Loadable(
+  lazy(() => {
+    return import('../pages/SignupPage');
+  })
+);
+
 const lazyRoutes: RouteObject[] = [
   {
     element: <LoginPage />,
     path: '/login',
+  },
+  {
+    element: <SignupPage />,
+    path: '/signup',
   },
   {
     element: <HomePage />,

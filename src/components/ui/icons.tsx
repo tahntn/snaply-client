@@ -26,6 +26,8 @@ import {
   LockKeyhole,
   Eye,
   EyeOff,
+  Lock,
+  Mail,
   // type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -75,4 +77,6 @@ export const Icons = {
   lockKeyhole: LockKeyhole,
   eye: Eye,
   eyeOff: EyeOff,
+  lock: Lock,
+  mail: Mail,
 };
