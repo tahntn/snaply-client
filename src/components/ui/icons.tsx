@@ -23,6 +23,9 @@ import {
   Twitter,
   User,
   X,
+  LockKeyhole,
+  Eye,
+  EyeOff,
   // type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -69,4 +72,7 @@ export const Icons = {
   ),
   twitter: Twitter,
   check: Check,
+  lockKeyhole: LockKeyhole,
+  eye: Eye,
+  eyeOff: EyeOff,
 };
