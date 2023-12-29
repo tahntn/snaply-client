@@ -24,6 +24,12 @@ const HomePage = Loadable(
   })
 );
 
+const ConversationsPage = Loadable(
+  lazy(() => {
+    return import('../pages/ConversationsPage');
+  })
+);
+
 const LoginPage = Loadable(
   lazy(() => {
     return import('../pages/LoginPage');
@@ -54,7 +60,7 @@ const lazyRoutes: RouteObject[] = [
     ),
     children: [
       {
-        element: <HomePage />,
+        element: <ConversationsPage />,
         path: pathNames.conversation,
       },
       {
