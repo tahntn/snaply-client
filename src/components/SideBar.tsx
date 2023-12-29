@@ -11,7 +11,7 @@ const SideBar: React.FC = () => {
     <aside
       id="logo-sidebar"
       className={cn(
-        'fixed top-0 left-0 z-40  h-screen duration-500   -translate-x-full sm:translate-x-0',
+        ' shadow-2xl fixed top-0 left-0 z-40  h-screen duration-500   -translate-x-full sm:translate-x-0',
         isMenuOpen ? 'w-64' : 'w-20'
       )}
       aria-label="Sidebar"

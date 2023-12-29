@@ -1,0 +1,23 @@
+.ResizeHandle,
+.ResizeHandleCollapsed {
+  width: 0.25rem;
+  transition: 250ms linear background-color;
+  background-color: var(--color-button-background);
+  outline: none;
+}
+.ResizeHandle:hover,
+.ResizeHandle[data-resize-handle-active],
+.ResizeHandleCollapsed:hover,
+.ResizeHandleCollapsed[data-resize-handle-active] {
+  background-color: var(--color-brand);
+}
+.ResizeHandleCollapsed {
+  background-color: var(--color-button-background-hover);
+}
+
+@media (max-width: 500px) {
+  .ResizeHandle,
+  .ResizeHandleCollapsed {
+    width: 1rem;
+  }
+}
