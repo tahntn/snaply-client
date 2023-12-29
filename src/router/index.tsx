@@ -1,9 +1,10 @@
 import { lazy, Suspense } from 'react';
-import { useRoutes } from 'react-router-dom';
+import { Navigate, Outlet, useRoutes } from 'react-router-dom';
 import type { ComponentType, PropsWithChildren, FC } from 'react';
 import type { RouteObject } from 'react-router-dom';
 import { pathNames } from '@/constants';
 import LoadingComponent from '@/components/LoadingComponent';
+import MainLayout from '@/layout/MainLayout';
 
 const Loadable = <P extends object>(Component: ComponentType<P>) => {
   const LazyComponents: FC<P> = (props: PropsWithChildren<P>) => {
@@ -19,7 +20,7 @@ const Loadable = <P extends object>(Component: ComponentType<P>) => {
 
 const HomePage = Loadable(
   lazy(() => {
-    return import('../pages/HomePage');
+    return import('../pages/HomePage/index');
   })
 );
 
@@ -38,15 +39,42 @@ const SignupPage = Loadable(
 const lazyRoutes: RouteObject[] = [
   {
     element: <LoginPage />,
-    path: '/login',
+    path: pathNames.login,
   },
   {
     element: <SignupPage />,
-    path: '/signup',
+    path: pathNames.signup,
   },
   {
-    element: <HomePage />,
-    path: pathNames.home,
+    path: '/',
+    element: (
+      <MainLayout>
+        <Outlet />
+      </MainLayout>
+    ),
+    children: [
+      {
+        element: <HomePage />,
+        path: pathNames.conversation,
+      },
+      {
+        element: <HomePage />,
+        path: pathNames.search,
+      },
+      {
+        element: <HomePage />,
+        path: pathNames.friendRequest,
+      },
+      {
+        element: <HomePage />,
+        path: pathNames.friend,
+      },
+
+      {
+        element: <Navigate to={pathNames.conversation} replace />,
+        path: pathNames.home,
+      },
+    ],
   },
 ];
 

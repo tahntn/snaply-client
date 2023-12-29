@@ -8,19 +8,25 @@ import Router from './router';
 import { Toaster } from '@/components/ui/toaster';
 
 import './App.css';
+import { ThemeProvider } from './context/ThemeProvider';
+import { TooltipProvider } from './components/ui/tooltip';
 
 const queryClient = new QueryClient();
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <ErrorBoundary fallbackRender={FallbackRenderer}>
-          <Router />
-        </ErrorBoundary>
-      </BrowserRouter>
-      <Toaster />
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    <ThemeProvider defaultTheme="light" storageKey="snaply-theme">
+      <TooltipProvider delayDuration={300}>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <ErrorBoundary fallbackRender={FallbackRenderer}>
+              <Router />
+            </ErrorBoundary>
+          </BrowserRouter>
+          <Toaster />
+          <ReactQueryDevtools initialIsOpen={true} position="bottom-right" />
+        </QueryClientProvider>
+      </TooltipProvider>
+    </ThemeProvider>
   );
 }
 
