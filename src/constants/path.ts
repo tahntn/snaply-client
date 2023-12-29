@@ -6,4 +6,5 @@ export const pathNames = {
   friendRequest: 'friend-request',
   friend: 'friend',
   search: 'search',
+  page_404: '404',
 } as const;

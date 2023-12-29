@@ -42,6 +42,12 @@ const SignupPage = Loadable(
   })
 );
 
+const Page404 = Loadable(
+  lazy(() => {
+    return import('../pages/404Page');
+  })
+);
+
 const lazyRoutes: RouteObject[] = [
   {
     element: <LoginPage />,
@@ -81,6 +87,11 @@ const lazyRoutes: RouteObject[] = [
         path: pathNames.home,
       },
     ],
+  },
+  { path: '/*', element: <Page404 /> },
+  {
+    path: '*',
+    element: <Navigate to={pathNames.page_404} replace />,
   },
 ];
 
