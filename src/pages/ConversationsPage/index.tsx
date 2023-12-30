@@ -7,7 +7,12 @@ const ConversationsPage: React.FC = () => {
   return (
     <div className="h-full w-full">
       <PanelGroup autoSaveId="example" direction="horizontal">
-        <Panel defaultSize={25} maxSize={30} minSize={15} className="bg-gray-100 dark:bg-black-500">
+        <Panel
+          defaultSize={25}
+          maxSize={30}
+          minSize={15}
+          className="bg-gray-100 dark:bg-black_custom-500"
+        >
           hi
         </Panel>
         <PanelResizeHandle className={styles.ResizeHandleCollapsed} />

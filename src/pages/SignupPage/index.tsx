@@ -34,20 +34,22 @@ const SignupPage = () => {
   const handleClickConfirmPassword = () => setShowConfirmPassword((prev) => !prev);
   const toggleLogin = () => navigate('/login');
   return (
-    <div className="flex items-center justify-center min-h-screen ">
-      <div className="bg-white px-16 py-16 min-w-[500px] rounded-lg">
-        <h2 className="text-5xl text-center font-bold pb-[50px]">Sign up</h2>
+    <div className="flex flex-1 items-center justify-center mb-5">
+      <div className="bg-primary px-16 py-10 min-w-[500px] rounded-lg">
+        <h2 className="text-5xl text-center font-bold pb-[50px] text-primary-foreground">
+          Sign up
+        </h2>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-2xl">Email</FormLabel>
+                  <FormLabel className="text-2xl text-primary-foreground">Email</FormLabel>
                   <FormControl>
                     <InputWithIcon
-                      startAndornment={<Icons.mail />}
+                      startAndornment={<Icons.mail className="text-black_custom-500" />}
                       placeholder="Type your email"
                       {...field}
                       type={'string'}
@@ -63,10 +65,10 @@ const SignupPage = () => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-2xl">Username</FormLabel>
+                  <FormLabel className="text-2xl text-primary-foreground">Username</FormLabel>
                   <FormControl>
                     <InputWithIcon
-                      startAndornment={<Icons.user />}
+                      startAndornment={<Icons.user className="text-black_custom-500" />}
                       placeholder="Type your username"
                       {...field}
                       type={'string'}
@@ -82,12 +84,15 @@ const SignupPage = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-2xl">Password</FormLabel>
+                  <FormLabel className="text-2xl text-primary-foreground">Password</FormLabel>
                   <FormControl>
                     <InputWithIcon
-                      startAndornment={<Icons.lockKeyhole />}
+                      startAndornment={<Icons.lockKeyhole className="text-black_custom-500" />}
                       endAndornment={
-                        <div onClick={handleClickPassword} className="cursor-pointer">
+                        <div
+                          onClick={handleClickPassword}
+                          className="cursor-pointer text-black_custom-500"
+                        >
                           {showPassword ? <Icons.eyeOff /> : <Icons.eye />}
                         </div>
                       }
@@ -106,12 +111,17 @@ const SignupPage = () => {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-2xl">Confirm password</FormLabel>
+                  <FormLabel className="text-2xl text-primary-foreground">
+                    Confirm password
+                  </FormLabel>
                   <FormControl>
                     <InputWithIcon
-                      startAndornment={<Icons.lock />}
+                      startAndornment={<Icons.lock className="text-black_custom-500" />}
                       endAndornment={
-                        <div onClick={handleClickConfirmPassword} className="cursor-pointer">
+                        <div
+                          onClick={handleClickConfirmPassword}
+                          className="cursor-pointer text-black_custom-500"
+                        >
                           {showConfirmPassword ? <Icons.eyeOff /> : <Icons.eye />}
                         </div>
                       }
@@ -125,11 +135,11 @@ const SignupPage = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full ">
+            <Button type="submit" className="w-full mt-5" variant={'outline'}>
               Sign up
             </Button>
             <div className="border-t-2 border-gray-500 my-10 w-[70%] mx-auto"></div>
-            <p className="text-center">
+            <p className="text-center text-primary-foreground">
               Already have an account?{' '}
               <span onClick={toggleLogin} className="font-semibold cursor-pointer">
                 Log in now

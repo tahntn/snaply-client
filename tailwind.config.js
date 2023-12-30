@@ -50,7 +50,7 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
-        black: {
+        black_custom: {
           100: '#d1d3d6',
           200: '#a3a7ac',
           300: '#757a83',

@@ -7,6 +7,8 @@ import LoadingComponent from '@/components/LoadingComponent';
 import MainLayout from '@/layout/MainLayout';
 import { GuardPublicOnly } from '@/guard/GuardPublicOnly';
 import { GuardAuthenticated } from '@/guard/GuardAuthenticated';
+import LoginPage from '@/pages/LoginPage';
+import SignupPage from '@/pages/SignupPage';
 
 const Loadable = <P extends object>(Component: ComponentType<P>) => {
   const LazyComponents: FC<P> = (props: PropsWithChildren<P>) => {
@@ -26,6 +28,12 @@ const Loadable = <P extends object>(Component: ComponentType<P>) => {
   return LazyComponents;
 };
 
+const AuthLayout = Loadable(
+  lazy(() => {
+    return import('@/layout/AuthLayout');
+  })
+);
+
 const HomePage = Loadable(
   lazy(() => {
     return import('../pages/HomePage/index');
@@ -35,18 +43,6 @@ const HomePage = Loadable(
 const ConversationsPage = Loadable(
   lazy(() => {
     return import('../pages/ConversationsPage');
-  })
-);
-
-const LoginPage = Loadable(
-  lazy(() => {
-    return import('../pages/LoginPage');
-  })
-);
-
-const SignupPage = Loadable(
-  lazy(() => {
-    return import('../pages/SignupPage');
   })
 );
 
@@ -65,7 +61,9 @@ const lazyRoutes: RouteObject[] = [
         path: pathNames.login,
         element: (
           <GuardPublicOnly>
-            <LoginPage />
+            <AuthLayout>
+              <LoginPage />
+            </AuthLayout>
           </GuardPublicOnly>
         ),
       },
@@ -73,7 +71,9 @@ const lazyRoutes: RouteObject[] = [
         path: pathNames.signup,
         element: (
           <GuardPublicOnly>
-            <SignupPage />
+            <AuthLayout>
+              <SignupPage />
+            </AuthLayout>
           </GuardPublicOnly>
         ),
       },

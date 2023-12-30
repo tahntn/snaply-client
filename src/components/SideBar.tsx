@@ -32,7 +32,7 @@ const SideBar: React.FC = () => {
               alt="Snaply Logo"
             />
 
-            <h2
+            {/* <h2
               style={{
                 transitionDelay: `50ms`,
               }}
@@ -41,7 +41,7 @@ const SideBar: React.FC = () => {
               }`}
             >
               Snaply
-            </h2>
+            </h2> */}
           </NavLink>
           <ul className="space-y-3 font-medium">
             {mainMenus.map((menu, i) => (
