@@ -7,8 +7,7 @@ import LoadingComponent from '@/components/LoadingComponent';
 import MainLayout from '@/layout/MainLayout';
 import { GuardPublicOnly } from '@/guard/GuardPublicOnly';
 import { GuardAuthenticated } from '@/guard/GuardAuthenticated';
-import LoginPage from '@/pages/LoginPage';
-import SignupPage from '@/pages/SignupPage';
+import { LoginPage, SignupPage } from '@/pages/AuthPage';
 
 const Loadable = <P extends object>(Component: ComponentType<P>) => {
   const LazyComponents: FC<P> = (props: PropsWithChildren<P>) => {

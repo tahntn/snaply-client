@@ -12,8 +12,7 @@ import { useTheme } from '@/context/ThemeProvider';
 
 const SideBar: React.FC = () => {
   const { isMenuOpen, toggleMenu } = useGlobalStore((state) => state);
-  const { theme } = useTheme();
-  console.log({ theme });
+  const { mainTheme } = useTheme();
   return (
     <aside
       id="logo-sidebar"
@@ -27,7 +26,7 @@ const SideBar: React.FC = () => {
         <div className="flex-1   ">
           <NavLink to={'/'} className="flex items-center ps-2.5 mb-5 ">
             <img
-              src={theme === 'light' ? LogoDark : LogoLight}
+              src={mainTheme === 'light' ? LogoDark : LogoLight}
               className="h-10 me-3 sm:h-11 translate-x-[-5px]"
               alt="Snaply Logo"
             />

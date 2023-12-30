@@ -7,17 +7,17 @@ import { ModeToggle } from '@/components/ModeToggle';
 import SelectLanguage from '@/components/SelectLanguage';
 
 const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { theme } = useTheme();
+  const { mainTheme } = useTheme();
   return (
     <div className="flex justify-around min-h-screen">
-      <div className="w-1/2 flex items-center justify-center">
+      <div className="w-1/2 flex items-center justify-center xs:hidden sm:hidden lg:flex">
         <img
-          src={theme === 'light' ? LogoDark : LogoLight}
+          src={mainTheme === 'light' ? LogoDark : LogoLight}
           className="h-[150px] translate-x-[-5px] duration-300 transition"
           alt="Snaply Logo"
         />
       </div>
-      <div className="w-1/2 flex flex-col">
+      <div className="lg:w-1/2  flex flex-col">
         <div className="flex items-center justify-end px-5 py-5 gap-4">
           <SelectLanguage />
           <ModeToggle />
