@@ -27,7 +27,9 @@ const ChatElement = () => {
         </Box>
       </Box>
       <Text className="text-sm absolute top-3 right-4">10:20</Text>
-      <Badge className="absolute bottom-3 right-4 rounded-full bg-red-400 text-white">9</Badge>
+      <span className="absolute bottom-3 right-4 inline-flex items-center  justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">
+        2
+      </span>
     </Box>
   );
 };

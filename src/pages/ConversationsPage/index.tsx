@@ -3,7 +3,7 @@ import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { ModeToggle } from '@/components/ModeToggle';
 
 import styles from './style/index.module.css';
-import ConversationList from './ConversationList';
+import ConversationList from './Conversation/ConversationList';
 const ConversationsPage: React.FC = () => {
   return (
     <div className="h-full w-full">
