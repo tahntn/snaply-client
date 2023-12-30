@@ -3,12 +3,18 @@ import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { ModeToggle } from '@/components/ModeToggle';
 
 import styles from './style/index.module.css';
+import ConversationList from './ConversationList';
 const ConversationsPage: React.FC = () => {
   return (
     <div className="h-full w-full">
       <PanelGroup autoSaveId="example" direction="horizontal">
-        <Panel defaultSize={25} maxSize={30} minSize={15} className="bg-gray-100 dark:bg-black-500">
-          hi
+        <Panel
+          defaultSize={25}
+          maxSize={30}
+          minSize={15}
+          className="bg-gray-100 dark:bg-black-500 h-full pb-10"
+        >
+          <ConversationList />
         </Panel>
         <PanelResizeHandle className={styles.ResizeHandleCollapsed} />
         <Panel>

@@ -22,7 +22,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const form = useForm({
-    resolver: yupResolver(loginSchema),
+    // resolver: yupResolver(loginSchema),
     defaultValues: {
       email: '',
       password: '',
