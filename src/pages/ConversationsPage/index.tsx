@@ -3,6 +3,7 @@ import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { ModeToggle } from '@/components/ModeToggle';
 
 import styles from './style/index.module.css';
+import ConversationList from './Conversation/ConversationList';
 const ConversationsPage: React.FC = () => {
   return (
     <div className="h-full w-full">
@@ -13,7 +14,7 @@ const ConversationsPage: React.FC = () => {
           minSize={15}
           className="bg-gray-100 dark:bg-black_custom-500"
         >
-          hi
+          <ConversationList />
         </Panel>
         <PanelResizeHandle className={styles.ResizeHandleCollapsed} />
         <Panel>
