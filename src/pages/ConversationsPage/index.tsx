@@ -12,7 +12,7 @@ const ConversationsPage: React.FC = () => {
           defaultSize={25}
           maxSize={30}
           minSize={15}
-          className="bg-gray-100 dark:bg-black-500 h-full pb-10"
+          className="bg-gray-100 dark:bg-black_custom-500"
         >
           <ConversationList />
         </Panel>
