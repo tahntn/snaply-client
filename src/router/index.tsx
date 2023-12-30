@@ -5,11 +5,19 @@ import type { RouteObject } from 'react-router-dom';
 import { pathNames } from '@/constants';
 import LoadingComponent from '@/components/LoadingComponent';
 import MainLayout from '@/layout/MainLayout';
+import { GuardPublicOnly } from '@/guard/GuardPublicOnly';
+import { GuardAuthenticated } from '@/guard/GuardAuthenticated';
 
 const Loadable = <P extends object>(Component: ComponentType<P>) => {
   const LazyComponents: FC<P> = (props: PropsWithChildren<P>) => {
     return (
-      <Suspense fallback={<LoadingComponent />}>
+      <Suspense
+        fallback={
+          <div className="h-screen w-screen flex items-center justify-center">
+            <LoadingComponent className="h-10 w-10" />
+          </div>
+        }
+      >
         <Component {...props} />
       </Suspense>
     );
@@ -50,45 +58,60 @@ const Page404 = Loadable(
 
 const lazyRoutes: RouteObject[] = [
   {
-    element: <LoginPage />,
-    path: pathNames.login,
-  },
-  {
-    element: <SignupPage />,
-    path: pathNames.signup,
-  },
-  {
     path: '/',
-    element: (
-      <MainLayout>
-        <Outlet />
-      </MainLayout>
-    ),
+    errorElement: <Page404 />,
     children: [
       {
-        element: <ConversationsPage />,
-        path: pathNames.conversation,
+        path: pathNames.login,
+        element: (
+          <GuardPublicOnly>
+            <LoginPage />
+          </GuardPublicOnly>
+        ),
       },
       {
-        element: <HomePage />,
-        path: pathNames.search,
+        path: pathNames.signup,
+        element: (
+          <GuardPublicOnly>
+            <SignupPage />
+          </GuardPublicOnly>
+        ),
       },
       {
-        element: <HomePage />,
-        path: pathNames.friendRequest,
-      },
-      {
-        element: <HomePage />,
-        path: pathNames.friend,
-      },
-
-      {
-        element: <Navigate to={pathNames.conversation} replace />,
-        path: pathNames.home,
-      },
-      {
-        path: '*',
-        element: <Page404 />,
+        path: '',
+        element: (
+          <GuardAuthenticated>
+            <MainLayout>
+              <Outlet />
+            </MainLayout>
+          </GuardAuthenticated>
+        ),
+        children: [
+          {
+            element: <ConversationsPage />,
+            path: pathNames.conversation,
+          },
+          {
+            element: <HomePage />,
+            path: pathNames.search,
+          },
+          {
+            element: <HomePage />,
+            path: pathNames.friendRequest,
+          },
+          {
+            element: <HomePage />,
+            path: pathNames.friend,
+          },
+          {
+            element: <Navigate to={pathNames.conversation} replace />,
+            path: pathNames.home,
+          },
+          {
+            path: '*',
+            element: <Page404 />,
+          },
+        ],
       },
     ],
   },

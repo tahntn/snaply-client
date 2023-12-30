@@ -1,6 +1,8 @@
 import React from 'react';
-import { InputWithIcon } from '@/components/InputWithIcon';
-import { Button } from '@/components/ui/button';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { yupResolver } from '@hookform/resolvers/yup';
+
 import {
   Form,
   FormControl,
@@ -10,36 +12,16 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Icons } from '@/components/ui/icons';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { InputWithIcon } from '@/components/InputWithIcon';
+import { Button } from '@/components/ui/button';
+import { signupSchema } from '@/schema';
 const SignupPage = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
-  const schema = yup
-    .object()
-    .shape({
-      email: yup.string().email().required(),
-      username: yup.string().min(4).required(),
-      password: yup
-        .string()
-        .min(8)
-        .matches(/[a-zA-Z]/, 'Password must contain at least one letter')
-        .matches(/[0-9]/, 'Password must contain at least one number')
-        .required(),
-      confirmPassword: yup
-        .string()
-        .oneOf([yup.ref('password')], 'Passwords must match')
-
-        .required('Confirm Password is required'),
-    })
-    .required();
-
   const form = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(signupSchema),
     defaultValues: {
       email: '',
       password: '',
