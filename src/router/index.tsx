@@ -86,12 +86,11 @@ const lazyRoutes: RouteObject[] = [
         element: <Navigate to={pathNames.conversation} replace />,
         path: pathNames.home,
       },
+      {
+        path: '*',
+        element: <Page404 />,
+      },
     ],
-  },
-  { path: '/*', element: <Page404 /> },
-  {
-    path: '*',
-    element: <Navigate to={pathNames.page_404} replace />,
   },
 ];
 
