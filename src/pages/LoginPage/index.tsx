@@ -1,7 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-import { InputWithIcon } from '@/components/InputWithIcon';
-import { Button } from '@/components/ui/button';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { yupResolver } from '@hookform/resolvers/yup';
+
 import {
   Form,
   FormControl,
@@ -11,35 +12,25 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Icons } from '@/components/ui/icons';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { Button } from '@/components/ui/button';
+import { InputWithIcon } from '@/components/InputWithIcon';
+import { loginSchema } from '@/schema';
+import { useAuthStore } from '@/store';
 const LoginPage = () => {
   const navigate = useNavigate();
+  const setLogin = useAuthStore((state) => state.setLogin);
   const [showPassword, setShowPassword] = React.useState(false);
 
-  const schema = yup
-    .object()
-    .shape({
-      email: yup.string().email().required(),
-      password: yup
-        .string()
-        .min(8)
-        .matches(/[a-zA-Z]/, 'Password must contain at least one letter')
-        .matches(/[0-9]/, 'Password must contain at least one number')
-        .required(),
-    })
-    .required();
-
   const form = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(loginSchema),
     defaultValues: {
       email: '',
       password: '',
     },
   });
-  const onSubmit = () => {};
+  const onSubmit = () => {
+    setLogin();
+  };
   const handleClickPassword = () => setShowPassword((prev) => !prev);
   const toggleSignup = () => navigate('/signup');
   return (
