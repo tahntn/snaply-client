@@ -5,8 +5,15 @@ import { Icons } from './ui/icons';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { mainMenus, subMenus } from '@/constants';
 import { useGlobalStore } from '@/store';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import LogoLight from '../assets/images/logo/logo-light.png';
+import LogoDark from '../assets/images/logo/logo-dark.png';
+import { useTheme } from '@/context/ThemeProvider';
+
 const SideBar: React.FC = () => {
   const { isMenuOpen, toggleMenu } = useGlobalStore((state) => state);
+  const { theme } = useTheme();
+  console.log({ theme });
   return (
     <aside
       id="logo-sidebar"
@@ -19,12 +26,17 @@ const SideBar: React.FC = () => {
       <div className="flex flex-col px-3 py-4 h-full bg-gray-50 dark:bg-gray-800">
         <div className="flex-1   ">
           <NavLink to={'/'} className="flex items-center ps-2.5 mb-5 ">
-            <img src="/vite.svg" className="h-6 me-3 sm:h-7" alt="Flowbite Logo" />
+            <img
+              src={theme === 'light' ? LogoDark : LogoLight}
+              className="h-10 me-3 sm:h-11 translate-x-[-5px]"
+              alt="Snaply Logo"
+            />
+
             <h2
               style={{
                 transitionDelay: `50ms`,
               }}
-              className={`self-center text-xl font-semibold whitespace-nowrap dark:text-white duration-500 ${
+              className={`self-center  text-xl font-semibold whitespace-nowrap dark:text-white duration-500 translate-y-[-3px] ${
                 !isMenuOpen && 'opacity-0 translate-x-2 overflow-hidden'
               }`}
             >
@@ -117,8 +129,9 @@ const SideBar: React.FC = () => {
             to={'/'}
             className="flex items-center ps-2.5 mt-5 rounded-md hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer"
           >
-            <img src="/vite.svg" className="h-6 me-3 sm:h-7" alt="Flowbite Logo" />
-
+            <Avatar className="me-3">
+              <AvatarImage src="https://source.unsplash.com/random" />
+            </Avatar>
             <h2
               style={{
                 transitionDelay: `50ms`,
