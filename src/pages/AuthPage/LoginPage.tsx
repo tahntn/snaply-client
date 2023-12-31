@@ -7,13 +7,15 @@ import FormAuth from './components/FormAuth';
 import { loginSchema } from '@/schema';
 import { useAuthStore } from '@/store';
 import { fieldAuth } from '@/types';
+import { useTranslation } from 'react-i18next';
 
 const LoginPage = () => {
   const setLogin = useAuthStore((state) => state.setLogin);
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = React.useState(false);
 
   const form = useForm({
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver(loginSchema()),
     defaultValues: {
       email: '',
       password: '',
@@ -26,21 +28,21 @@ const LoginPage = () => {
 
   const fieldLogin: fieldAuth[] = [
     {
-      label: 'Email',
+      label: t('login.form.email'),
       name: 'email',
       form: form,
       startAndornment: <Icons.user />,
-      placeholder: 'Type your email',
+      placeholder: t('login.form.placeholderEmail'),
     },
     {
-      label: 'Password',
+      label: t('login.form.password'),
       name: 'password',
       form: form,
       startAndornment: <Icons.lockKeyhole />,
       endAndornment: (
         <div onClick={handleClickPassword}>{showPassword ? <Icons.eyeOff /> : <Icons.eye />}</div>
       ),
-      placeholder: 'Type your password',
+      placeholder: t('login.form.placeholderPassword'),
       type: showPassword ? 'text' : 'password',
     },
   ];

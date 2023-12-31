@@ -6,6 +6,7 @@ import FormFieldAuth from './FormFieldAuth';
 import { fieldAuth } from '@/types';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@/context/ThemeProvider';
+import { useTranslation } from 'react-i18next';
 
 interface FormAuthProps {
   form: any;
@@ -16,6 +17,7 @@ interface FormAuthProps {
 
 const FormAuth: React.FC<FormAuthProps> = ({ form, onSubmit, fieldAuth, type }) => {
   const { mainTheme } = useTheme();
+  const { t } = useTranslation();
   return (
     <div className={cn('flex flex-1 justify-center my-10 ', 'lg:items-center')}>
       <div
@@ -33,7 +35,7 @@ const FormAuth: React.FC<FormAuthProps> = ({ form, onSubmit, fieldAuth, type }) 
             'xs:text-4xl xxs:text-3xl'
           )}
         >
-          {type === 'login' ? 'Log in' : 'Sign up'}
+          {type === 'login' ? t('login.title') : t('signup.title')}
         </h2>
         <Form {...form}>
           <form onSubmit={form?.handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -55,13 +57,16 @@ const FormAuth: React.FC<FormAuthProps> = ({ form, onSubmit, fieldAuth, type }) 
               className="w-full mt-5"
               variant={mainTheme === 'light' ? 'destructive' : 'outline'}
             >
-              {type === 'login' ? 'Login' : 'Signup'}
+              {type === 'login' ? t('login.button.title') : t('signup.button.title')}
             </Button>
             <div className="border-t-2 border-gray-500 my-10 w-[70%] mx-auto "></div>
             <p className={cn('text-center', 'lg:text-primary-foreground', 'xs:text-sm ')}>
-              {type === 'login' ? "Don't have an account?" : '  Already have an account?'}
+              {type === 'login' ? t('login.prompt.noAccount') : t('signup.prompt.haveAccount')}
               <span className="font-semibold cursor-pointer">
-                <Link to={`/${type === 'login' ? 'signup' : 'login'}`}> Sign up now</Link>
+                <Link to={`/${type === 'login' ? 'signup' : 'login'}`}>
+                  {' '}
+                  {type === 'login' ? t('login.prompt.signup') : t('signup.prompt.login')}
+                </Link>
               </span>
             </p>
           </form>
