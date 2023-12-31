@@ -7,3 +7,8 @@ export interface fieldAuth {
   placeholder: string;
   type?: React.HTMLInputTypeAttribute;
 }
+
+export interface loginBody {
+  email: string;
+  password: string;
+}

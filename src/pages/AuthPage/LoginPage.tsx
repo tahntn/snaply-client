@@ -6,23 +6,28 @@ import { Icons } from '@/components/ui/icons';
 import FormAuth from './components/FormAuth';
 import { loginSchema } from '@/schema';
 import { useAuthStore } from '@/store';
-import { fieldAuth } from '@/types';
+import { fieldAuth, loginBody } from '@/types';
 import { useTranslation } from 'react-i18next';
+import { useLogin } from '@/hooks/useLogin';
 
 const LoginPage = () => {
-  const setLogin = useAuthStore((state) => state.setLogin);
+  const { mutate: login } = useLogin();
+  const auth = useAuthStore((state) => state);
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = React.useState(false);
 
-  const form = useForm({
+  const form = useForm<loginBody>({
     resolver: yupResolver(loginSchema()),
     defaultValues: {
       email: '',
       password: '',
     },
   });
-  const onSubmit = () => {
-    setLogin();
+  const onSubmit = (data: loginBody) => {
+    login({
+      email: data.email,
+      password: data.password,
+    });
   };
   const handleClickPassword = () => setShowPassword((prev) => !prev);
 
