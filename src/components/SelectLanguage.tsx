@@ -1,4 +1,4 @@
-import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Select,
   SelectContent,
@@ -10,8 +10,14 @@ import {
 } from './ui/select';
 
 const SelectLanguage = () => {
+  const { i18n } = useTranslation();
+
+  const onChangeLanguage = (lang: string) => {
+    i18n.changeLanguage(lang);
+    localStorage.setItem('snaply-language', lang);
+  };
   return (
-    <Select>
+    <Select onValueChange={(value) => onChangeLanguage(value)} value={i18n.language}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Language" />
       </SelectTrigger>
@@ -19,7 +25,7 @@ const SelectLanguage = () => {
         <SelectGroup>
           <SelectLabel>Language</SelectLabel>
           <SelectItem value="en">en English</SelectItem>
-          <SelectItem value="vn">vn Vietnamese</SelectItem>
+          <SelectItem value="vi">vn Vietnamese</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
