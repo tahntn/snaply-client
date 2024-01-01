@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select';
+import { cn } from '@/lib/utils';
 
 const SelectLanguage = () => {
   const { i18n } = useTranslation();
@@ -18,7 +19,7 @@ const SelectLanguage = () => {
   };
   return (
     <Select onValueChange={(value) => onChangeLanguage(value)} value={i18n.language}>
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className={cn('w-[180px]', '2xl:w-[180px] xl:w-[180px] lg:w-[140px]')}>
         <SelectValue placeholder="Language" />
       </SelectTrigger>
       <SelectContent>
