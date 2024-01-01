@@ -45,6 +45,12 @@ const ConversationsPage = Loadable(
   })
 );
 
+const SettingPage = Loadable(
+  lazy(() => {
+    return import('../pages/SettingPage');
+  })
+);
+
 const Page404 = Loadable(
   lazy(() => {
     return import('../pages/404Page');
@@ -103,12 +109,16 @@ const lazyRoutes: RouteObject[] = [
             path: pathNames.friend,
           },
           {
+            element: <SettingPage />,
+            path: pathNames.setting,
+          },
+          {
             element: <Navigate to={pathNames.conversation} replace />,
             path: pathNames.home,
           },
           {
-            path: '*',
             element: <Page404 />,
+            path: '*',
           },
         ],
       },
