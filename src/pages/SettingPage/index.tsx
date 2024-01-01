@@ -6,9 +6,11 @@ import React from 'react';
 import SettingItem from './SettingItem';
 import { settingList } from '@/constants/setting';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '@/context/ThemeProvider';
 
 const SettingPage: React.FC = () => {
   const { t } = useTranslation();
+  const { mainTheme } = useTheme();
   return (
     <Box
       className={cn(
@@ -46,7 +48,7 @@ const SettingPage: React.FC = () => {
         </Box>
         {/* List options */}
         <Box className="mt-4 flex flex-col ">
-          {settingList(t)?.map((settingItem) => (
+          {settingList(t, mainTheme)?.map((settingItem) => (
             <SettingItem
               key={settingItem.id}
               title={settingItem.title}

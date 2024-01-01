@@ -9,7 +9,7 @@ import {
   SunMoon,
 } from 'lucide-react';
 
-export const settingList = (t: TFunction<'translation', undefined>) => [
+export const settingList = (t: TFunction<'translation', undefined>, mainTheme: string) => [
   {
     id: 'language',
     title: t('setting.option.language'),
@@ -17,7 +17,7 @@ export const settingList = (t: TFunction<'translation', undefined>) => [
   },
   {
     id: 'darkMode',
-    title: t('setting.option.darkMode'),
+    title: mainTheme === 'light' ? t('setting.option.lightMode') : t('setting.option.darkMode'),
     Icon: SunMoon,
   },
   {

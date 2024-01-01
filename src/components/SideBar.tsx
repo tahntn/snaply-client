@@ -9,10 +9,13 @@ import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import LogoLight from '../assets/images/logo/logo-light.png';
 import LogoDark from '../assets/images/logo/logo-dark.png';
 import { useTheme } from '@/context/ThemeProvider';
+import { useTranslation } from 'react-i18next';
 
 const SideBar: React.FC = () => {
   const { isMenuOpen, toggleMenu } = useGlobalStore((state) => state);
   const { mainTheme } = useTheme();
+  const { t } = useTranslation();
+
   return (
     <aside
       id="logo-sidebar"
@@ -43,7 +46,7 @@ const SideBar: React.FC = () => {
             </h2> */}
           </NavLink>
           <ul className="space-y-3 font-medium">
-            {mainMenus.map((menu, i) => (
+            {mainMenus(t).map((menu, i) => (
               <li>
                 <NavLink
                   to={menu.link}
@@ -83,7 +86,7 @@ const SideBar: React.FC = () => {
             ))}
           </ul>
           <ul className="pt-5 mt-5 space-y-2 border-t border-gray-500 dark:border-gray-700 font-medium">
-            {subMenus.map((menu, i) => (
+            {subMenus(t).map((menu, i) => (
               <li>
                 <NavLink
                   to={menu.link}
