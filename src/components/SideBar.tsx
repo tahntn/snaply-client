@@ -6,8 +6,8 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { mainMenus, subMenus } from '@/constants';
 import { useGlobalStore } from '@/store';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import LogoLight from '../assets/images/logo/logo-light.png';
-import LogoDark from '../assets/images/logo/logo-dark.png';
+import LogoLight from '../assets/images/logo/logo-light-none-text.png';
+import LogoDark from '../assets/images/logo/logo-dark-none-text.png';
 import { useTheme } from '@/context/ThemeProvider';
 import { useTranslation } from 'react-i18next';
 
@@ -20,30 +20,33 @@ const SideBar: React.FC = () => {
     <aside
       id="logo-sidebar"
       className={cn(
-        ' shadow-2xl fixed top-0 left-0 z-40  h-screen duration-500   -translate-x-full sm:translate-x-0',
+        'shadow-2xl fixed top-0 left-0 z-40  h-screen duration-500 -translate-x-full',
+        'sm:translate-x-0',
         isMenuOpen ? 'w-64' : 'w-20'
       )}
       aria-label="Sidebar"
     >
-      <div className="flex flex-col px-3 py-4 h-full bg-gray-50 dark:bg-gray-800">
-        <div className="flex-1   ">
+      <div className={cn('flex flex-col px-3 py-4 h-full bg-gray-50 relative', 'dark:bg-gray-800')}>
+        <div className="flex-1">
           <NavLink to={'/'} className="flex items-center ps-2.5 mb-5 ">
             <img
               src={mainTheme === 'light' ? LogoDark : LogoLight}
-              className="h-10 me-3 sm:h-11 translate-x-[-5px]"
+              className={cn('h-8 translate-x-[-5px]', 'sm:h-9')}
               alt="Snaply Logo"
             />
 
-            {/* <h2
+            <h2
               style={{
                 transitionDelay: `50ms`,
               }}
-              className={`self-center  text-xl font-semibold whitespace-nowrap dark:text-white duration-500 translate-y-[-3px] ${
+              className={cn(
+                `self-center text-xl font-semibold whitespace-nowrap duration-500 translate-y-[-3px]`,
+                'dark:text-white',
                 !isMenuOpen && 'opacity-0 translate-x-2 overflow-hidden'
-              }`}
+              )}
             >
               Snaply
-            </h2> */}
+            </h2>
           </NavLink>
           <ul className="space-y-3 font-medium">
             {mainMenus(t).map((menu, i) => (
@@ -117,16 +120,6 @@ const SideBar: React.FC = () => {
           </ul>
         </div>
         <div className="mb-5">
-          <div className="flex items-center justify-end">
-            <div
-              className={`cursor-pointer transition-transform duration-500 transform ${
-                isMenuOpen ? 'rotate-0' : 'rotate-180'
-              }`}
-              onClick={toggleMenu}
-            >
-              <Icons.chevronLeft />
-            </div>
-          </div>
           <NavLink
             to={'/'}
             className="flex items-center ps-2.5 mt-5 rounded-md hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer"
@@ -150,6 +143,21 @@ const SideBar: React.FC = () => {
               </h4>
             </h2>
           </NavLink>
+        </div>
+        <div
+          className={cn(
+            'flex items-center justify-end absolute right-0 top-6 bg-gray-800 rounded-full translate-x-2/4',
+            'dark:bg-white'
+          )}
+        >
+          <div
+            className={`cursor-pointer transition-transform duration-500 transform ${
+              isMenuOpen ? 'rotate-0' : 'rotate-180'
+            }`}
+            onClick={toggleMenu}
+          >
+            <Icons.chevronLeft className={cn('text-white', 'dark:text-gray-800')} />
+          </div>
         </div>
       </div>
     </aside>
