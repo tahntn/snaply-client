@@ -5,14 +5,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Icons } from '@/components/ui/icons';
 import FormAuth from './components/FormAuth';
 import { loginSchema } from '@/schema';
-import { useAuthStore } from '@/store';
 import { fieldAuth, loginBody } from '@/types';
 import { useTranslation } from 'react-i18next';
-import { useLogin } from '@/hooks/useLogin';
+import { useAuth } from '@/hooks/useAuth';
 
 const LoginPage = () => {
-  const { mutate: login } = useLogin();
-  const auth = useAuthStore((state) => state);
+  const { mutate: login } = useAuth('login');
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = React.useState(false);
 

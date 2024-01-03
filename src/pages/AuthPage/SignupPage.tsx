@@ -4,11 +4,13 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { signupSchema } from '@/schema';
-import { fieldAuth } from '@/types';
+import { fieldAuth, signupBody } from '@/types';
 import { Icons } from '@/components/ui/icons';
 import FormAuth from './components/FormAuth';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '@/hooks/useAuth';
 const SignupPage = () => {
+  const { mutate: signup } = useAuth('register');
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
@@ -22,7 +24,10 @@ const SignupPage = () => {
       confirmPassword: '',
     },
   });
-  const onSubmit = () => {};
+  const onSubmit = (data: signupBody & { confirmPassword: string }) => {
+    const { confirmPassword, ..._data } = data;
+    signup(_data);
+  };
   const handleClickPassword = () => setShowPassword((prev) => !prev);
   const handleClickConfirmPassword = () => setShowConfirmPassword((prev) => !prev);
   const fieldLogin: fieldAuth[] = [
