@@ -1,9 +1,14 @@
+import AvatarUser from '@/components/AvatarUser';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Box, Text } from '@radix-ui/themes';
 
-const ChatElement = () => {
+interface ChatElementProps {
+  conversation: any;
+}
+
+const ChatElement: React.FC<ChatElementProps> = ({ conversation }) => {
   return (
     <Box
       className={cn(
@@ -13,15 +18,13 @@ const ChatElement = () => {
       )}
     >
       <Box className="flex flex-row items-center gap-4">
-        <Box className="relative">
-          <Avatar>
-            <AvatarImage src="https://source.unsplash.com/random" />
-          </Avatar>
-          <Badge className="absolute bottom-0 right-0 rounded-full p-[5px] bg-green-400" />
-        </Box>
+        <AvatarUser
+          name={conversation?.participants?.[1].username}
+          url={conversation?.participants?.[1].avatar}
+        />
         <Box className="flex flex-col gap-[0.2px]">
           <Text className="text-base font-semibold truncate max-w-[320px] opacity-0 lg:opacity-100">
-            Tien Nhat Tien Nhat Tien Nhat Tien Nhat Tien Nhat Tien Nhat Tien Nhat Tien Nhat
+            {conversation?.participants?.[1].username}
           </Text>
           <Text className="text-sm">I'm Senior</Text>
         </Box>

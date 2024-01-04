@@ -31,18 +31,6 @@ function App() {
 
     if (refreshToken) {
       setLogin();
-      // const decoded = jwtDecode(refreshToken) as JwtPayload & { type: string };
-      // if (decoded?.type === 'refresh' && decoded?.iat && decoded?.exp && decoded?.sub) {
-      //   if (decoded.exp && moment.unix(decoded.exp).isAfter(moment())) {
-      //     setLogin();
-      //   } else {
-      //     toast({
-      //       variant: 'destructive',
-      //       title: 'Uh oh! Something went wrong.2',
-      //       description: 'Phiên bản đã hết hạn vui lòng đăng nhập lại',
-      //     });
-      //   }
-      // }
     }
 
     //handle language
@@ -78,8 +66,10 @@ function App() {
     };
     axiosInstance.interceptors.request.use(async (req) => {
       const accessToken = getString('snalpy-access');
+      const language = i18n.language;
       if (accessToken) {
-        req.headers.Authorization = `Bearer ${accessToken}`;
+        req.headers['Authorization'] = 'Bearer ' + accessToken;
+        req.headers['Accept-Language'] = language;
       }
       return req;
     });
