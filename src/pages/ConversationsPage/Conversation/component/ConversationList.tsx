@@ -13,10 +13,8 @@ const ConversationList = () => {
   const { data, isLoading, status, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useConversations();
 
-  console.log('🚀 ~ file: ConversationList.tsx:14 ~ ConversationList ~ data:', data);
   React.useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
-      console.log('Fire!');
       fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
@@ -36,19 +34,6 @@ const ConversationList = () => {
             <ChatElement conversation={conversation} />
           ))
         )}
-      {/* <ChatElement />
-      <ChatElement />
-      <ChatElement />
-      <ChatElement />
-      <ChatElement />
-      <ChatElement />
-      <ChatElement />
-      <ChatElement />
-      <ChatElement />
-      <ChatElement />
-      <ChatElement />
-      <ChatElement />
-      <ChatElement /> */}
       <div ref={ref} style={{ height: '20px' }} />
     </Box>
   );

@@ -13,7 +13,6 @@ export const useConversations = (limit = 2) => {
     },
     {
       getNextPageParam: (res: any) => {
-        console.log('lastPage', res);
         if (res.data.length > 0 && res.data.length === res.pagination.limit) {
           return res.pagination.page + 1;
         }
