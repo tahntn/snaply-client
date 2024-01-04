@@ -1,12 +1,12 @@
+import { useTranslation } from 'react-i18next';
+
 import { Box, Text } from '@radix-ui/themes';
 import { InputWithIcon } from '@/components/InputWithIcon';
 import { Icons } from '@/components/ui/icons';
-import ChatElement from './component/ChatElement';
-import { useTranslation } from 'react-i18next';
+import ConversationList from './component/ConversationList';
 
-const ConversationList = () => {
+const Conversation = () => {
   const { t } = useTranslation();
-
   return (
     <Box className="h-full">
       <Box className="p-6">
@@ -21,25 +21,10 @@ const ConversationList = () => {
           />
         </Box>
         <div className="border-b border-gray-300 my-6"></div>
-        <Box className="flex gap-5 flex-col overflow-y-auto max-h-[750px] pr-4 overflow-x-hidden">
-          <Text className="text-lg font-semibold">{t('conversation.allConversation')}</Text>
-          <ChatElement />
-          <ChatElement />
-          <ChatElement />
-          <ChatElement />
-          <ChatElement />
-          <ChatElement />
-          <ChatElement />
-          <ChatElement />
-          <ChatElement />
-          <ChatElement />
-          <ChatElement />
-          <ChatElement />
-          <ChatElement />
-        </Box>
+        <ConversationList />
       </Box>
     </Box>
   );
 };
 
-export default ConversationList;
+export default Conversation;

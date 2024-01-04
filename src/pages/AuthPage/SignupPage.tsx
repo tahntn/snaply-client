@@ -1,14 +1,14 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
+import { useAuth } from '@/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
-
 import { signupSchema } from '@/schema';
 import { fieldAuth, signupBody } from '@/types';
 import { Icons } from '@/components/ui/icons';
 import FormAuth from './components/FormAuth';
-import { useTranslation } from 'react-i18next';
-import { useAuth } from '@/hooks/useAuth';
+
 const SignupPage = () => {
   const { mutate: signup } = useAuth('register');
   const { t } = useTranslation();

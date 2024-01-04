@@ -1,12 +1,14 @@
 import React from 'react';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
-import { ModeToggle } from '@/components/ModeToggle';
-import styles from './style/index.module.css';
-import ConversationList from './Conversation/ConversationList';
-import useSearchUsers from '@/hooks/useSearchUses';
-import { Button } from '@/components/ui/button';
+
 import { useLogout } from '@/hooks/useSignOut';
 import { storage } from '@/lib/storage';
+import { ModeToggle } from '@/components/ModeToggle';
+import useSearchUsers from '@/hooks/useSearchUses';
+import { Button } from '@/components/ui/button';
+import Conversation from './Conversation/Conversation';
+
+import styles from './style/index.module.css';
 const ConversationsPage: React.FC = () => {
   const {} = useSearchUsers();
   const { mutate } = useLogout();
@@ -23,7 +25,7 @@ const ConversationsPage: React.FC = () => {
           minSize={15}
           className="bg-gray-100 dark:bg-black_custom-500"
         >
-          <ConversationList />
+          <Conversation />
         </Panel>
         <PanelResizeHandle className={styles.ResizeHandleCollapsed} />
         <Panel>
