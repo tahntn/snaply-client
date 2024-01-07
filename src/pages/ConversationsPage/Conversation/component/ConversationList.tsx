@@ -26,11 +26,11 @@ const ConversationList = () => {
     return <p>Error</p>;
   }
   return (
-    <Box className="flex gap-5 flex-col overflow-y-auto max-h-[750px] pr-4 overflow-x-hidden">
+    <Box className="flex gap-5 pb-5 flex-col overflow-y-auto max-h-[750px] pr-4 overflow-x-hidden">
       <Text className="text-lg font-semibold">{t('conversation.allConversation')}</Text>
       {data &&
         data.pages?.map((listConversation: any) =>
-          listConversation?.data?.map((conversation: any) => (
+          listConversation?.data?.data?.map((conversation: any) => (
             <ChatElement conversation={conversation} />
           ))
         )}

@@ -28,7 +28,7 @@ const SideBar: React.FC = () => {
     >
       <div className={cn('flex flex-col px-3 py-4 h-full bg-gray-50 relative', 'dark:bg-gray-800')}>
         <div className="flex-1">
-          <NavLink to={'/'} className="flex items-center ps-2.5 mb-5 ">
+          <NavLink to={'/conversation'} className="flex items-center ps-2.5 mb-5 ">
             <img
               src={mainTheme === 'light' ? LogoDark : LogoLight}
               className={cn('h-8 translate-x-[-5px]', 'sm:h-9')}

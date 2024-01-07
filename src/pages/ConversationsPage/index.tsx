@@ -1,39 +1,54 @@
 import React from 'react';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
-import { useLogout } from '@/hooks/useSignOut';
-import { storage } from '@/lib/storage';
-import { ModeToggle } from '@/components/ModeToggle';
 import useSearchUsers from '@/hooks/useSearchUses';
-import { Button } from '@/components/ui/button';
 import Conversation from './Conversation/Conversation';
 
 import styles from './style/index.module.css';
-const ConversationsPage: React.FC = () => {
+import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { useParams, useSearchParams } from 'react-router-dom';
+
+interface ConversationsPageProps {
+  children: React.ReactNode;
+}
+
+const ConversationsPage: React.FC<ConversationsPageProps> = ({ children }) => {
   const {} = useSearchUsers();
-  const { mutate } = useLogout();
-  const handleLogout = () => {
-    const refreshToken = storage.getString('snalpy-refresh');
-    mutate(refreshToken!);
-  };
+  const desktop = '(max-width: 1200px)';
+  const tablet = '(max-width: 1000px)';
+  const { conversationId } = useParams();
+
+  const isDesktop = useMediaQuery(desktop);
+  const isTablet = useMediaQuery(tablet);
+  const minSize = React.useMemo(() => {
+    if (isDesktop) {
+      return 45;
+    }
+    return 30;
+  }, [isDesktop]);
+
   return (
     <div className="h-full w-full">
-      <PanelGroup autoSaveId="example" direction="horizontal">
-        <Panel
-          defaultSize={25}
-          maxSize={30}
-          minSize={15}
-          className="bg-gray-100 dark:bg-black_custom-500"
-        >
+      {isTablet ? (
+        conversationId ? (
+          children
+        ) : (
           <Conversation />
-        </Panel>
-        <PanelResizeHandle className={styles.ResizeHandleCollapsed} />
-        <Panel>
-          hello
-          <Button onClick={handleLogout}>logout</Button>
-          <ModeToggle />
-        </Panel>
-      </PanelGroup>
+        )
+      ) : (
+        <PanelGroup autoSaveId="example" direction="horizontal">
+          <Panel
+            defaultSize={minSize}
+            maxSize={50}
+            minSize={minSize}
+            className="bg-gray-100 dark:bg-black_custom-500"
+          >
+            <Conversation />
+          </Panel>
+          <PanelResizeHandle className={styles.ResizeHandleCollapsed} />
+          <Panel>{children}</Panel>
+        </PanelGroup>
+      )}
     </div>
   );
 };
