@@ -1,13 +1,13 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { useTranslation } from 'react-i18next';
 
-import { Icons } from '@/components/ui/icons';
 import FormAuth from './components/FormAuth';
 import { loginSchema } from '@/schema';
 import { fieldAuth, loginBody } from '@/types';
-import { useTranslation } from 'react-i18next';
-import { useAuth } from '@/hooks/useAuth';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useAuth } from '@/hooks';
+import { Icons } from '@/components/ui/icons';
 
 const LoginPage = () => {
   const { mutate: login } = useAuth('login');
