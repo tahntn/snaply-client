@@ -30,7 +30,7 @@ const ConversationList = () => {
       <Text className="text-lg font-semibold">{t('conversation.allConversation')}</Text>
       {data &&
         data.pages?.map((listConversation: any) =>
-          listConversation?.data?.data?.map((conversation: any) => (
+          listConversation?.data?.map((conversation: any) => (
             <ChatElement conversation={conversation} />
           ))
         )}

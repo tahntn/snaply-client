@@ -30,7 +30,7 @@ const ChatElement: React.FC<ChatElementProps> = ({ conversation }) => {
               {!!isGroup ? nameGroup : participants?.[1].username}
             </Text>
             <Text className="text-sm">
-              {participants.find((user: any) => user._id === lastActivity?.senderId)?.username}
+              {lastActivity?.senderId?.username}{' '}
               {lastActivity?.type === 'init' && 'đã tạo cuộc trò chuyện'}
               {lastActivity?.type === 'text' && 'đã gửi một tin nhắn'}
               {lastActivity?.type === 'image' && 'đã gửi một ảnh'}

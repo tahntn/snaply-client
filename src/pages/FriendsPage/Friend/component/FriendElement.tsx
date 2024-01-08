@@ -10,8 +10,6 @@ interface FriendElementProps {
 const FriendElement: React.FC<FriendElementProps> = ({ friend }) => {
   const { avatar, username, email } = friend!.user;
 
-  console.log('friend', friend);
-
   return (
     <Box
       className={cn(

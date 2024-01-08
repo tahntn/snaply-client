@@ -13,9 +13,10 @@ export const useConversations = (limit = 5) => {
     },
     {
       getNextPageParam: (res: any) => {
-        if (res.data.data.length > 0 && res.data.data.length === res.data.pagination.limit) {
-          return res.data.pagination.page + 1;
+        if (res.data.length > 0 && res.data.length === res.pagination.limit) {
+          return res.pagination.page + 1;
         }
+
         return undefined;
       },
     }
