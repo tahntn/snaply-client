@@ -1,7 +1,6 @@
 import AvatarUser from '@/components/AvatarUser';
-import { cn } from '@/lib/utils';
+import { cn, formatDateTime } from '@/lib/utils';
 import { Box, Text } from '@radix-ui/themes';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 interface ChatElementProps {
   conversation: any;
@@ -38,7 +37,12 @@ const ChatElement: React.FC<ChatElementProps> = ({ conversation }) => {
           </Box>
         </Box>
         <Text className="text-sm absolute top-3 right-4">
-          {lastActivity?.timestamp && moment(lastActivity.timestamp).format('HH:mm')}
+          {/* {lastActivity?.timestamp && moment(lastActivity.timestamp).format('HH:mm')} */}
+          {lastActivity?.timestamp && formatDateTime(lastActivity.timestamp)}
+          {console.log(
+            '🚀 ~ file: ChatElement.tsx:43 ~ lastActivity?.timestamp:',
+            lastActivity?.timestamp
+          )}
         </Text>
         <span className="absolute bottom-3 right-4 inline-flex items-center  justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">
           2
