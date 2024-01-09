@@ -11,7 +11,6 @@ import LogoDark from '../assets/images/logo/logo-dark-none-text.png';
 import { useTheme } from '@/context/ThemeProvider';
 import { useTranslation } from 'react-i18next';
 import { useGetMe } from '@/hooks';
-import LoadingComponent from './LoadingComponent';
 import { Skeleton } from './ui/skeleton';
 
 const SideBar: React.FC = () => {
@@ -140,8 +139,8 @@ const SideBar: React.FC = () => {
             ) : (
               <>
                 <Avatar className="me-3 border border-gray-500">
-                  <AvatarImage src={data?.data.avatar} />
-                  <AvatarFallback className="uppercase">{data?.data.username?.[0]}</AvatarFallback>
+                  <AvatarImage src={data?.avatar} />
+                  <AvatarFallback className="uppercase">{data?.username?.[0]}</AvatarFallback>
                 </Avatar>
                 <h2
                   style={{
@@ -152,10 +151,10 @@ const SideBar: React.FC = () => {
                   }`}
                 >
                   <h3 className="text-lg  font-bold whitespace-nowrap dark:text-white line-clamp-1">
-                    {data?.data.username}
+                    {data?.username}
                   </h3>
                   <h4 className="text-xs font-bold text-gray-800 dark:text-gray-400 line-clamp-1">
-                    {data?.data.email}
+                    {data?.email}
                   </h4>
                 </h2>
               </>

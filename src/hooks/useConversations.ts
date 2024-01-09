@@ -9,14 +9,13 @@ export const useConversations = (limit = 5) => {
         page: pageParam,
         limit,
       });
-      return res.data;
+      return res;
     },
     {
       getNextPageParam: (res: any) => {
-        if (res.data.length > 0 && res.data.length === res.pagination.limit) {
+        if (res.data?.length > 0 && res.data?.length === res.pagination.limit) {
           return res.pagination.page + 1;
         }
-
         return undefined;
       },
     }

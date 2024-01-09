@@ -5,3 +5,4 @@ export * from './useSignOut';
 export * from './useMediaQuery';
 export * from './useFriends';
 export * from './useGetMe';
+export * from './useDetailConversation';
