@@ -1,11 +1,11 @@
 import { getAxios } from '@/api';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-export const useConversations = (limit = 5) => {
+export const useMessages = (conversationId: string, limit = 10) => {
   return useInfiniteQuery(
-    ['conversation'],
+    ['messages', conversationId],
     async ({ pageParam = 1 }) => {
-      const res = await getAxios('/conversation', {
+      const res = await getAxios(`/conversation/${conversationId}/message`, {
         page: pageParam,
         limit,
       });

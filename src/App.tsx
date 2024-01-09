@@ -20,7 +20,7 @@ import { useLogout } from './hooks/useSignOut';
 function App() {
   const { i18n } = useTranslation();
   const { getString } = storage;
-  const { setLogin, setLogout } = useAuthStore((state) => state);
+  const { setLogin } = useAuthStore((state) => state);
   const { toast } = useToast();
   const { mutate: logout } = useLogout();
   React.useEffect(() => {

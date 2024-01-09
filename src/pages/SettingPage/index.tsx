@@ -47,17 +47,17 @@ const SettingPage: React.FC = () => {
             ) : (
               <>
                 <Avatar className="!w-[56px] !h-[56px] border border-gray-500">
-                  <AvatarImage src={data?.data.avatar} />
-                  <AvatarFallback className="uppercase">{data?.data.username?.[0]}</AvatarFallback>
+                  <AvatarImage src={data?.avatar} />
+                  <AvatarFallback className="uppercase">{data?.username?.[0]}</AvatarFallback>
                 </Avatar>
                 <h2
                   className={`self-center text-xl font-semibold whitespace-nowrap dark:text-white`}
                 >
                   <h3 className="text-lg  font-bold whitespace-nowrap dark:text-white line-clamp-1">
-                    {data?.data.username}
+                    {data?.username}
                   </h3>
                   <h4 className="text-xs font-bold text-gray-800 dark:text-gray-400 line-clamp-1">
-                    {data?.data.email}
+                    {data?.email}
                   </h4>
                 </h2>
               </>

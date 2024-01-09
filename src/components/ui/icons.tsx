@@ -33,7 +33,7 @@ import {
   UserRoundPlus,
   Search,
   Contact,
-
+  Info,
   // type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -73,6 +73,7 @@ export const Icons = {
   userRoundPlus: UserRoundPlus,
   search: Search,
   contact: Contact,
+  info: Info,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
