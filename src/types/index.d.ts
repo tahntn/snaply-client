@@ -1,2 +1,4 @@
 export * from './auth';
-export * from './user.d';
+export * from './user';
+export * from './conversation';
+export * from './message';

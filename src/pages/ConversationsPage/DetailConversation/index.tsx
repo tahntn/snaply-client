@@ -6,10 +6,11 @@ import { useDetailConversation, useGetMe } from '@/hooks';
 import { IUser } from '@/types';
 import { Navigate, useParams } from 'react-router-dom';
 import MessageList from './component/MessageList';
+import ChatMessage from './component/ChatMessage';
 const DetailConversation = () => {
   const { conversationId } = useParams();
   const { data: currentUser } = useGetMe();
-  const { data, isLoading, isError } = useDetailConversation(conversationId!) as any;
+  const { data, isLoading, isError } = useDetailConversation(conversationId!);
 
   if (!!isError) {
     return <Navigate replace to={'/conversation'} />;
@@ -18,7 +19,7 @@ const DetailConversation = () => {
   return (
     <div className="flex flex-col md:h-screen sm:h-[calc(100vh-64px)]">
       <div className="h-20 shadow-lg flex items-center  justify-between px-4">
-        <div className="flex items-center gap-2  min-w-fit">
+        <div className="flex items-center gap-2 flex-1 max-w-[60%] ">
           {isLoading ? (
             <>
               <Skeleton className="h-12 w-12 rounded-full bg-foreground" />
@@ -31,7 +32,7 @@ const DetailConversation = () => {
                 <AvatarFallback className="uppercase">{data?.nameGroup?.[0]}</AvatarFallback>
               </Avatar>
               <div>
-                <h3 className="text-xl font-normal">{data?.nameGroup}</h3>
+                <h3 className="text-xl font-normal line-clamp-1">{data?.nameGroup}</h3>
               </div>
             </>
           ) : (
@@ -39,20 +40,20 @@ const DetailConversation = () => {
               <Avatar className=" border border-gray-500">
                 <AvatarImage
                   src={
-                    data?.participants.find((userItem: IUser) => userItem.id !== currentUser?.id)
+                    data?.participants.find((userItem: IUser) => userItem.id !== currentUser?.id)!
                       .avatar
                   }
                 />
                 <AvatarFallback className="uppercase">
                   {
-                    data?.participants.find((userItem: IUser) => userItem.id !== currentUser?.id)
+                    data?.participants.find((userItem: IUser) => userItem.id !== currentUser?.id)!
                       .username
                   }
                 </AvatarFallback>
               </Avatar>
               <h3 className="text-xl font-normal">
                 {
-                  data?.participants.find((userItem: IUser) => userItem.id !== currentUser?.id)
+                  data?.participants.find((userItem: IUser) => userItem.id !== currentUser?.id)!
                     .username
                 }
               </h3>
@@ -64,9 +65,11 @@ const DetailConversation = () => {
         </Button>
       </div>
       <div className="flex-1 bg-slate-200">
-        <MessageList conversationId={conversationId!} currentUser={currentUser} />
+        <MessageList conversationId={conversationId!} currentUser={currentUser!} />
       </div>
-      <div className="h-20 bg-slate-400"></div>
+      <div className="h-20 bg-slate-400">
+        <ChatMessage />
+      </div>
     </div>
   );
 };
