@@ -4,14 +4,16 @@ import { IUser } from '@/types';
 import { Text } from '@radix-ui/themes';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
+import { Navigate } from 'react-router-dom';
+import MessageItem from './MessageItem';
 
 interface MessageListProps {
   conversationId: string;
-  currentUser: IUser | undefined;
+  currentUser: IUser;
 }
 
 const MessageList: React.FC<MessageListProps> = ({ conversationId, currentUser }) => {
-  const { data, isLoading, status, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, isLoading, status, fetchNextPage, isError, hasNextPage, isFetchingNextPage } =
     useMessages(conversationId);
   const { ref, inView } = useInView();
 
@@ -20,26 +22,14 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId, currentUser }
       fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
+
+  if (!!isError) {
+    return <Navigate replace to={'/conversation'} />;
+  }
   return (
-    <div className="h-[calc(100vh-200px)] overflow-y-auto flex-col-reverse flex gap-5 py-3 px-4">
-      {data?.pages.map((page: any) =>
-        page.data.map((message: any) => (
-          <div
-            className={cn(
-              'w-full flex',
-              currentUser?.id === message?.senderId?.id && 'justify-end'
-            )}
-          >
-            <div
-              className={cn(
-                'bg-slate-50 py-3 w-fit px-3 rounded-md text-xl',
-                currentUser?.id === message?.senderId?.id && 'text-right'
-              )}
-            >
-              <Text className={cn()}>{message.title}</Text>
-            </div>
-          </div>
-        ))
+    <div className="h-[calc(100vh-210px)] overflow-y-auto overflow-x-hidden flex-col-reverse flex gap-5 py-3 px-4">
+      {data?.pages.map((page) =>
+        page.data.map((message) => <MessageItem {...message} currentUser={currentUser} />)
       )}
       <div ref={ref} style={{ height: '20px' }} />
     </div>
