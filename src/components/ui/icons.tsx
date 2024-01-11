@@ -34,6 +34,9 @@ import {
   Search,
   Contact,
   Info,
+  Send,
+  Link,
+  Smile,
   // type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -74,6 +77,9 @@ export const Icons = {
   search: Search,
   contact: Contact,
   info: Info,
+  send: Send,
+  link: Link,
+  smile: Smile,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

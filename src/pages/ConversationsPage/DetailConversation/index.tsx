@@ -64,10 +64,10 @@ const DetailConversation = () => {
           <Icons.info className="w-full h-full" />
         </Button>
       </div>
-      <div className="flex-1 bg-slate-200">
+      <div className="flex-1 shadow-xl bg-[#f0f4fa]">
         <MessageList conversationId={conversationId!} currentUser={currentUser!} />
       </div>
-      <div className="h-20 bg-slate-400">
+      <div className="h-20 px-3 ">
         <ChatMessage />
       </div>
     </div>

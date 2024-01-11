@@ -35,7 +35,8 @@ const MessageItem: React.FC<IMessage & { currentUser: IUser }> = ({
           'max-w-[60%] ',
           'sm:max-w-[80%]',
           'xs:max-w-[70%]',
-          type === 'text' && 'bg-slate-50 px-3 py-3  break-words rounded-md text-xl '
+          type === 'text' && 'bg-slate-50 shadow px-3 py-3  break-words rounded-md text-xl ',
+          type === 'text' && currentUser?.id !== senderId?.id && 'bg-gray-200'
         )}
       >
         {type === 'text' && (
@@ -69,7 +70,10 @@ const MessageItem: React.FC<IMessage & { currentUser: IUser }> = ({
             )}
           >
             {imageList?.map((image) => (
-              <img src={image} className="max-w-[calc(calc(100%/3)-6px)] object-cover" />
+              <img
+                src={image}
+                className="max-w-[calc(calc(100%/3)-6px)] object-cover border rounded-xl shadow-lg"
+              />
             ))}
           </div>
         )}

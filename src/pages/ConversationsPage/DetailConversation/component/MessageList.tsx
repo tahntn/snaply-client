@@ -27,7 +27,7 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId, currentUser }
     return <Navigate replace to={'/conversation'} />;
   }
   return (
-    <div className="h-[calc(100vh-210px)] overflow-y-auto overflow-x-hidden flex-col-reverse flex gap-5 py-3 px-4">
+    <div className="h-[calc(100vh-160px)] overflow-y-auto overflow-x-hidden flex-col-reverse flex gap-5 py-3 px-3">
       {data?.pages.map((page) =>
         page.data.map((message) => <MessageItem {...message} currentUser={currentUser} />)
       )}
