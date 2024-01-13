@@ -127,9 +127,9 @@ function App() {
           </ErrorBoundary>
         </BrowserRouter>
         <Toaster />
-        {import.meta.env.VITE_NODE_ENV === 'development' && (
+        {/* {import.meta.env.VITE_NODE_ENV === 'development' && (
           <ReactQueryDevtools initialIsOpen={true} position="bottom-right" />
-        )}
+        )} */}
       </TooltipProvider>
     </ThemeProvider>
   );

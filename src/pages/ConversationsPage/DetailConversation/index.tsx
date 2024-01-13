@@ -17,8 +17,8 @@ const DetailConversation = () => {
   }
 
   return (
-    <div className="flex flex-col md:h-screen sm:h-[calc(100vh-64px)]">
-      <div className="h-20 shadow-lg flex items-center  justify-between px-4">
+    <div className="relative md:h-screen sm:h-[calc(100vh)] xs:h-[calc(100vh-64px)]">
+      <div className="h-20 absolute top-0 right-0 left-0 flex items-center  justify-between px-4 border-b border-card-foreground">
         <div className="flex items-center gap-2 flex-1 max-w-[60%] ">
           {isLoading ? (
             <>
@@ -64,10 +64,14 @@ const DetailConversation = () => {
           <Icons.info className="w-full h-full" />
         </Button>
       </div>
-      <div className="flex-1 shadow-xl bg-[#f0f4fa]">
+      <div
+        className="flex-1 h-full   bg-custom-3 border-t pt-[80px] pb-[96px] border-b border-gray-500 
+
+      "
+      >
         <MessageList conversationId={conversationId!} currentUser={currentUser!} />
       </div>
-      <div className="h-20 px-3 ">
+      <div className="h-20 px-3 py-2 absolute bottom-0 right-0 left-0  border-t border-card-foreground">
         <ChatMessage />
       </div>
     </div>
