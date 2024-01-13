@@ -10,7 +10,6 @@ import { GuardAuthenticated } from '@/guard/GuardAuthenticated';
 import { LoginPage, SignupPage } from '@/pages/AuthPage';
 import NoChat from '@/components/NoChat';
 import DetailConversation from '@/pages/ConversationsPage/DetailConversation';
-import Test from '@/pages/Test';
 
 const Loadable = <P extends object>(Component: ComponentType<P>) => {
   const LazyComponents: FC<P> = (props: PropsWithChildren<P>) => {
@@ -63,10 +62,6 @@ const Page404 = Loadable(
 );
 
 const lazyRoutes: RouteObject[] = [
-  {
-    path: '/test',
-    element: <Test />,
-  },
   {
     path: '/',
     errorElement: <Page404 />,

@@ -49,7 +49,6 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId, currentUser }
           ) {
             hasAvatar = false;
           }
-          console.log(indexPage, indexMessage, message.imageList, message.title, prevMessage);
 
           return (
             <MessageItem
