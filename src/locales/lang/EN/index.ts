@@ -1,5 +1,6 @@
 import { Conversation } from './conversation';
 import { Friend } from './friend';
+import { FriendRequest } from './friendRequest';
 import { Login } from './login';
 import { Mode } from './mode';
 import { Setting } from './setting';
@@ -14,4 +15,5 @@ export const EN = {
   mode: Mode,
   sidebar: Sidebar,
   friend: Friend,
+  friendRequest: FriendRequest,
 };

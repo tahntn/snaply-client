@@ -1,24 +1,24 @@
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import React from 'react';
-
-import Friend from './Friend/Friend';
 import { Box } from '@radix-ui/themes';
+import FriendRequest from './FriendRequest/FriendRequest';
 
-interface FriendsPageProps {
+interface FriendRequestPageProps {
   children: React.ReactNode;
 }
-const FriendsPage: React.FC<FriendsPageProps> = ({ children }) => {
+
+const FriendRequestPage: React.FC<FriendRequestPageProps> = ({ children }) => {
   const tablet = '(max-width: 1000px)';
   const isTablet = useMediaQuery(tablet);
 
   return (
     <div className="h-full w-full">
       {isTablet ? (
-        <Friend />
+        <FriendRequest />
       ) : (
         <Box className="h-full">
           <Box className="h-full bg-gray-100 dark:bg-black_custom-500 max-w-[30%]">
-            <Friend />
+            <FriendRequest />
           </Box>
           <Box>{children}</Box>
         </Box>
@@ -27,4 +27,4 @@ const FriendsPage: React.FC<FriendsPageProps> = ({ children }) => {
   );
 };
 
-export default FriendsPage;
+export default FriendRequestPage;

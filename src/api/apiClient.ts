@@ -1,4 +1,3 @@
-// import { QueryClient, useMutation, useQuery } from '@tanstack/react-query';
 import { axiosInstance } from './apiConfig';
 
 // method

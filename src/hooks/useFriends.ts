@@ -1,13 +1,19 @@
 import { getAxios } from '@/api';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-export const useFriends = (limit = 5) => {
+interface IProps {
+  limit?: number;
+  type?: string;
+}
+
+export const useFriends = ({ limit = 5, type }: IProps = {}) => {
   return useInfiniteQuery(
     ['friends/list'],
     async ({ pageParam = 1 }) => {
-      const res = await getAxios('/friend/list', {
+      const res = await getAxios(`/friend/list`, {
         page: pageParam,
         limit,
+        type,
       });
       return res.data;
     },
