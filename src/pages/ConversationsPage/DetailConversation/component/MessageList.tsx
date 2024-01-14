@@ -32,20 +32,27 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId, currentUser }
         page.data.map((message, indexMessage) => {
           let prevMessage: IMessage;
           let hasAvatar: boolean = true;
+          let isMessagesNew = true;
           if (indexMessage === 9) {
             prevMessage = data.pages?.[indexPage + 1]?.data?.[0];
           } else {
             prevMessage = data.pages?.[indexPage]?.data?.[indexMessage + 1];
           }
-
           if (
             prevMessage &&
-            prevMessage.senderId?.id === message.senderId.id &&
-            prevMessage.type === message.type &&
             Math.abs(
               new Date(message.createdAt).getTime() - new Date(prevMessage.createdAt).getTime()
             ) <
               20 * 60 * 1000
+          ) {
+            isMessagesNew = false;
+          }
+          if (
+            prevMessage &&
+            prevMessage.senderId?.id === message.senderId.id &&
+            prevMessage.type === message.type &&
+            message.type !== 'image' &&
+            !isMessagesNew
           ) {
             hasAvatar = false;
           }
@@ -56,6 +63,7 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId, currentUser }
               {...message}
               currentUser={currentUser}
               hasAvatar={hasAvatar}
+              isMessagesNew={isMessagesNew}
             />
           );
         })

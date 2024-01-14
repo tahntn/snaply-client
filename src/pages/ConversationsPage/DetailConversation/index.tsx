@@ -1,21 +1,29 @@
+import React from 'react';
+import { Navigate, useParams } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useDetailConversation, useGetMe } from '@/hooks';
 import { IUser } from '@/types';
-import { Navigate, useParams } from 'react-router-dom';
 import MessageList from './component/MessageList';
 import ChatMessage from './component/ChatMessage';
+import ReplyMessage from './component/ReplyMessage';
+import { useConversationStore } from '@/store';
+import { cn } from '@/lib/utils';
 const DetailConversation = () => {
   const { conversationId } = useParams();
   const { data: currentUser } = useGetMe();
   const { data, isLoading, isError } = useDetailConversation(conversationId!);
+  const { replyMessage, resetReplyMessage } = useConversationStore((state) => state);
 
   if (!!isError) {
     return <Navigate replace to={'/conversation'} />;
   }
 
+  React.useEffect(() => {
+    resetReplyMessage();
+  }, [conversationId]);
   return (
     <div className="relative md:h-screen sm:h-[calc(100vh)] xs:h-[calc(100vh-64px)]">
       <div className="h-20 absolute top-0 right-0 left-0 flex items-center  justify-between px-4 border-b border-card-foreground">
@@ -65,12 +73,18 @@ const DetailConversation = () => {
         </Button>
       </div>
       <div
-        className="flex-1 h-full   bg-custom-3 border-t pt-[80px] pb-[96px] border-b border-gray-500 
-
-      "
+        className={cn(
+          'flex-1 h-full   bg-custom-3 border-t pt-[80px] border-b border-gray-500 ',
+          replyMessage?.id ? 'pb-[176px] ' : 'pb-[96px]'
+        )}
       >
         <MessageList conversationId={conversationId!} currentUser={currentUser!} />
       </div>
+      {replyMessage?.id && (
+        <div className="h-16 absolute bottom-20 border-t  right-0 left-0  border-card-foreground">
+          <ReplyMessage />
+        </div>
+      )}
       <div className="h-20 px-3 py-2 absolute bottom-0 right-0 left-0  border-t border-card-foreground">
         <ChatMessage />
       </div>
