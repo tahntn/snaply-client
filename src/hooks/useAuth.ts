@@ -14,10 +14,7 @@ export const useAuth = (type: 'login' | 'register') => {
       return postAxios<any>(`auth/${type}`, user);
     },
     onSuccess: ({ data }) => {
-      const {
-        data: { tokens },
-      } = data;
-      const { access, refresh } = tokens;
+      const { access, refresh } = data;
       if (access && refresh) {
         storage.setString('snalpy-access', access?.token);
         storage.setString('snalpy-refresh', refresh?.token);

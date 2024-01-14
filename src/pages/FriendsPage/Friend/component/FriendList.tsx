@@ -3,6 +3,7 @@ import React from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Box } from '@radix-ui/themes';
 import { useFriends } from '@/hooks/useFriends';
+import { cn } from '@/lib/utils';
 import FriendElement from './FriendElement';
 
 const FriendList: React.FC = () => {
@@ -24,14 +25,28 @@ const FriendList: React.FC = () => {
   }
 
   return (
-    <Box className="flex gap-5 pb-5 flex-col overflow-y-auto max-h-[750px] pr-4 overflow-x-hidden">
-      {data &&
-        data?.pages?.map((listFriend: any) => {
-          return listFriend?.data?.map((friend: any) => (
-            <FriendElement key={friend._id} friend={friend} />
-          ));
-        })}
-      <div ref={ref} style={{ height: '20px' }} />
+    <Box className="p-6 pr-0 h-screen pt-[140px]">
+      <Box className="overflow-y-auto overflow-x-hidden pr-6 flex gap-5 flex-col h-full">
+        {data &&
+          data?.pages.map((listFriend: any) => {
+            return listFriend?.data?.map((friendInfo: any) => (
+              <>
+                <div
+                  className={cn(
+                    'relative font-semibold text-xl',
+                    'before:absolute before:h-[1px] before:top-1/2 before:translate-y-1/2 before:left-[40px] before:right-0 before:bg-foreground before:w-[calc(100%-40px)]'
+                  )}
+                >
+                  {friendInfo?._id?.toUpperCase()}
+                </div>
+                {friendInfo?.friends?.map((friend: any) => (
+                  <FriendElement key={friend?._id} friend={friend?.user} />
+                ))}
+              </>
+            ));
+          })}
+        <div ref={ref} style={{ height: '20px' }} />
+      </Box>
     </Box>
   );
 };

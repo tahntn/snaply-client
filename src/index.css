@@ -91,13 +91,12 @@
     @apply bg-background text-foreground;
   }
   ::-webkit-scrollbar {
-    width: 10px;
+    width: 4px;
   }
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
     background: #888;
-    border-radius: 10px;
   }
 
   /* Handle on hover */

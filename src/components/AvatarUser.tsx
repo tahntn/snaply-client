@@ -6,13 +6,14 @@ import { Box } from '@radix-ui/themes';
 interface AvatarUserProps {
   name: string;
   url: string;
+  className?: string;
 }
 
-const AvatarUser: React.FC<AvatarUserProps> = ({ name, url }) => {
+const AvatarUser: React.FC<AvatarUserProps> = ({ name, url, className }) => {
   return (
     <Box className="relative">
       <Avatar>
-        <AvatarImage src={url} />
+        <AvatarImage src={url} className={className} />
         <AvatarFallback className="uppercase">{name[0]}</AvatarFallback>
       </Avatar>
 

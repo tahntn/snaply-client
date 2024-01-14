@@ -8,17 +8,8 @@ interface FriendsPageProps {
   children: React.ReactNode;
 }
 const FriendsPage: React.FC<FriendsPageProps> = ({ children }) => {
-  const desktop = '(max-width: 1200px)';
   const tablet = '(max-width: 1000px)';
-  const isDesktop = useMediaQuery(desktop);
   const isTablet = useMediaQuery(tablet);
-
-  const minSize = React.useMemo(() => {
-    if (isDesktop) {
-      return 45;
-    }
-    return 30;
-  }, [isDesktop]);
 
   return (
     <div className="h-full w-full">
