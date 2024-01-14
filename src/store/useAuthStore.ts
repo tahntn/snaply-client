@@ -1,5 +1,3 @@
-import { IUser } from '@/types';
-
 import { create } from 'zustand';
 
 interface GlobalState {

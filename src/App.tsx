@@ -16,6 +16,7 @@ import { axiosInstance } from './api/apiConfig';
 import axios from 'axios';
 import { refreshAccessToken } from './services/auth.service';
 import { useLogout } from './hooks/useSignOut';
+import { DialogPreviewImage } from './components/Dialog';
 
 function App() {
   const { i18n } = useTranslation();
@@ -127,6 +128,7 @@ function App() {
           </ErrorBoundary>
         </BrowserRouter>
         <Toaster />
+        <DialogPreviewImage />
         {import.meta.env.VITE_NODE_ENV === 'development' && (
           <ReactQueryDevtools initialIsOpen={true} position="bottom-right" />
         )}
