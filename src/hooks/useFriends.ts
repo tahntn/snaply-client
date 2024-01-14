@@ -5,11 +5,11 @@ export const useFriends = (limit = 5) => {
   return useInfiniteQuery(
     ['friends/list'],
     async ({ pageParam = 1 }) => {
-      const res = await getAxios('/friend/list', {
+      const res = await getAxios('/friend/list-v2', {
         page: pageParam,
         limit,
       });
-      return res.data;
+      return res;
     },
     {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

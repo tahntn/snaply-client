@@ -5,7 +5,7 @@ import { Text } from '@radix-ui/themes';
 import React from 'react';
 import reactStringReplace from 'react-string-replace';
 
-const MessageItem: React.FC<IMessage & { currentUser: IUser }> = ({
+const MessageItem: React.FC<IMessage & { currentUser: IUser; sameAuthor: boolean }> = ({
   conversationId,
   createdAt,
   updatedAt,
@@ -16,6 +16,7 @@ const MessageItem: React.FC<IMessage & { currentUser: IUser }> = ({
   type,
   currentUser,
   imageList,
+  sameAuthor,
 }) => {
   return (
     <div

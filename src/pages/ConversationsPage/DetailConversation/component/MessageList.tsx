@@ -29,7 +29,17 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId, currentUser }
   return (
     <div className="h-[calc(100vh-160px)] overflow-y-auto overflow-x-hidden flex-col-reverse flex gap-5 py-3 px-3">
       {data?.pages.map((page) =>
-        page.data.map((message) => <MessageItem {...message} currentUser={currentUser} />)
+        page.data.map((message, index) => {
+          console.log('a', page?.data?.[page?.data?.length - 1]);
+          console.log('b', page?.data?.[page?.data?.length - 2]);
+
+          const sameAuthor =
+            page?.data?.length - 1 > 0 &&
+            page?.data?.[page?.data?.length - 1]?.senderId?.id ===
+              page?.data?.[page?.data?.length - 2]?.senderId?.id;
+          console.log('sameAuthor', sameAuthor);
+          return <MessageItem {...message} currentUser={currentUser} sameAuthor={sameAuthor} />;
+        })
       )}
       <div ref={ref} style={{ height: '20px' }} />
     </div>
