@@ -16,11 +16,12 @@ import { axiosInstance } from './api/apiConfig';
 import axios from 'axios';
 import { refreshAccessToken } from './services/auth.service';
 import { useLogout } from './hooks/useSignOut';
+import { DialogPreviewImage } from './components/Dialog';
 
 function App() {
   const { i18n } = useTranslation();
   const { getString } = storage;
-  const { setLogin, setLogout } = useAuthStore((state) => state);
+  const { setLogin } = useAuthStore((state) => state);
   const { toast } = useToast();
   const { mutate: logout } = useLogout();
   React.useEffect(() => {
@@ -127,6 +128,7 @@ function App() {
           </ErrorBoundary>
         </BrowserRouter>
         <Toaster />
+        <DialogPreviewImage />
         {import.meta.env.VITE_NODE_ENV === 'development' && (
           <ReactQueryDevtools initialIsOpen={true} position="bottom-right" />
         )}

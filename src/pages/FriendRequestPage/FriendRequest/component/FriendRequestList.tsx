@@ -1,13 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useInView } from 'react-intersection-observer';
 import { Box } from '@radix-ui/themes';
-import { useFriends } from '@/hooks/useFriends';
 import React from 'react';
+import { useFriendRequest } from '@/hooks';
+import FriendRequestElement from './FriendRequestElement';
 
 const FriendRequestList: React.FC = () => {
   const { ref, inView } = useInView();
-  const { data, isLoading, status, fetchNextPage, hasNextPage, isFetchingNextPage } = useFriends({
-    type: 'friendRequests',
-  });
+  const { data, isLoading, status, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useFriendRequest({
+      type: 'friendRequests',
+    });
 
   React.useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -23,10 +26,16 @@ const FriendRequestList: React.FC = () => {
     return <p>Error</p>;
   }
 
-  console.log('data', data);
-
   return (
-    <Box className="flex gap-5 pb-5 flex-col overflow-y-auto max-h-[750px] pr-4 overflow-x-hidden">
+    <Box className="p-6 pr-0 h-screen pt-[20px] ">
+      <Box className="overflow-y-auto overflow-x-hidden pr-6 flex gap-3 flex-col h-full">
+        {data &&
+          data.pages?.map((listFriendRequest: any) =>
+            listFriendRequest?.data?.map((friendRequest: any) => (
+              <FriendRequestElement key={friendRequest?._id} friendRequest={friendRequest} />
+            ))
+          )}
+      </Box>
       <div ref={ref} style={{ height: '20px' }} />
     </Box>
   );

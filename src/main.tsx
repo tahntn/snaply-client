@@ -13,7 +13,7 @@ const queryClient = new QueryClient({
       staleTime: 1000 * 60, //1 phút
       cacheTime: 1000 * 60 * 10, //10 phút
       refetchInterval: false,
-      retry: 0,
+      retry: 2,
       retryDelay: 0,
     },
   },

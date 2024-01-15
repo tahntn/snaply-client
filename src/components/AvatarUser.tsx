@@ -11,12 +11,12 @@ interface AvatarUserProps {
 const AvatarUser: React.FC<AvatarUserProps> = ({ name, url }) => {
   return (
     <Box className="relative">
-      <Avatar>
+      <Avatar className="border-2 border-background w-9 h-9">
         <AvatarImage src={url} />
         <AvatarFallback className="uppercase">{name[0]}</AvatarFallback>
       </Avatar>
 
-      <Badge className="absolute bottom-0 right-0 rounded-full p-[5px] bg-green-400" />
+      <Badge className="absolute top-0 right-0 rounded-full border-2 border-background p-[4px] bg-green-400" />
     </Box>
   );
 };
