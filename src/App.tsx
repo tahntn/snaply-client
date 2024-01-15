@@ -130,7 +130,7 @@ function App() {
         <Toaster />
         <DialogPreviewImage />
         {import.meta.env.VITE_NODE_ENV === 'development' && (
-          <ReactQueryDevtools initialIsOpen={true} position="bottom-right" />
+          <ReactQueryDevtools initialIsOpen={true} position="top-left" />
         )}
       </TooltipProvider>
     </ThemeProvider>
