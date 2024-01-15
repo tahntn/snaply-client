@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 
 const Friend: React.FC = () => {
   const { t } = useTranslation();
+
   return (
     <Box className="h-screen relative">
       <Box className="absolute w-full p-6 pb-0 bg-gray-100 dark:bg-black_custom-500 z-[1000]">
@@ -23,8 +24,11 @@ const Friend: React.FC = () => {
         </Box>
         <Box className="mt-4">
           <InputWithIcon
-            startAndornment={<Icons.search className="h-[18px] text-black-500" />}
-            className="p-2 border-none"
+            onChange={(e) => {
+              console.log('a', e.target.value);
+            }}
+            startAndornment={<Icons.search className="h-[18px] text-background" />}
+            className="p-2 border-none text-background"
             placeholder={t('friend.form.placeholderSearch')}
           />
         </Box>

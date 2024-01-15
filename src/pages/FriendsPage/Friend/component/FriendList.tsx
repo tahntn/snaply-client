@@ -26,15 +26,15 @@ const FriendList: React.FC = () => {
 
   return (
     <Box className="p-6 pr-0 h-screen pt-[140px]">
-      <Box className="overflow-y-auto overflow-x-hidden pr-6 flex gap-5 flex-col h-full">
+      <Box className="overflow-y-auto overflow-x-hidden pr-6 flex gap-2 flex-col h-full">
         {data &&
           data?.pages.map((listFriend: any) => {
             return listFriend?.data?.map((friendInfo: any) => (
               <>
                 <div
                   className={cn(
-                    'relative font-semibold text-xl',
-                    'before:absolute before:h-[1px] before:top-1/2 before:translate-y-1/2 before:left-[40px] before:right-0 before:bg-foreground before:w-[calc(100%-40px)]'
+                    'relative font-semibold text-base',
+                    'before:absolute before:h-[1px] before:top-1/2 before:translate-y-1/2 before:left-[40px] before:right-0 before:bg-gray-400 before:w-[calc(100%-40px)]'
                   )}
                 >
                   {friendInfo?._id?.toUpperCase()}
