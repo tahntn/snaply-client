@@ -3,15 +3,17 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 interface IProps {
   limit?: number;
+  type?: string;
 }
 
-export const useFriends = ({ limit = 5 }: IProps = {}) => {
+export const useFriendRequest = ({ limit = 5, type }: IProps = {}) => {
   return useInfiniteQuery(
-    ['friends'],
+    ['friendRequest'],
     async ({ pageParam = 1 }) => {
-      const res = await getAxios('/friend/list-v2', {
+      const res = await getAxios('/friend/list', {
         page: pageParam,
         limit,
+        type,
       });
       return res;
     },

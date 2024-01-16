@@ -10,6 +10,7 @@ import { GuardAuthenticated } from '@/guard/GuardAuthenticated';
 import { LoginPage, SignupPage } from '@/pages/AuthPage';
 import NoChat from '@/components/NoChat';
 import DetailConversation from '@/pages/ConversationsPage/DetailConversation';
+import FriendRequestPage from '@/pages/FriendRequestPage';
 
 const Loadable = <P extends object>(Component: ComponentType<P>) => {
   const LazyComponents: FC<P> = (props: PropsWithChildren<P>) => {
@@ -113,7 +114,11 @@ const lazyRoutes: RouteObject[] = [
             path: pathNames.search,
           },
           {
-            element: <HomePage />,
+            element: (
+              <FriendRequestPage>
+                <Outlet />
+              </FriendRequestPage>
+            ),
             path: pathNames.friendRequest,
           },
           {
