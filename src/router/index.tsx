@@ -11,6 +11,7 @@ import { LoginPage, SignupPage } from '@/pages/AuthPage';
 import NoChat from '@/components/NoChat';
 import DetailConversation from '@/pages/ConversationsPage/DetailConversation';
 import FriendRequestPage from '@/pages/FriendRequestPage';
+import CommonLayout from '@/layout/CommonLayout';
 
 const Loadable = <P extends object>(Component: ComponentType<P>) => {
   const LazyComponents: FC<P> = (props: PropsWithChildren<P>) => {
@@ -39,6 +40,12 @@ const AuthLayout = Loadable(
 const HomePage = Loadable(
   lazy(() => {
     return import('../pages/HomePage/index');
+  })
+);
+
+const SearchPage = Loadable(
+  lazy(() => {
+    return import('../pages/SearchPage');
   })
 );
 
@@ -110,9 +117,20 @@ const lazyRoutes: RouteObject[] = [
             ],
           },
           {
-            element: <HomePage />,
-            path: pathNames.search,
+            path: '',
+            element: (
+              <CommonLayout>
+                <Outlet />
+              </CommonLayout>
+            ),
+            children: [
+              {
+                element: <SearchPage />,
+                path: pathNames.search,
+              },
+            ],
           },
+
           {
             element: (
               <FriendRequestPage>

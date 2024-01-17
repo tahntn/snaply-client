@@ -161,7 +161,7 @@ const SideBar: React.FC = () => {
             )}
           </NavLink>
         </div>
-        <div
+        {/* <div
           className={cn(
             'flex items-center justify-end absolute right-0 top-6 bg-gray-800 rounded-full translate-x-2/4',
             'dark:bg-white'
@@ -175,7 +175,7 @@ const SideBar: React.FC = () => {
           >
             <Icons.chevronLeft className={cn('text-white', 'dark:text-gray-800')} />
           </div>
-        </div>
+        </div> */}
       </div>
     </aside>
   );

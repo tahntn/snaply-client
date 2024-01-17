@@ -1,7 +1,7 @@
 import React from 'react';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
-import useSearchUsers from '@/hooks/useSearchUses';
+import useSearchUsers from '@/hooks/useSearchUsers';
 import Conversation from './Conversation/Conversation';
 
 import styles from './style/index.module.css';
