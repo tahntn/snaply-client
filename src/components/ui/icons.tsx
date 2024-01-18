@@ -40,6 +40,7 @@ import {
   MoreHorizontal,
   Reply,
   ImagePlus,
+  UserPlus,
   // type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -87,6 +88,7 @@ export const Icons = {
   reply: Reply,
   imagePlus: ImagePlus,
   image: Image,
+  userPlus: UserPlus,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
