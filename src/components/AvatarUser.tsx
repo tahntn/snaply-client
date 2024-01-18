@@ -18,7 +18,7 @@ const AvatarUser: React.FC<AvatarUserProps> = ({ name, url, classNameAvatar }) =
         <AvatarFallback className="uppercase">{name[0]}</AvatarFallback>
       </Avatar>
 
-      <Badge className="absolute top-0 right-0 rounded-full border-2 border-background p-[4px] bg-green-400" />
+      {/* <Badge className="absolute top-0 right-0 rounded-full border-2 border-background p-[4px] bg-green-400" /> */}
     </Box>
   );
 };
