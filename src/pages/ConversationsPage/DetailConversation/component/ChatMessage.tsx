@@ -7,21 +7,62 @@ import { useConversationStore } from '@/store';
 import { Text } from '@radix-ui/themes';
 import React from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
+import data from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from '@/context/ThemeProvider';
+import GiphySelect from './GiphySelect';
+// import { Gif } from '@giphy/react-components';
 
 interface ChatMessageProps {}
+
 const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
-  const { fileUpload, deleteFile } = useConversationStore((state) => state);
+  const { fileUpload, deleteFile, giphyUrl } = useConversationStore((state) => state);
+
+  const { theme } = useTheme();
+  const { i18n } = useTranslation();
+  const currentLanguage = i18n.language;
+
   const [isOpenPopover, setIsOpenPopover] = React.useState(false);
   const [value, setValue] = React.useState('');
 
   const { getRootProps, getInputProps } = useUploadFile();
+
   return (
     <div
       className={cn('px-2 py-3 flex gap-2 items-end h-full', fileUpload.length > 0 && 'items-end')}
     >
-      <Button className={cn(' rounded-2xl bg-custom_5 h-[40px] w-[40px]  text-black p-3')}>
-        <Icons.smile className="w-full h-full" />
-      </Button>
+      <Popover>
+        <PopoverTrigger>
+          <Button className={cn('rounded-2xl bg-custom_5 h-[40px] w-[40px]  text-black p-3 ')}>
+            <Icons.smile className="w-full h-full" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-0 p-0 border-0">
+          <div className="translate-y-[-5%] -translate-x-8">
+            <Picker
+              data={data}
+              emojiSize={20}
+              locale={currentLanguage}
+              theme={theme}
+              previewPosition="none"
+              onEmojiSelect={(emoji: { native: string }) => setValue(value + emoji.native)}
+              maxFrequentRows={1}
+            />
+          </div>
+        </PopoverContent>
+      </Popover>
+      <Popover>
+        <PopoverTrigger>
+          <Button className={cn(' rounded-2xl bg-custom_5 h-[40px] w-[40px]  text-black p-3 ')}>
+            Gif
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="translate-y-[-5%] translate-x-14 bg-black-800">
+          <GiphySelect />
+        </PopoverContent>
+      </Popover>
+
       <div
         className={cn(
           'flex  border border-input rounded-2xl  flex-1 text-sm bg-custom_5  px-3 ',
@@ -57,15 +98,19 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
             ))}
           </div>
         )}
+
+        {/* {giphyUrl && <Gif gif={giphyUrl} width={200} noLink={true} hideAttribution={true} />} */}
+
         <div></div>
         <TextareaAutosize
           minRows={1}
           maxRows={6}
+          onChange={(e) => setValue(e.target.value)}
           className={cn(
             'w-full resize-none  text-black max-h-[120px]  p-2 pb-3 placeholder:text-[#a4a4a4] focus-visible:outline-none text-sm  disabled:opacity-50 bg-transparent'
           )}
           placeholder="Write somthing"
-          // value={value}
+          value={value}
         />
       </div>
       {fileUpload.length === 0 && (
