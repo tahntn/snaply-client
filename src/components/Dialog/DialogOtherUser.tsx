@@ -1,17 +1,6 @@
-import React from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { useGlobalStore } from '@/store';
-import { useGetMe, userOtherUser } from '@/hooks';
+import { useCreateConversation, useGetMe, userOtherUser } from '@/hooks';
 import AvatarUser from '../AvatarUser';
 import { Icons } from '../ui/icons';
 import { Text } from '@radix-ui/themes';
@@ -22,10 +11,10 @@ const DialogOtherUser = () => {
   const { isOpenDialogOtherUser, idOtherUser, handleCloseDialogOtherUser } = useGlobalStore(
     (state) => state
   );
+
+  const { mutate: createConversation } = useCreateConversation();
   const { data: currentUser } = useGetMe();
   const { data, isLoading } = userOtherUser(idOtherUser!);
-  console.log('🚀 ~ DialogOtherUser ~ data:', data);
-
   return (
     <Dialog open={!!isOpenDialogOtherUser} onOpenChange={handleCloseDialogOtherUser}>
       <DialogContent className="sm:max-w-[425px]">
@@ -74,7 +63,14 @@ const DialogOtherUser = () => {
               )}
             </Button>
 
-            <Button>
+            <Button
+              onClick={() => {
+                createConversation({
+                  participants: [(data?.data._id || data?.data.id)!],
+                  isGroup: false,
+                });
+              }}
+            >
               <Icons.messageCircle className="w-5 h-5" />
               <Text className="pl-2">Message</Text>
             </Button>

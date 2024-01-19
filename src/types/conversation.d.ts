@@ -1,4 +1,4 @@
-import { IUser } from '.';
+import { IMessage, IPagination, IUser } from '.';
 
 interface ILastActivity {
   type: 'text' | 'image' | 'init';
@@ -10,8 +10,16 @@ export interface IDetailConversation {
   avatarGroup?: string;
   nameGroup?: string;
   createAt: Date;
-  id: string;
+  id?: string;
+  _id?: string;
   isGroup: boolean;
-  lastActivity: ILastActivity;
+  lastActivity: {
+    lastMessage: IMessage;
+  };
   participants: IUser[];
+}
+
+export interface IConversations {
+  data: IDetailConversation[];
+  pagination: IPagination;
 }

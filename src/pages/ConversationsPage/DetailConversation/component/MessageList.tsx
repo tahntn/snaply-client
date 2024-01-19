@@ -47,6 +47,11 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId, currentUser }
           ) {
             isMessagesNew = false;
           }
+
+          if (prevMessage && prevMessage.type == 'update') {
+            isMessagesNew = false;
+          }
+
           if (
             prevMessage &&
             prevMessage.senderId?.id === message.senderId.id &&

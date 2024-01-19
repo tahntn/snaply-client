@@ -61,18 +61,19 @@ const MessageItem: React.FC<
             'max-w-[60%] ',
             'sm:max-w-[80%]',
             'xs:max-w-[70%]',
-            type === 'image' && 'md:max-w-[50%]'
+            type === 'image' && 'md:max-w-[50%]',
+            type === 'update' && 'w-full sm:max-w-full'
           )}
         >
           {/* Name sender */}
-          {hasAvatar && currentUser?.id !== senderId?.id && (
+          {hasAvatar && currentUser?.id !== senderId?.id && type !== 'update' && (
             <div className="pb-2">
               <Text className="text-base pl-1 text-color_brand ">{senderId.username}</Text>
               <Text className=" pl-2 text-color_brand">{moment(createdAt).format('HH:mm')}</Text>
             </div>
           )}
           {/* Time sent */}
-          {hasAvatar && currentUser?.id === senderId?.id && (
+          {hasAvatar && currentUser?.id === senderId?.id && type !== 'update' && (
             <div className="pb-2 flex justify-end">
               <Text className=" pr-2 text-color_brand ">{moment(createdAt).format('HH:mm')}</Text>
             </div>
@@ -88,6 +89,16 @@ const MessageItem: React.FC<
                 ' text-background bg-foreground'
             )}
           >
+            {type === 'update' && (
+              <h4 className={cn('text-center')}>
+                {senderId?.username}{' '}
+                {title === 'new'
+                  ? 'đã tạo cuộc trò chuyện'
+                  : title === 'change_name_group'
+                  ? 'đã thay đổi tên nhóm'
+                  : 'đã thay đổi ảnh nhóm'}
+              </h4>
+            )}
             {type === 'text' && (
               <Text className={cn()}>
                 {reactStringReplace(

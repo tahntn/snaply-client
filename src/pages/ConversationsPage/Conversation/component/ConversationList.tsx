@@ -29,10 +29,8 @@ const ConversationList = () => {
     <Box className="flex gap-5 pb-5 flex-col overflow-y-auto max-h-[750px] pr-4 overflow-x-hidden">
       <Text className="text-lg font-semibold">{t('conversation.allConversation')}</Text>
       {data &&
-        data.pages?.map((listConversation: any) =>
-          listConversation?.data?.map((conversation: any) => (
-            <ChatElement conversation={conversation} />
-          ))
+        data.pages?.map((listConversation) =>
+          listConversation?.data?.map((conversation) => <ChatElement conversation={conversation} />)
         )}
       <div ref={ref} style={{ height: '20px' }} />
     </Box>
