@@ -11,7 +11,7 @@ export const useAuth = (type: 'login' | 'register') => {
   const { setLogin } = useAuthStore((state) => state);
   return useMutation({
     mutationFn: (user: UserBodyType<typeof type>) => {
-      return postAxios<any>(`auth/${type}`, user);
+      return postAxios<any, any>(`auth/${type}`, user);
     },
     onSuccess: ({ data }) => {
       const { access, refresh } = data;

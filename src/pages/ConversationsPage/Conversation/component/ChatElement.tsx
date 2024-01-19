@@ -1,16 +1,17 @@
 import AvatarUser from '@/components/AvatarUser';
 import { cn, formatDateTime } from '@/lib/utils';
+import { IDetailConversation } from '@/types';
 import { Box, Text } from '@radix-ui/themes';
 import { Link } from 'react-router-dom';
 interface ChatElementProps {
-  conversation: any;
+  conversation: IDetailConversation;
 }
 
 const ChatElement: React.FC<ChatElementProps> = ({ conversation }) => {
-  const { participants, _id, isGroup, lastActivity, nameGroup, avatarGroup } = conversation;
+  const { participants, _id, id, isGroup, lastActivity, nameGroup, avatarGroup } = conversation;
 
   return (
-    <Link to={_id}>
+    <Link to={(_id || id)!}>
       <Box
         className={cn(
           'w-full rounded-xl p-4 bg-white cursor-pointer relative',
@@ -20,8 +21,8 @@ const ChatElement: React.FC<ChatElementProps> = ({ conversation }) => {
       >
         <Box className="flex flex-row items-center gap-4">
           <AvatarUser
-            name={!!isGroup ? nameGroup : participants?.[1].username}
-            url={!!isGroup ? avatarGroup : participants?.[1].avatar}
+            name={!!isGroup ? nameGroup! : participants?.[1].username}
+            url={!!isGroup ? avatarGroup! : participants?.[1].avatar}
           />
 
           <Box className="flex flex-col gap-[0.2px]">
@@ -29,15 +30,24 @@ const ChatElement: React.FC<ChatElementProps> = ({ conversation }) => {
               {!!isGroup ? nameGroup : participants?.[1].username}
             </Text>
             <Text className="text-sm">
-              {lastActivity?.senderId?.username}{' '}
-              {lastActivity?.type === 'init' && 'đã tạo cuộc trò chuyện'}
-              {lastActivity?.type === 'text' && 'đã gửi một tin nhắn'}
-              {lastActivity?.type === 'image' && 'đã gửi một ảnh'}
+              {lastActivity?.lastMessage?.senderId?.username}{' '}
+              {lastActivity.lastMessage?.type === 'update' &&
+                lastActivity?.lastMessage?.title === 'new' &&
+                'đã tạo cuộc trò chuyện'}
+              {lastActivity.lastMessage?.type === 'update' &&
+                lastActivity?.lastMessage?.title === 'change_avatar_group' &&
+                'đã thay đổi ảnh nhóm'}
+              {lastActivity.lastMessage?.type === 'update' &&
+                lastActivity?.lastMessage?.title === 'change_name_group' &&
+                'đã thay đổi ảnh nhóm'}
+              {lastActivity?.lastMessage?.type === 'text' && 'đã gửi một tin nhắn'}
+              {lastActivity?.lastMessage?.type === 'image' && 'đã gửi một ảnh'}
             </Text>
           </Box>
         </Box>
         <Text className="text-sm absolute top-3 right-4">
-          {lastActivity?.timestamp && formatDateTime(lastActivity.timestamp)}
+          {lastActivity?.lastMessage?.createdAt &&
+            formatDateTime(lastActivity.lastMessage.createdAt)}
         </Text>
         <span className="absolute bottom-3 right-4 inline-flex items-center  justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">
           2
