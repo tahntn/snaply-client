@@ -15,7 +15,8 @@ export interface IMessage {
   isPin: boolean;
   senderId: IUser;
   title?: string;
-  type: 'text' | 'image' | 'video' | 'file' | 'update';
+  type: 'text' | 'image' | 'video' | 'file' | 'update' | 'gif';
+  url?: string;
 }
 
 export interface IMessages {

@@ -7,7 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useDetailConversation, useGetMe, useUploadFile } from '@/hooks';
 import { IUser } from '@/types';
 import MessageList from './component/MessageList';
-import ChatMessage from './component/ChatMessage';
+import ChatMessage from './component/InputMessage/ChatMessage';
 import { useConversationStore } from '@/store';
 import { cn } from '@/lib/utils';
 
