@@ -1,6 +1,7 @@
 export const Friend = {
   title: 'Friends',
   form: {
-    placeholderSearch: 'Search...',
+    placeholderSearch: 'Search friend...',
+    notFound: 'No result found',
   },
 };

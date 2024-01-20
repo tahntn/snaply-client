@@ -14,8 +14,8 @@ const LoginPage = () => {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = React.useState(false);
 
+  // resolver: yupResolver(loginSchema()),
   const form = useForm<loginBody>({
-    resolver: yupResolver(loginSchema()),
     defaultValues: {
       email: '',
       password: '',

@@ -3,11 +3,14 @@ import React from 'react';
 
 import Friend from './Friend/Friend';
 import { Box } from '@radix-ui/themes';
+import { useGlobalStore } from '@/store';
+import { DialogOtherUser } from '@/components/Dialog';
 
 interface FriendsPageProps {
   children: React.ReactNode;
 }
 const FriendsPage: React.FC<FriendsPageProps> = ({ children }) => {
+  const { isOpenDialogOtherUser } = useGlobalStore((state) => state);
   const tablet = '(max-width: 1000px)';
   const isTablet = useMediaQuery(tablet);
 
@@ -23,6 +26,7 @@ const FriendsPage: React.FC<FriendsPageProps> = ({ children }) => {
           <Box>{children}</Box>
         </Box>
       )}
+      {isOpenDialogOtherUser && <DialogOtherUser />}
     </div>
   );
 };

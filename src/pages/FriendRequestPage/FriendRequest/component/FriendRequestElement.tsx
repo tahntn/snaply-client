@@ -3,15 +3,19 @@ import { cn } from '@/lib/utils';
 import AvatarUser from '@/components/AvatarUser';
 import { Check, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useGlobalStore } from '@/store';
+import { IFriendRequest } from '@/types';
 
 interface FriendRequestElementProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  friendRequest: any;
+  friendRequest: IFriendRequest;
 }
 
 const FriendRequestElement: React.FC<FriendRequestElementProps> = ({ friendRequest }) => {
+  const { handleOpenDialogOtherUser } = useGlobalStore((state) => state);
   const { username, avatar } = friendRequest.user;
   const { t } = useTranslation();
+
   return (
     <Box
       className={cn(
@@ -20,7 +24,10 @@ const FriendRequestElement: React.FC<FriendRequestElementProps> = ({ friendReque
         'hover:bg-gray-200 transition-all ease-linear'
       )}
     >
-      <Box className="flex flex-row items-center gap-4">
+      <Box
+        className="flex flex-row items-center gap-4"
+        onClick={() => handleOpenDialogOtherUser(friendRequest.user.id! || friendRequest.user._id!)}
+      >
         <AvatarUser name={username} url={avatar} />
 
         <Box className="flex flex-col gap-[0.2px]">
