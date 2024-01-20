@@ -4,48 +4,62 @@ import { GiphyFetch } from '@giphy/js-fetch-api';
 import { IGif } from '@giphy/js-types';
 import { Box } from '@radix-ui/themes';
 import { Icons } from '@/components/ui/icons';
-import { SyntheticEvent, useState } from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 import { useConversationStore } from '@/store';
+import { useDebounce } from '@/hooks';
 
 const GiphySelect = () => {
+  const GifMessageRef = React.useRef<HTMLDivElement>(null);
   const { setGiphyUrl } = useConversationStore((state) => state);
 
   const WEB_SDK_KEY = import.meta.env.VITE_GIPHY_API_KEY! as string;
+
   const giphyFetch = new GiphyFetch(WEB_SDK_KEY);
   const [search, setSearch] = useState('');
+  const debouncedValueSearch = useDebounce(search, 500);
+  const [widthGifMessage, setWidthGifMessage] = React.useState(0);
 
   const fetchGifs = (offset: number) =>
-    giphyFetch.search(search || 'trending', { offset, limit: 10 });
+    giphyFetch.search(debouncedValueSearch || 'trending', { offset, limit: 10 });
 
   const onGifClick = (gif: IGif, e: SyntheticEvent<HTMLElement, Event>) => {
     e.preventDefault();
     setGiphyUrl(gif);
   };
 
+  React.useEffect(() => {
+    if (!GifMessageRef?.current) return;
+    const resizeObserver = new ResizeObserver(() => {
+      setWidthGifMessage(() => GifMessageRef.current?.clientWidth! - 10);
+    });
+    resizeObserver.observe(GifMessageRef.current);
+    return () => resizeObserver.disconnect();
+  }, []);
+
   return (
-    <>
+    <div className="pb-2 mb-2 border-b" ref={GifMessageRef}>
       <Box>
         <InputWithIcon
           onChange={(e) => {
             setSearch(e.target.value);
           }}
-          startAndornment={<Icons.search className="h-[18px] text-background" />}
-          className="p-2 border-none text-background focus:border-none"
+          startAndornment={<Icons.search className="h-[18px]" />}
+          className="p-2 outline-none"
         />
       </Box>
-      <div className="h-[300px] overflow-y-auto mt-4">
+      <div className="h-[250px] overflow-y-auto mt-4 w-full">
         <Grid
-          key={search}
-          columns={3}
+          key={debouncedValueSearch}
+          columns={6}
           gutter={6}
-          width={250}
+          width={widthGifMessage}
           fetchGifs={fetchGifs}
           onGifClick={onGifClick}
           noLink={true}
           hideAttribution={true}
         />
       </div>
-    </>
+    </div>
   );
 };
 
