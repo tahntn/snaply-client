@@ -2,15 +2,12 @@ import { useMediaQuery } from '@/hooks/useMediaQuery';
 import React from 'react';
 import { Box } from '@radix-ui/themes';
 import FriendRequest from './FriendRequest/FriendRequest';
-import { DialogOtherUser } from '@/components/Dialog';
-import { useGlobalStore } from '@/store';
 
 interface FriendRequestPageProps {
   children: React.ReactNode;
 }
 
 const FriendRequestPage: React.FC<FriendRequestPageProps> = ({ children }) => {
-  const { isOpenDialogOtherUser } = useGlobalStore((state) => state);
   const tablet = '(max-width: 1000px)';
   const isTablet = useMediaQuery(tablet);
 
@@ -26,7 +23,6 @@ const FriendRequestPage: React.FC<FriendRequestPageProps> = ({ children }) => {
           <Box>{children}</Box>
         </Box>
       )}
-      {isOpenDialogOtherUser && <DialogOtherUser />}
     </div>
   );
 };
