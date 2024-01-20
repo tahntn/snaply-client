@@ -10,7 +10,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from './components/ui/tooltip';
 import './App.css';
 import { storage } from './lib/storage';
-import { useAuthStore } from './store';
+import { useAuthStore, useGlobalStore } from './store';
 import { useToast } from './components/ui/use-toast';
 import { axiosInstance } from './api/apiConfig';
 import axios from 'axios';

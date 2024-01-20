@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Text } from '@radix-ui/themes';
 import { InputWithIcon } from '@/components/InputWithIcon';
@@ -6,9 +6,25 @@ import { Icons } from '@/components/ui/icons';
 import FriendList from './component/FriendList';
 import { Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useDebounce } from '@/hooks';
 
 const Friend: React.FC = () => {
   const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const qParam = searchParams.get('q');
+
+  const [searchValue, setSearchValue] = useState(qParam || '');
+  const debouncedValueSearch = useDebounce(searchValue, 500);
+
+  useEffect(() => {
+    if (!!debouncedValueSearch) {
+      navigate(`?q=${debouncedValueSearch}`);
+    } else {
+      navigate('');
+    }
+  }, [debouncedValueSearch]);
 
   return (
     <Box className="h-screen relative">
@@ -20,20 +36,20 @@ const Friend: React.FC = () => {
               'text-white bg-foreground p-1 h-7 w-7 cursor-pointer rounded-full',
               'dark:text-background'
             )}
+            onClick={() => navigate('/search')}
           />
         </Box>
         <Box className="mt-4">
           <InputWithIcon
-            onChange={(e) => {
-              console.log('a', e.target.value);
-            }}
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
             startAndornment={<Icons.search className="h-[18px] text-background" />}
             className="p-2 border-none text-background"
             placeholder={t('friend.form.placeholderSearch')}
           />
         </Box>
       </Box>
-      <FriendList />
+      <FriendList keyword={debouncedValueSearch} />
     </Box>
   );
 };

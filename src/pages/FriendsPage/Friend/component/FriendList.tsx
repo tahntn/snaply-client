@@ -5,10 +5,17 @@ import { Box } from '@radix-ui/themes';
 import { useFriends } from '@/hooks/useFriends';
 import { cn } from '@/lib/utils';
 import FriendElement from './FriendElement';
+import { useTranslation } from 'react-i18next';
 
-const FriendList: React.FC = () => {
+interface ListSearchProps {
+  keyword: string;
+}
+
+const FriendList: React.FC<ListSearchProps> = ({ keyword }) => {
   const { ref, inView } = useInView();
-  const { data, isLoading, status, fetchNextPage, hasNextPage, isFetchingNextPage } = useFriends();
+  const { t } = useTranslation();
+  const { data, isLoading, status, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useFriends(keyword);
 
   React.useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -22,6 +29,10 @@ const FriendList: React.FC = () => {
 
   if (status === 'error') {
     return <p>Error</p>;
+  }
+
+  if (!data?.pages?.[0]?.data?.length) {
+    return <p className="text-center pt-[140px]">{t('friend.form.notFound')}</p>;
   }
 
   return (
