@@ -6,17 +6,20 @@ import { useTranslation } from 'react-i18next';
 import { useConfirmFriendRequest } from '@/hooks/useConfirmFriendRequest';
 import useDenyFriendRequest from '@/hooks/useDenyFriendRequest';
 import { IDataFriendRequest } from '@/types/friendRequest';
+import { useGlobalStore } from '@/store';
 
 interface FriendRequestElementProps {
   friendRequest: IDataFriendRequest;
 }
 
 const FriendRequestElement: React.FC<FriendRequestElementProps> = ({ friendRequest }) => {
+  const { handleOpenDialogOtherUser } = useGlobalStore((state) => state);
   const { username, avatar } = friendRequest.user;
   const { mutate: confirmFriendRequest } = useConfirmFriendRequest(friendRequest._id!);
   const { mutate: denyFriendRequest } = useDenyFriendRequest(friendRequest._id!);
 
   const { t } = useTranslation();
+
   return (
     <Box
       className={cn(
@@ -25,7 +28,10 @@ const FriendRequestElement: React.FC<FriendRequestElementProps> = ({ friendReque
         'hover:bg-gray-200 transition-all ease-linear'
       )}
     >
-      <Box className="flex flex-row items-center gap-4">
+      <Box
+        className="flex flex-row items-center gap-4"
+        onClick={() => handleOpenDialogOtherUser(friendRequest.user.id! || friendRequest.user._id!)}
+      >
         <AvatarUser name={username} url={avatar} />
 
         <Box className="flex flex-col gap-[0.2px]">

@@ -7,6 +7,7 @@ interface GlobalState {
   replyMessage: IMessage | null;
   fileUpload: File[];
   giphyUrl?: IGif | null;
+  isOpenGif: boolean;
 }
 
 export interface GlobalStore extends GlobalState {
@@ -16,12 +17,14 @@ export interface GlobalStore extends GlobalState {
   deleteFile: (file: File) => void;
   deleteAllFiles: () => void;
   setGiphyUrl: (url: IGif) => void;
+  handleOpenGif: () => void;
 }
 
 const initialState: Pick<GlobalStore, keyof GlobalState> = {
   replyMessage: null,
   fileUpload: [],
   giphyUrl: null,
+  isOpenGif: false,
 };
 
 const useConversationStore = create<GlobalStore>()(
@@ -54,6 +57,13 @@ const useConversationStore = create<GlobalStore>()(
       set((state) => {
         {
           state.giphyUrl = url;
+        }
+      });
+    },
+    handleOpenGif: () => {
+      set((state) => {
+        {
+          state.isOpenGif = !state.isOpenGif;
         }
       });
     },

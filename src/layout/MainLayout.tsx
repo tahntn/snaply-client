@@ -1,3 +1,4 @@
+import { DialogOtherUser } from '@/components/Dialog';
 import Header from '@/components/Header';
 import SideBar from '@/components/SideBar';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
@@ -6,7 +7,7 @@ import { useGlobalStore } from '@/store';
 import React from 'react';
 
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const isMenuOpen = useGlobalStore((state) => state.isMenuOpen);
+  const { isOpenDialogOtherUser, isMenuOpen } = useGlobalStore((state) => state);
   const mobile = '(max-width: 640px)';
   const isMobile = useMediaQuery(mobile);
 
@@ -22,6 +23,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       >
         {children}
       </div>
+      {isOpenDialogOtherUser && <DialogOtherUser />}
     </div>
   );
 };

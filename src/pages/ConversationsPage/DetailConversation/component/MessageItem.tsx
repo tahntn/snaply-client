@@ -27,6 +27,7 @@ const MessageItem: React.FC<
     imageList,
     hasAvatar,
     isMessagesNew,
+    url,
   } = props;
   const setReplyMessage = useConversationStore((state) => state.setReplyMessage);
   const handleOpenDialogImage = useGlobalStore((state) => state.handleOpenDialogImage);
@@ -181,6 +182,7 @@ const MessageItem: React.FC<
                 })}
               </div>
             )}
+            {type === 'gif' && <img src={url!} />}
             {/* Action with message */}
             <div
               className={cn(
