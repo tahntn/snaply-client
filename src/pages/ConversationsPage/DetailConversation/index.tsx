@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 
 const DetailConversation = () => {
   const { conversationId } = useParams();
+
   const { data: currentUser } = useGetMe();
   const ChatMessageRef = React.useRef<HTMLDivElement>(null);
   const { data, isLoading, isError } = useDetailConversation(conversationId!);

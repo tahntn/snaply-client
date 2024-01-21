@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
-import { useUploadFile } from '@/hooks';
+import { useSendMessage, useUploadFile } from '@/hooks';
 import { cn } from '@/lib/utils';
 import { useConversationStore } from '@/store';
 import React from 'react';
@@ -8,15 +8,25 @@ import TextareaAutosize from 'react-textarea-autosize';
 import ButtonEmoji from './ButtonEmoji';
 import ButtonMore from './ButtonMore';
 import SelectStickerOrGif from './SelectStickerOrGif';
+import { useParams } from 'react-router-dom';
 
 interface ChatMessageProps {}
 
 const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
+  const { conversationId } = useParams();
   const { fileUpload, deleteFile, isOpenGif } = useConversationStore((state) => state);
-
+  const { mutate: sendMessage } = useSendMessage(conversationId!);
   const [value, setValue] = React.useState('');
 
   const { getRootProps, getInputProps } = useUploadFile();
+
+  const handleSendMessage = () => {
+    sendMessage({
+      type: 'text',
+      title: value,
+    });
+    setValue(() => '');
+  };
 
   return (
     <div className={cn('h-full')}>
@@ -72,15 +82,12 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
             value={value}
           />
         </div>
-        {fileUpload.length === 0 && <ButtonMore />}
-
-        {/* <PopoverClose asChild>
-        <button>X</button>
-      </PopoverClose> */}
+        {fileUpload.length === 0 && !isOpenGif && <ButtonMore />}
         <Button
           className={cn(
             'rounded-2xl text-[white] bg-[#020817] border-foreground border text-xs  h-[40px] w-[40px] p-3 '
           )}
+          onClick={() => handleSendMessage()}
         >
           <Icons.send className="w-full h-full" />
         </Button>

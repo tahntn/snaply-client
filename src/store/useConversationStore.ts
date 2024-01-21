@@ -3,11 +3,14 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { IGif } from '@giphy/js-types';
 
+type IValueGif = 'gif' | 'sticker';
+
 interface GlobalState {
   replyMessage: IMessage | null;
   fileUpload: File[];
   giphyUrl?: IGif | null;
   isOpenGif: boolean;
+  valueGif: IValueGif;
 }
 
 export interface GlobalStore extends GlobalState {
@@ -17,7 +20,7 @@ export interface GlobalStore extends GlobalState {
   deleteFile: (file: File) => void;
   deleteAllFiles: () => void;
   setGiphyUrl: (url: IGif) => void;
-  handleOpenGif: () => void;
+  handleOpenGif: (value: IValueGif) => void;
 }
 
 const initialState: Pick<GlobalStore, keyof GlobalState> = {
@@ -25,6 +28,7 @@ const initialState: Pick<GlobalStore, keyof GlobalState> = {
   fileUpload: [],
   giphyUrl: null,
   isOpenGif: false,
+  valueGif: 'gif',
 };
 
 const useConversationStore = create<GlobalStore>()(
@@ -60,10 +64,11 @@ const useConversationStore = create<GlobalStore>()(
         }
       });
     },
-    handleOpenGif: () => {
+    handleOpenGif: (value: IValueGif) => {
       set((state) => {
         {
           state.isOpenGif = !state.isOpenGif;
+          state.valueGif = value;
         }
       });
     },

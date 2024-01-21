@@ -42,6 +42,8 @@ const ChatElement: React.FC<ChatElementProps> = ({ conversation }) => {
                 'đã thay đổi ảnh nhóm'}
               {lastActivity?.lastMessage?.type === 'text' && 'đã gửi một tin nhắn'}
               {lastActivity?.lastMessage?.type === 'image' && 'đã gửi một ảnh'}
+              {lastActivity?.lastMessage?.type === 'gif' && 'đã gửi một gif'}
+              {lastActivity?.lastMessage?.type === 'sticker' && 'đã gửi một nhãn dán'}
             </Text>
           </Box>
         </Box>

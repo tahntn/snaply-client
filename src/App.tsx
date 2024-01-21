@@ -17,6 +17,7 @@ import axios from 'axios';
 import { refreshAccessToken } from './services/auth.service';
 import { useLogout } from './hooks/useSignOut';
 import { DialogPreviewImage } from './components/Dialog';
+import PusherProvider from './context/PusherProvider';
 
 function App() {
   const { i18n } = useTranslation();
@@ -24,6 +25,7 @@ function App() {
   const { setLogin } = useAuthStore((state) => state);
   const { toast } = useToast();
   const { mutate: logout } = useLogout();
+
   React.useEffect(() => {
     const refreshToken = getString('snalpy-refresh');
     const language = getString('snaply-language');
@@ -120,20 +122,22 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider defaultTheme="light" storageKey="snaply-theme">
-      <TooltipProvider delayDuration={300}>
-        <BrowserRouter>
-          <ErrorBoundary fallbackRender={FallbackRenderer}>
-            <Router />
-          </ErrorBoundary>
-        </BrowserRouter>
-        <Toaster />
-        <DialogPreviewImage />
-        {import.meta.env.VITE_NODE_ENV === 'development' && (
-          <ReactQueryDevtools initialIsOpen={true} position="top-left" />
-        )}
-      </TooltipProvider>
-    </ThemeProvider>
+    <PusherProvider>
+      <ThemeProvider defaultTheme="light" storageKey="snaply-theme">
+        <TooltipProvider delayDuration={300}>
+          <BrowserRouter>
+            <ErrorBoundary fallbackRender={FallbackRenderer}>
+              <Router />
+            </ErrorBoundary>
+          </BrowserRouter>
+          <Toaster />
+          <DialogPreviewImage />
+          {import.meta.env.VITE_NODE_ENV === 'development' && (
+            <ReactQueryDevtools initialIsOpen={true} position="top-left" />
+          )}
+        </TooltipProvider>
+      </ThemeProvider>
+    </PusherProvider>
   );
 }
 
