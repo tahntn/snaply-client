@@ -3,17 +3,21 @@ import { cn } from '@/lib/utils';
 import AvatarUser from '@/components/AvatarUser';
 import { Check, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useConfirmFriendRequest } from '@/hooks/useConfirmFriendRequest';
+import useDenyFriendRequest from '@/hooks/useDenyFriendRequest';
+import { IDataFriendRequest } from '@/types/friendRequest';
 import { useGlobalStore } from '@/store';
-import { IFriendRequest } from '@/types';
 
 interface FriendRequestElementProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  friendRequest: IFriendRequest;
+  friendRequest: IDataFriendRequest;
 }
 
 const FriendRequestElement: React.FC<FriendRequestElementProps> = ({ friendRequest }) => {
   const { handleOpenDialogOtherUser } = useGlobalStore((state) => state);
   const { username, avatar } = friendRequest.user;
+  const { mutate: confirmFriendRequest } = useConfirmFriendRequest(friendRequest._id!);
+  const { mutate: denyFriendRequest } = useDenyFriendRequest(friendRequest._id!);
+
   const { t } = useTranslation();
 
   return (
@@ -38,8 +42,14 @@ const FriendRequestElement: React.FC<FriendRequestElementProps> = ({ friendReque
         </Box>
       </Box>
       <Box className="flex gap-2">
-        <Check className="h-7 w-7 bg-green-400 p-1 rounded-full cursor-pointer hover:-translate-y-1 transition-all ease-linear duration-3000" />
-        <X className="h-7 w-7 bg-red-400 p-1 rounded-full cursor-pointer hover:-translate-y-1 transition-all ease-linear duration-3000" />
+        <Check
+          className="h-7 w-7 bg-green-400 p-1 rounded-full cursor-pointer hover:-translate-y-1 transition-all ease-linear duration-3000"
+          onClick={() => confirmFriendRequest()}
+        />
+        <X
+          className="h-7 w-7 bg-red-400 p-1 rounded-full cursor-pointer hover:-translate-y-1 transition-all ease-linear duration-3000"
+          onClick={() => denyFriendRequest()}
+        />
       </Box>
     </Box>
   );

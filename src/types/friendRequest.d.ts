@@ -1,10 +1,15 @@
 import { IUser } from '.';
 
-export interface IFriendRequest {
-  createdAt: Date;
-  id: Date;
-  status: 'accept' | 'pending';
-  targetUserId: string;
-  updatedAt: Date;
+export interface IDataFriendRequest {
+  createAt: Date;
+  updateAt: Date;
+  id?: string;
+  _id?: string;
+  status: string;
   user: IUser;
+}
+
+export interface IFriendRequest {
+  data: IDataFriendRequest[];
+  pagination: IPagination;
 }
