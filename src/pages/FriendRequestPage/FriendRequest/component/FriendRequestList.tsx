@@ -30,8 +30,8 @@ const FriendRequestList: React.FC = () => {
     <Box className="p-6 pr-0 h-screen pt-[20px] ">
       <Box className="overflow-y-auto overflow-x-hidden pr-6 flex gap-3 flex-col h-full">
         {data &&
-          data.pages?.map((listFriendRequest: any) =>
-            listFriendRequest?.data?.map((friendRequest: any) => (
+          data.pages?.map((listFriendRequest) =>
+            listFriendRequest?.data?.map((friendRequest) => (
               <FriendRequestElement key={friendRequest?._id} friendRequest={friendRequest} />
             ))
           )}

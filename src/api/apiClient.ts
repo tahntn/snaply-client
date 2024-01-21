@@ -11,7 +11,7 @@ export async function deleteAxios<T>(endpoint: string, id: string) {
   return res.data;
 }
 
-export async function postAxios<RT, BT>(endpoint: string, arg: BT) {
+export async function postAxios<RT, BT>(endpoint: string, arg?: BT) {
   const res = await axiosInstance.post<RT>(`${endpoint}`, arg);
   return res.data;
 }
