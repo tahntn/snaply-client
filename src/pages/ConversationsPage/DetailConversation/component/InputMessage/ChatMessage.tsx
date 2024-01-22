@@ -9,6 +9,8 @@ import ButtonEmoji from './ButtonEmoji';
 import ButtonMore from './ButtonMore';
 import SelectStickerOrGif from './SelectStickerOrGif';
 import { useParams } from 'react-router-dom';
+import { BASE_URL, axiosInstance } from '@/api/apiConfig';
+import axios from 'axios';
 
 interface ChatMessageProps {}
 
@@ -17,8 +19,38 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
   const { fileUpload, deleteFile, isOpenGif } = useConversationStore((state) => state);
   const { mutate: sendMessage } = useSendMessage(conversationId!);
   const [value, setValue] = React.useState('');
-
+  const [isTyping, setIsTyping] = React.useState(false);
   const { getRootProps, getInputProps } = useUploadFile();
+  const typingTimeoutRef: any = React.useRef(null);
+  const abortControllerRef = React.useRef(new AbortController());
+  const sendTypingStatus = async (isTyping: boolean) => {
+    try {
+      await axiosInstance.post(
+        `${BASE_URL}/api/v1/conversation/${conversationId}/typing`,
+        {
+          isTyping: isTyping,
+        },
+        { signal: abortControllerRef.current.signal }
+      );
+    } catch (error) {
+      console.error('Error sending typing status:', error);
+    }
+  };
+
+  const handleChangeMessage = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setValue(e.target.value);
+    if (!isTyping) {
+      setIsTyping(true);
+      abortControllerRef.current.abort();
+      abortControllerRef.current = new AbortController();
+      await sendTypingStatus(true);
+    }
+    clearTimeout(typingTimeoutRef.current);
+    typingTimeoutRef.current = setTimeout(async () => {
+      setIsTyping(false);
+      await sendTypingStatus(false);
+    }, 2000);
+  };
 
   const handleSendMessage = () => {
     sendMessage({
@@ -74,7 +106,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
           <TextareaAutosize
             minRows={1}
             maxRows={6}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={handleChangeMessage}
             className={cn(
               'w-full resize-none  text-black max-h-[120px]  p-2 pb-3 placeholder:text-[#a4a4a4] focus-visible:outline-none text-sm  disabled:opacity-50 bg-transparent'
             )}
@@ -88,6 +120,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
             'rounded-2xl text-[white] bg-[#020817] border-foreground border text-xs  h-[40px] w-[40px] p-3 '
           )}
           onClick={() => handleSendMessage()}
+          disabled={!value.trim()}
         >
           <Icons.send className="w-full h-full" />
         </Button>

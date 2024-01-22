@@ -7,7 +7,7 @@ export const refreshAccessToken = async (refreshToken: string) => {
   });
 };
 
-export const logoutService = async (refreshToken: string) => {
+export const logoutService = async (refreshToken?: string) => {
   return await axios.post(`${BASE_URL}/api/v1/auth/logout`, {
     refreshToken,
   });

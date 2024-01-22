@@ -100,7 +100,11 @@ const DetailConversation = () => {
             paddingBottom: `${heightChatMessage}px`,
           }}
         >
-          <MessageList conversationId={conversationId!} currentUser={currentUser!} />
+          <MessageList
+            conversationId={conversationId!}
+            currentUser={currentUser!}
+            participants={data?.participants!}
+          />
         </div>
         {/* {replyMessage?.id && (
           <div className="h-16 absolute bottom-20 border-t  right-0 left-0  border-card-foreground">
