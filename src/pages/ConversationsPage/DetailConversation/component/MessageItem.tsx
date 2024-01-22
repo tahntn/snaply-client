@@ -49,7 +49,7 @@ const MessageItem: React.FC<
         )}
       >
         {/* Avatar */}
-        {hasAvatar && currentUser?.id !== senderId?.id && (
+        {hasAvatar && currentUser?.id !== senderId?.id && type !== 'update' && (
           <Avatar>
             <AvatarImage src={senderId.avatar} />
             <AvatarFallback className="uppercase">{senderId.username?.[0]}</AvatarFallback>
@@ -182,7 +182,10 @@ const MessageItem: React.FC<
                 })}
               </div>
             )}
-            {type === 'gif' && <img src={url!} />}
+            {(type === 'gif' || type === 'sticker') && (
+              <img src={url!} className={cn(type === 'gif' && 'max-h-[300px]')} />
+            )}
+
             {/* Action with message */}
             <div
               className={cn(

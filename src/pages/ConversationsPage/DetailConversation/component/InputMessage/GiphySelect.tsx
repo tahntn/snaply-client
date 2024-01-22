@@ -5,15 +5,14 @@ import { IGif } from '@giphy/js-types';
 import { Box } from '@radix-ui/themes';
 import { Icons } from '@/components/ui/icons';
 import React, { SyntheticEvent, useState } from 'react';
-import { useConversationStore } from '@/store';
-import { useDebounce } from '@/hooks';
+import { useDebounce, useSendMessage } from '@/hooks';
+import { useParams } from 'react-router-dom';
 
 const GiphySelect = () => {
-  const GifMessageRef = React.useRef<HTMLDivElement>(null);
-  const { setGiphyUrl } = useConversationStore((state) => state);
-
+  const { conversationId } = useParams();
   const WEB_SDK_KEY = import.meta.env.VITE_GIPHY_API_KEY! as string;
-
+  const { mutate: sendMessage } = useSendMessage(conversationId!);
+  const GifMessageRef = React.useRef<HTMLDivElement>(null);
   const giphyFetch = new GiphyFetch(WEB_SDK_KEY);
   const [search, setSearch] = useState('');
   const debouncedValueSearch = useDebounce(search, 500);
@@ -24,7 +23,11 @@ const GiphySelect = () => {
 
   const onGifClick = (gif: IGif, e: SyntheticEvent<HTMLElement, Event>) => {
     e.preventDefault();
-    setGiphyUrl(gif);
+    console.log(gif);
+    sendMessage({
+      type: gif.type,
+      url: gif.images.original.url,
+    });
   };
 
   React.useEffect(() => {
@@ -37,26 +40,27 @@ const GiphySelect = () => {
   }, []);
 
   return (
-    <div className="pb-2 mb-2 border-b" ref={GifMessageRef}>
+    <div className="pb-2 mb-2 border-b " ref={GifMessageRef}>
       <Box>
         <InputWithIcon
           onChange={(e) => {
             setSearch(e.target.value);
           }}
           startAndornment={<Icons.search className="h-[18px]" />}
-          className="p-2 outline-none"
+          className="px-2 outline-none"
         />
       </Box>
       <div className="h-[250px] overflow-y-auto mt-4 w-full">
         <Grid
           key={debouncedValueSearch}
-          columns={6}
+          columns={3}
           gutter={6}
           width={widthGifMessage}
           fetchGifs={fetchGifs}
           onGifClick={onGifClick}
           noLink={true}
           hideAttribution={true}
+          className="cursor-pointer"
         />
       </div>
     </div>

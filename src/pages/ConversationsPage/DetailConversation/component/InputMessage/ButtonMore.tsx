@@ -32,13 +32,23 @@ const ButtonMore = () => {
               </div>
             </PopoverClose>
           </li>
-          <li className="pt-3">
-            <PopoverClose asChild onClick={handleOpenGif}>
+          <li className="py-3">
+            <PopoverClose asChild onClick={() => handleOpenGif('gif')}>
               <div className="flex gap-3 items-center cursor-pointer">
                 <div>
                   <Icons.gif className="h-5 w-5" />
                 </div>
                 <Text> Gif</Text>
+              </div>
+            </PopoverClose>
+          </li>
+          <li className="pt-3">
+            <PopoverClose asChild onClick={() => handleOpenGif('sticker')}>
+              <div className="flex gap-3 items-center cursor-pointer">
+                <div>
+                  <Icons.sticker className="h-5 w-5" />
+                </div>
+                <Text> Sticker</Text>
               </div>
             </PopoverClose>
           </li>
