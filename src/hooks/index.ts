@@ -12,4 +12,6 @@ export * from './useUploadFile';
 export * from './useDebounce';
 export * from './useOtherUser';
 export * from './useCreateConversation';
+export * from './useConfirmFriendRequest';
+export * from './useDenyFriendRequest';
 export * from './useSendMessage';
