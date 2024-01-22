@@ -8,19 +8,22 @@ import { Navigate } from 'react-router-dom';
 import MessageItem from './MessageItem';
 import { usePusher } from '@/context/PusherProvider';
 import { useQueryClient } from '@tanstack/react-query';
+import UserTyping from './UserTyping';
 
 interface MessageListProps {
   conversationId: string;
   currentUser: IUser;
+  participants: IUser[];
 }
 
-const MessageList: React.FC<MessageListProps> = ({ conversationId, currentUser }) => {
+const MessageList: React.FC<MessageListProps> = ({ conversationId }) => {
   const queryClient = useQueryClient();
   const pusher = usePusher();
+  const { data: currentUser } = useGetMe();
   const { data, isLoading, status, fetchNextPage, isError, hasNextPage, isFetchingNextPage } =
     useMessages(conversationId);
   const { ref, inView } = useInView();
-
+  const [listUserTyping, setListUserTyping] = React.useState<IUser[]>([]);
   React.useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
@@ -43,15 +46,35 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId, currentUser }
           };
         });
       };
+
+      const userTyping = (data: { isTyping: boolean; userTyping: IUser }) => {
+        const { isTyping, userTyping } = data;
+        if (!currentUser?.id || userTyping?.id === currentUser?.id) {
+          return;
+        }
+        if (isTyping) {
+          setListUserTyping((prev) => [...prev, userTyping]);
+          return;
+        }
+
+        setListUserTyping((prev) => {
+          return prev.filter((user) => user?.id !== userTyping?.id);
+        });
+        return;
+      };
       pusher.bind('message:new', newMessageHandler);
+      pusher.bind('message:typing', userTyping);
       return () => {
         pusher.unsubscribe(conversationId);
         pusher.unbind('message:new', newMessageHandler);
+        pusher.unbind('message:typing', userTyping);
       };
     }
-  }, [pusher, conversationId]);
+  }, [pusher, conversationId, currentUser]);
   return (
     <div className="h-full max-h-full overflow-y-auto overflow-x-hidden flex-col-reverse flex gap-2 py-3 px-3">
+      {listUserTyping?.length > 0 && <UserTyping listUserTyping={listUserTyping} />}
+
       {data?.pages.map((page, indexPage) =>
         page.data.map((message, indexMessage) => {
           let prevMessage: IMessage;
@@ -89,7 +112,7 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId, currentUser }
             <MessageItem
               key={message.id}
               {...message}
-              currentUser={currentUser}
+              currentUser={currentUser!}
               hasAvatar={hasAvatar}
               isMessagesNew={isMessagesNew}
             />

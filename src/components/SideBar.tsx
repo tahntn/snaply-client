@@ -12,12 +12,13 @@ import { useTheme } from '@/context/ThemeProvider';
 import { useTranslation } from 'react-i18next';
 import { useGetMe } from '@/hooks';
 import { Skeleton } from './ui/skeleton';
+import ButtonMe from './Button/ButtonMe';
 
 const SideBar: React.FC = () => {
   const { isMenuOpen, toggleMenu } = useGlobalStore((state) => state);
   const { mainTheme } = useTheme();
   const { t } = useTranslation();
-  const { data, isLoading } = useGetMe();
+  // const { data, isLoading } = useGetMe();
   return (
     <aside
       id="logo-sidebar"
@@ -122,7 +123,8 @@ const SideBar: React.FC = () => {
           </ul>
         </div>
         <div className="mb-5">
-          <NavLink
+          <ButtonMe />
+          {/* <NavLink
             to={'/conversation'}
             className="flex items-center p-[5px] mt-5 rounded-md hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer"
           >
@@ -159,7 +161,7 @@ const SideBar: React.FC = () => {
                 </h2>
               </>
             )}
-          </NavLink>
+          </NavLink> */}
         </div>
         {/* <div
           className={cn(
