@@ -8,7 +8,7 @@ const ReplyMessage = () => {
   const { replyMessage, resetReplyMessage } = useConversationStore((state) => state);
   const { data: currentUser } = useGetMe();
   return (
-    <div className="w-full px-3 py-2 flex flex-col justify-center ">
+    <div className="w-full px-3 py-2 flex flex-col justify-center bg-[#0006] my-2 rounded-md ">
       <div className="flex justify-between">
         <div className="flex items-center gap-4">
           <Icons.reply />
@@ -20,7 +20,7 @@ const ReplyMessage = () => {
         </div>
         <Button
           variant={'outline'}
-          className="rounded-full  py-0 px-0 w-6 h-6"
+          className="rounded-full  py-0 px-0 w-5 h-5"
           onClick={() => {
             resetReplyMessage();
           }}

@@ -10,9 +10,12 @@ interface DataType {
   url?: string;
 }
 
-export const useSendMessage = (conversation: string) => {
+export const useSendMessage = (conversation: string, cb?: () => void) => {
   return useMutation({
     mutationFn: (data: DataType) =>
       postAxios<IMessage, DataType>(`conversation/${conversation}/message`, data),
+    onSuccess: () => {
+      cb && cb();
+    },
   });
 };
