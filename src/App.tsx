@@ -72,6 +72,9 @@ function App() {
         req.headers['Authorization'] = 'Bearer ' + accessToken;
         req.headers['Accept-Language'] = language;
       }
+      if (req.data instanceof FormData) {
+        req.headers['Content-Type'] = 'multipart/form-data';
+      }
       return req;
     });
 

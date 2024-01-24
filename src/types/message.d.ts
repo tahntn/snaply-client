@@ -23,3 +23,9 @@ export interface IMessages {
   data: IMessage[];
   pagination: IPagination;
 }
+
+export interface IResMessage {
+  name: string;
+  url: string;
+  type: string;
+}

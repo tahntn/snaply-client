@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 import { BASE_URL, axiosInstance } from '@/api/apiConfig';
 import ReplyMessage from './ReplyMessage';
 import { useUploadImageMessage } from '@/hooks/useUploadImageMessage';
+import { IResMessage } from '@/types';
 
 interface ChatMessageProps {}
 
@@ -20,7 +21,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
   const { fileUpload, deleteFile, isOpenGif, replyMessage } = useConversationStore(
     (state) => state
   );
-  const { mutate: sendMessage } = useSendMessage(conversationId!, () => {});
+  const { mutate: sendMessage } = useSendMessage(conversationId!);
   const { mutate: uploadImage } = useUploadImageMessage();
   const [value, setValue] = React.useState('');
   const [isTyping, setIsTyping] = React.useState(false);
@@ -57,29 +58,51 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
   };
 
   const handleFileUpload = (files: File[]) => {
-    console.log(files);
-
     const formData = new FormData();
-    formData.append(`files`, files[0]);
-
-    // files.forEach((file, index) => {
-    // });
-
-    uploadImage(formData);
+    files.forEach((file) => {
+      formData.append(`files`, file);
+    });
+    return new Promise<IResMessage[]>((resolve, reject) =>
+      uploadImage(formData, {
+        onSuccess: (response) => resolve(response),
+        onError: (error) => reject(error),
+      })
+    );
   };
 
-  const handleSendMessage = () => {
-    if (fileUpload.length > 0) {
-      handleFileUpload(fileUpload);
-    }
-    // if(value && fileUpload.length > 0) {
+  const handleSendMessage = async () => {
+    try {
+      if (fileUpload.length > 0) {
+        const resImages = await handleFileUpload(fileUpload);
 
-    // }
-    // sendMessage({
-    //   type: 'text',
-    //   title: value,
-    // });
-    // setValue(() => '');
+        if (!!value.trim()) {
+          sendMessage({
+            type: 'image',
+            imageList: resImages.map((res) => res.url),
+          });
+          sendMessage({
+            type: 'text',
+            title: value,
+            replyTo: replyMessage?.id || replyMessage?._id,
+          });
+          return;
+        }
+
+        sendMessage({
+          type: 'image',
+          imageList: resImages.map((res) => res.url),
+          replyTo: replyMessage?.id || replyMessage?._id,
+        });
+        return;
+      }
+      sendMessage({
+        type: 'text',
+        title: value,
+        replyTo: replyMessage?.id || replyMessage?._id,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
