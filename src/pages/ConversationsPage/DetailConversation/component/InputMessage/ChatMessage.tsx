@@ -13,14 +13,15 @@ import { BASE_URL, axiosInstance } from '@/api/apiConfig';
 import ReplyMessage from './ReplyMessage';
 import { useUploadImageMessage } from '@/hooks/useUploadImageMessage';
 import { IResMessage } from '@/types';
+import { useTranslation } from 'react-i18next';
 
 interface ChatMessageProps {}
 
 const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
   const { conversationId } = useParams();
-  const { fileUpload, deleteFile, isOpenGif, replyMessage } = useConversationStore(
-    (state) => state
-  );
+  const { t } = useTranslation();
+  const { fileUpload, deleteFile, isOpenGif, replyMessage, deleteAllFiles, resetReplyMessage } =
+    useConversationStore((state) => state);
   const { mutate: sendMessage } = useSendMessage(conversationId!);
   const { mutate: uploadImage } = useUploadImageMessage();
   const [value, setValue] = React.useState('');
@@ -78,7 +79,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
         if (!!value.trim()) {
           sendMessage({
             type: 'image',
-            imageList: resImages.map((res) => res.url),
+            imageList: resImages.map((res) => encodeURI(res.url)),
           });
           sendMessage({
             type: 'text',
@@ -90,7 +91,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
 
         sendMessage({
           type: 'image',
-          imageList: resImages.map((res) => res.url),
+          imageList: resImages.map((res) => encodeURI(res.url)),
           replyTo: replyMessage?.id || replyMessage?._id,
         });
         return;
@@ -101,7 +102,10 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
         replyTo: replyMessage?.id || replyMessage?._id,
       });
     } catch (error) {
-      console.log(error);
+    } finally {
+      setValue(() => '');
+      deleteAllFiles();
+      resetReplyMessage();
     }
   };
 
@@ -117,7 +121,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
             fileUpload.length > 0 ? 'flex-col p-3 gap-1' : 'items-center '
           )}
         >
-          {(replyMessage?._id || replyMessage?.id) && <ReplyMessage />}
+          <ReplyMessage />
           {fileUpload.length > 0 && (
             <div className="flex gap-2 items-center h-15  ">
               <div
@@ -155,7 +159,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
             className={cn(
               'w-full resize-none  text-black max-h-[120px]  p-2 pb-3 placeholder:text-[#a4a4a4] focus-visible:outline-none text-sm  disabled:opacity-50 bg-transparent'
             )}
-            placeholder="Write something"
+            placeholder={t('message.input.placeholder')}
             value={value}
           />
         </div>

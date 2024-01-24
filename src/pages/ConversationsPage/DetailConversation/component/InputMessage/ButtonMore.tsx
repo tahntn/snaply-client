@@ -5,8 +5,10 @@ import { useUploadFile } from '@/hooks';
 import { cn } from '@/lib/utils';
 import { Text } from '@radix-ui/themes';
 import { useConversationStore } from '@/store';
+import { useTranslation } from 'react-i18next';
 
 const ButtonMore = () => {
+  const { t } = useTranslation();
   const { getRootProps, getInputProps } = useUploadFile();
   const { handleOpenGif } = useConversationStore((state) => state);
   return (
@@ -28,7 +30,7 @@ const ButtonMore = () => {
                 <div>
                   <Icons.image className="h-5 w-5" />
                 </div>
-                <Text> Gallery</Text>
+                <Text>{t('message.more.gallery')}</Text>
               </div>
             </PopoverClose>
           </li>
@@ -38,7 +40,7 @@ const ButtonMore = () => {
                 <div>
                   <Icons.gif className="h-5 w-5" />
                 </div>
-                <Text> Gif</Text>
+                <Text>{t('message.more.gif')}</Text>
               </div>
             </PopoverClose>
           </li>
@@ -48,7 +50,7 @@ const ButtonMore = () => {
                 <div>
                   <Icons.sticker className="h-5 w-5" />
                 </div>
-                <Text> Sticker</Text>
+                <Text>{t('message.more.sticker')}</Text>
               </div>
             </PopoverClose>
           </li>
