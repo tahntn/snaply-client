@@ -2,6 +2,7 @@ import { Conversation } from './conversation';
 import { Friend } from './friend';
 import { FriendRequest } from './friendRequest';
 import { Login } from './login';
+import { Message } from './message';
 import { Mode } from './mode';
 import { Search } from './search';
 import { Setting } from './setting';
@@ -18,4 +19,5 @@ export const VI = {
   friend: Friend,
   friendRequest: FriendRequest,
   search: Search,
+  message: Message,
 };

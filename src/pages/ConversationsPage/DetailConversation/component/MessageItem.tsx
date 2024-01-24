@@ -110,17 +110,19 @@ const MessageItem: React.FC<
                       </React.Fragment>
                     )),
                     /(https?:\/\/[^\s]+)/g,
-                    (match, i) => (
-                      <a
-                        key={i}
-                        href={match}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="underline"
-                      >
-                        {match}
-                      </a>
-                    )
+                    (match, i) => {
+                      return (
+                        <a
+                          key={i}
+                          href={match}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="underline"
+                        >
+                          {match}
+                        </a>
+                      );
+                    }
                   ),
                   /(\s+)/g,
                   (match, i) => (

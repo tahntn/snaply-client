@@ -10,14 +10,20 @@ import ButtonMore from './ButtonMore';
 import SelectStickerOrGif from './SelectStickerOrGif';
 import { useParams } from 'react-router-dom';
 import { BASE_URL, axiosInstance } from '@/api/apiConfig';
-import axios from 'axios';
+import ReplyMessage from './ReplyMessage';
+import { useUploadImageMessage } from '@/hooks/useUploadImageMessage';
+import { IResMessage } from '@/types';
+import { useTranslation } from 'react-i18next';
 
 interface ChatMessageProps {}
 
 const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
   const { conversationId } = useParams();
-  const { fileUpload, deleteFile, isOpenGif } = useConversationStore((state) => state);
+  const { t } = useTranslation();
+  const { fileUpload, deleteFile, isOpenGif, replyMessage, deleteAllFiles, resetReplyMessage } =
+    useConversationStore((state) => state);
   const { mutate: sendMessage } = useSendMessage(conversationId!);
+  const { mutate: uploadImage } = useUploadImageMessage();
   const [value, setValue] = React.useState('');
   const [isTyping, setIsTyping] = React.useState(false);
   const { getRootProps, getInputProps } = useUploadFile();
@@ -52,12 +58,55 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
     }, 2000);
   };
 
-  const handleSendMessage = () => {
-    sendMessage({
-      type: 'text',
-      title: value,
+  const handleFileUpload = (files: File[]) => {
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append(`files`, file);
     });
-    setValue(() => '');
+    return new Promise<IResMessage[]>((resolve, reject) =>
+      uploadImage(formData, {
+        onSuccess: (response) => resolve(response),
+        onError: (error) => reject(error),
+      })
+    );
+  };
+
+  const handleSendMessage = async () => {
+    try {
+      if (fileUpload.length > 0) {
+        const resImages = await handleFileUpload(fileUpload);
+
+        if (!!value.trim()) {
+          sendMessage({
+            type: 'image',
+            imageList: resImages.map((res) => encodeURI(res.url)),
+          });
+          sendMessage({
+            type: 'text',
+            title: value,
+            replyTo: replyMessage?.id || replyMessage?._id,
+          });
+          return;
+        }
+
+        sendMessage({
+          type: 'image',
+          imageList: resImages.map((res) => encodeURI(res.url)),
+          replyTo: replyMessage?.id || replyMessage?._id,
+        });
+        return;
+      }
+      sendMessage({
+        type: 'text',
+        title: value,
+        replyTo: replyMessage?.id || replyMessage?._id,
+      });
+    } catch (error) {
+    } finally {
+      setValue(() => '');
+      deleteAllFiles();
+      resetReplyMessage();
+    }
   };
 
   return (
@@ -68,28 +117,29 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
 
         <div
           className={cn(
-            'flex  border border-input rounded-2xl  flex-1 text-sm bg-custom_5  px-3 ',
+            'flex flex-col border border-input rounded-2xl  flex-1 text-sm bg-custom_5  px-3 ',
             fileUpload.length > 0 ? 'flex-col p-3 gap-1' : 'items-center '
           )}
         >
+          <ReplyMessage />
           {fileUpload.length > 0 && (
-            <div className="flex gap-2 items-center h-15 max-w-full ">
+            <div className="flex gap-2 items-center h-15  ">
               <div
                 {...getRootProps({ className: 'dropzone' })}
-                className="h-10 w-10   rounded-sm shadow-md overflow-hidden flex items-center justify-center bg-slate-400"
+                className="h-20 w-20 cursor-pointer   rounded-sm shadow-md overflow-hidden flex items-center justify-center bg-slate-400"
               >
                 <input {...getInputProps()} />
                 <Icons.imagePlus />
               </div>
               {fileUpload.map((file, index) => (
-                <div className="h-10 w-10  rounded-sm shadow-md relative border transition-opacity duration-300 ease-in-out hover:opacity-75">
+                <div className="h-20 w-20  rounded-sm shadow-md relative border transition-opacity duration-300 ease-in-out hover:opacity-75">
                   <img
                     key={index}
                     src={URL.createObjectURL(file)}
                     alt={`Uploaded ${index}`}
                     className="h-full w-full object-cover  rounded-sm v"
                   />
-                  <div className="absolute h-4 w-4 bg-muted-foreground top-[-3px] right-[-3px] rounded-full shadow-xl flex items-center justify-center cursor-pointer">
+                  <div className="absolute h-4 w-4 bg-slate-50 top-[3px] right-[3px] rounded-full shadow-xl flex items-center justify-center cursor-pointer">
                     <Icons.close
                       className="h-3/4"
                       onClick={() => {
@@ -102,7 +152,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
             </div>
           )}
 
-          <div></div>
           <TextareaAutosize
             minRows={1}
             maxRows={6}
@@ -110,7 +159,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
             className={cn(
               'w-full resize-none  text-black max-h-[120px]  p-2 pb-3 placeholder:text-[#a4a4a4] focus-visible:outline-none text-sm  disabled:opacity-50 bg-transparent'
             )}
-            placeholder="Write somthing"
+            placeholder={t('message.input.placeholder')}
             value={value}
           />
         </div>
@@ -120,7 +169,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
             'rounded-2xl text-[white] bg-[#020817] border-foreground border text-xs  h-[40px] w-[40px] p-3 '
           )}
           onClick={() => handleSendMessage()}
-          disabled={!value.trim()}
+          disabled={!value.trim() && fileUpload.length === 0}
         >
           <Icons.send className="w-full h-full" />
         </Button>
