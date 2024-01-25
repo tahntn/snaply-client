@@ -1,7 +1,9 @@
 import AvatarUser from '@/components/AvatarUser';
+import { useGetMe } from '@/hooks';
 import { cn, formatDateTime } from '@/lib/utils';
 import { IDetailConversation } from '@/types';
 import { Box, Text } from '@radix-ui/themes';
+import React from 'react';
 import { Link } from 'react-router-dom';
 interface ChatElementProps {
   conversation: IDetailConversation;
@@ -9,7 +11,12 @@ interface ChatElementProps {
 
 const ChatElement: React.FC<ChatElementProps> = ({ conversation }) => {
   const { participants, _id, id, isGroup, lastActivity, nameGroup, avatarGroup } = conversation;
-
+  const { data: currentUser } = useGetMe();
+  const targetUser = React.useMemo(() => {
+    return participants.find(
+      (user) => user._id !== currentUser?.id && user.id !== currentUser?.id
+    )!;
+  }, [participants, currentUser]);
   return (
     <Link to={(_id || id)!}>
       <Box
@@ -21,13 +28,13 @@ const ChatElement: React.FC<ChatElementProps> = ({ conversation }) => {
       >
         <Box className="flex flex-row items-center gap-4">
           <AvatarUser
-            name={!!isGroup ? nameGroup! : participants?.[1].username}
-            url={!!isGroup ? avatarGroup! : participants?.[1].avatar}
+            name={!!isGroup ? nameGroup! : targetUser?.username}
+            url={!!isGroup ? avatarGroup! : targetUser.avatar}
           />
 
           <Box className="flex flex-col gap-[0.2px]">
             <Text className="text-base font-semibold truncate max-w-[320px] opacity-0 lg:opacity-100">
-              {!!isGroup ? nameGroup : participants?.[1].username}
+              {!!isGroup ? nameGroup : targetUser.username}
             </Text>
             <Text className="text-sm">
               {lastActivity?.lastMessage?.senderId?.username}{' '}

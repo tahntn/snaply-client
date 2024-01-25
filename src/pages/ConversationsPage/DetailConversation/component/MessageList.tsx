@@ -16,7 +16,7 @@ interface MessageListProps {
   participants: IUser[];
 }
 
-const MessageList: React.FC<MessageListProps> = ({ conversationId }) => {
+const MessageList: React.FC<MessageListProps> = ({ conversationId, participants }) => {
   const queryClient = useQueryClient();
   const pusher = usePusher();
   const { data: currentUser } = useGetMe();
@@ -95,8 +95,13 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId }) => {
             isMessagesNew = false;
           }
 
-          if (prevMessage && prevMessage.type == 'update') {
+          if (prevMessage && prevMessage.type === 'update') {
             isMessagesNew = false;
+          }
+
+          if (message?.type === 'update' && message?.title === 'new') {
+            console.log('🚀 ~ page.data.map ~ message:', message);
+            isMessagesNew = true;
           }
 
           if (
