@@ -99,11 +99,6 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId, participants 
             isMessagesNew = false;
           }
 
-          if (message?.type === 'update' && message?.title === 'new') {
-            console.log('🚀 ~ page.data.map ~ message:', message);
-            isMessagesNew = true;
-          }
-
           if (
             prevMessage &&
             prevMessage.senderId?.id === message.senderId.id &&

@@ -4,4 +4,9 @@ export const Conversation = {
   form: {
     placeholderSearch: 'Search...',
   },
+
+  detailConversation: {
+    members: 'Members',
+    otherAction: 'Other action',
+  },
 };

@@ -6,6 +6,7 @@ import { IUser } from '@/types';
 import { Text } from '@radix-ui/themes';
 import moment from 'moment';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
 interface UpdateMessageProps {
@@ -17,6 +18,7 @@ interface UpdateMessageProps {
 const UpdateMessage: React.FC<UpdateMessageProps> = ({ user, title, createdAt }) => {
   const { data: currentUser } = useGetMe();
   const { conversationId } = useParams();
+  const { t } = useTranslation();
   const { data, isLoading } = useDetailConversation(conversationId!);
   const targetUser = React.useMemo(() => {
     return data?.participants.find(
@@ -41,13 +43,15 @@ const UpdateMessage: React.FC<UpdateMessageProps> = ({ user, title, createdAt })
       </div>
       <h4 className={cn('text-center text-xl')}>
         <span className="font-semibold">
-          {user?._id === currentUser?.id || user?.id === currentUser?.id ? 'Bạn' : user?.username}{' '}
+          {user?._id === currentUser?.id || user?.id === currentUser?.id
+            ? t('message.message.you')
+            : user?.username}{' '}
         </span>
         {title === 'new'
-          ? 'đã tạo cuộc trò chuyện'
+          ? t('message.message.createdAConversation')
           : title === 'change_name_group'
-          ? 'đã thay đổi tên nhóm'
-          : 'đã thay đổi ảnh nhóm'}
+          ? t('message.message.changedTheGroupName')
+          : t('message.message.changedTheGroupPicture')}
       </h4>
     </div>
   );
