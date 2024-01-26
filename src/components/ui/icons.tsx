@@ -43,6 +43,7 @@ import {
   UserPlus,
   Sticker,
   LogOut,
+  Pin,
   // type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -93,7 +94,7 @@ export const Icons = {
   userPlus: UserPlus,
   sticker: Sticker,
   logOut: LogOut,
-
+  pin: Pin,
   gif: ({ ...props }: LucideProps) => (
     <svg
       {...props}

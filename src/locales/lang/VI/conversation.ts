@@ -4,4 +4,8 @@ export const Conversation = {
   form: {
     placeholderSearch: 'Tìm kiếm...',
   },
+  detailConversation: {
+    members: 'Thành viên',
+    otherAction: 'Hành động khác',
+  },
 };

@@ -13,7 +13,7 @@ interface AvatarUserProps {
 const AvatarUser: React.FC<AvatarUserProps> = ({ name, url, classNameAvatar }) => {
   return (
     <Box className="relative">
-      <Avatar className={cn('border-2 border-background w-9 h-9', classNameAvatar)}>
+      <Avatar className={cn('border border-input w-9 h-9', classNameAvatar)}>
         <AvatarImage src={url} />
         <AvatarFallback className="uppercase">{name[0]}</AvatarFallback>
       </Avatar>

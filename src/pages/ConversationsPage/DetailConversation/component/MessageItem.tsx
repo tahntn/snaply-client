@@ -10,6 +10,11 @@ import { Text } from '@radix-ui/themes';
 import moment from 'moment';
 import React from 'react';
 import reactStringReplace from 'react-string-replace';
+import TextMessage from './Message/TextMessage';
+import ImageMessage from './Message/ImageMessage';
+import GifMessage from './Message/GifMessage';
+import StickerMessage from './Message/StickerMessage';
+import UpdateMessage from './Message/UpdateMessage';
 
 const MessageItem: React.FC<
   IMessage & { currentUser: IUser; hasAvatar: boolean; isMessagesNew: boolean }
@@ -29,6 +34,7 @@ const MessageItem: React.FC<
     isMessagesNew,
     url,
   } = props;
+  console.log('🚀 ~ isMessagesNew:', type, isMessagesNew);
   const setReplyMessage = useConversationStore((state) => state.setReplyMessage);
   const handleOpenDialogImage = useGlobalStore((state) => state.handleOpenDialogImage);
 
@@ -91,102 +97,20 @@ const MessageItem: React.FC<
             )}
           >
             {type === 'update' && (
-              <h4 className={cn('text-center')}>
-                {senderId?.username}{' '}
-                {title === 'new'
-                  ? 'đã tạo cuộc trò chuyện'
-                  : title === 'change_name_group'
-                  ? 'đã thay đổi tên nhóm'
-                  : 'đã thay đổi ảnh nhóm'}
-              </h4>
+              <UpdateMessage createdAt={createdAt!} user={senderId} title={title!} />
             )}
-            {type === 'text' && (
-              <Text className={cn()}>
-                {reactStringReplace(
-                  reactStringReplace(
-                    reactStringReplace(title, /(\n)/g, (_match, i) => (
-                      <React.Fragment key={i}>
-                        <br />
-                      </React.Fragment>
-                    )),
-                    /(https?:\/\/[^\s]+)/g,
-                    (match, i) => {
-                      return (
-                        <a
-                          key={i}
-                          href={match}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="underline"
-                        >
-                          {match}
-                        </a>
-                      );
-                    }
-                  ),
-                  /(\s+)/g,
-                  (match, i) => (
-                    <React.Fragment key={i}>{match.replace(/ /g, '\u00a0')}</React.Fragment>
-                  )
-                )}
-              </Text>
-            )}
+            {type === 'text' && <TextMessage title={title!} />}
             {type === 'image' && (
-              <div
-                className={cn(
+              <ImageMessage
+                imageList={imageList!}
+                classNameWrap={cn(
                   'flex flex-wrap w-full items-stretch gap-1',
-                  currentUser?.id === senderId?.id && 'justify-end '
+                  currentUser?.id === senderId?.id && 'justify-end'
                 )}
-              >
-                {imageList?.map((image, index) => {
-                  const total = imageList.length;
-                  let widthItem = 1;
-                  if (total % 3 === 1) {
-                    if (index === total - 1) {
-                      widthItem = 3;
-                    }
-                  } else if (total % 3 === 2) {
-                    if (index >= total - 2) {
-                      widthItem = 2;
-                    }
-                  }
-                  return (
-                    <div
-                      key={index}
-                      className={cn(
-                        'max-h-[175px] border rounded-xl overflow-hidden group/image relative ',
-                        widthItem === 1 && 'w-[calc(calc(100%/3)-3px)]',
-                        widthItem === 2 && 'w-[calc(calc(100%/2)-2px)]',
-                        widthItem === 3 && 'w-[calc(calc(100%/1)-0px)]'
-                      )}
-                    >
-                      <img
-                        src={image}
-                        className={cn(
-                          ' object-cover  shadow-lg w-full h-full transition-transform transform group-hover/image:scale-105'
-                        )}
-                      />
-                      <div
-                        className={cn(
-                          'hidden absolute cursor-pointer group-hover/image:block  inset-0 bg-black bg-opacity-50 opacity-0 group-hover/image:opacity-100 transition-opacity',
-                          'group-hover/image:flex group-hover/image:items-center group-hover/image:justify-center'
-                        )}
-                        onClick={() => {
-                          handleOpenDialogImage(image);
-                        }}
-                      >
-                        <Button className="bg-transparent text-white ">
-                          <Icons.eye className="mr-2" /> Preview image
-                        </Button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              />
             )}
-            {(type === 'gif' || type === 'sticker') && (
-              <img src={url!} className={cn(type === 'gif' && 'max-h-[300px]')} />
-            )}
+            {type === 'gif' && <GifMessage url={url!} />}
+            {type === 'sticker' && <StickerMessage url={url!} />}
 
             {/* Action with message */}
             <div
