@@ -5,17 +5,20 @@ import { Icons } from './ui/icons';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { mainMenus, subMenus } from '@/constants';
 import { useGlobalStore } from '@/store';
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import LogoLight from '../assets/images/logo/logo-light-none-text.png';
 import LogoDark from '../assets/images/logo/logo-dark-none-text.png';
 import { useTheme } from '@/context/ThemeProvider';
 import { useTranslation } from 'react-i18next';
+import { useGetMe } from '@/hooks';
+import { Skeleton } from './ui/skeleton';
+import ButtonMe from './Button/ButtonMe';
 
 const SideBar: React.FC = () => {
   const { isMenuOpen, toggleMenu } = useGlobalStore((state) => state);
   const { mainTheme } = useTheme();
   const { t } = useTranslation();
-
+  // const { data, isLoading } = useGetMe();
   return (
     <aside
       id="logo-sidebar"
@@ -28,7 +31,7 @@ const SideBar: React.FC = () => {
     >
       <div className={cn('flex flex-col px-3 py-4 h-full bg-gray-50 relative', 'dark:bg-gray-800')}>
         <div className="flex-1">
-          <NavLink to={'/'} className="flex items-center ps-2.5 mb-5 ">
+          <NavLink to={'/conversation'} className="flex items-center ps-2.5 mb-5 ">
             <img
               src={mainTheme === 'light' ? LogoDark : LogoLight}
               className={cn('h-8 translate-x-[-5px]', 'sm:h-9')}
@@ -120,31 +123,47 @@ const SideBar: React.FC = () => {
           </ul>
         </div>
         <div className="mb-5">
-          <NavLink
-            to={'/'}
-            className="flex items-center ps-2.5 mt-5 rounded-md hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer"
+          <ButtonMe />
+          {/* <NavLink
+            to={'/conversation'}
+            className="flex items-center p-[5px] mt-5 rounded-md hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer"
           >
-            <Avatar className="me-3">
-              <AvatarImage src="https://source.unsplash.com/random" />
-            </Avatar>
-            <h2
-              style={{
-                transitionDelay: `50ms`,
-              }}
-              className={`self-center text-xl font-semibold whitespace-nowrap dark:text-white duration-500 ${
-                !isMenuOpen && 'opacity-0 translate-x-2 overflow-hidden'
-              }`}
-            >
-              <h3 className="text-lg  font-bold whitespace-nowrap dark:text-white line-clamp-1">
-                tahn
-              </h3>
-              <h4 className="text-xs font-bold text-gray-800 dark:text-gray-400 line-clamp-1">
-                ntnhat.267@gmail.com
-              </h4>
-            </h2>
-          </NavLink>
+            {isLoading ? (
+              <div className="flex items-center space-x-4  w-full">
+                <Skeleton className="h-12 w-12 rounded-full bg-foreground" />
+                {isMenuOpen && (
+                  <div className="space-y-2 flex-1">
+                    <Skeleton className="h-4 w-full bg-foreground " />
+                    <Skeleton className="h-4 w-3/4 bg-foreground" />
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <Avatar className="me-3 border border-gray-500">
+                  <AvatarImage src={data?.avatar} />
+                  <AvatarFallback className="uppercase">{data?.username?.[0]}</AvatarFallback>
+                </Avatar>
+                <h2
+                  style={{
+                    transitionDelay: `50ms`,
+                  }}
+                  className={`self-center text-xl font-semibold whitespace-nowrap dark:text-white duration-500 ${
+                    !isMenuOpen && 'opacity-0 translate-x-2 overflow-hidden'
+                  }`}
+                >
+                  <h3 className="text-lg  font-bold whitespace-nowrap dark:text-white line-clamp-1">
+                    {data?.username}
+                  </h3>
+                  <h4 className="text-xs font-bold text-gray-800 dark:text-gray-400 line-clamp-1">
+                    {data?.email}
+                  </h4>
+                </h2>
+              </>
+            )}
+          </NavLink> */}
         </div>
-        <div
+        {/* <div
           className={cn(
             'flex items-center justify-end absolute right-0 top-6 bg-gray-800 rounded-full translate-x-2/4',
             'dark:bg-white'
@@ -158,7 +177,7 @@ const SideBar: React.FC = () => {
           >
             <Icons.chevronLeft className={cn('text-white', 'dark:text-gray-800')} />
           </div>
-        </div>
+        </div> */}
       </div>
     </aside>
   );

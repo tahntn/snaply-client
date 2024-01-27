@@ -1,19 +1,22 @@
-// import { QueryClient, useMutation, useQuery } from '@tanstack/react-query';
 import { axiosInstance } from './apiConfig';
 
 // method
 export async function getAxios<T>(endpoint: string, params?: Record<string, any>) {
-  return await axiosInstance.get<T>(endpoint, { params });
+  const res = await axiosInstance.get<T>(endpoint, { params });
+  return res.data;
 }
 
 export async function deleteAxios<T>(endpoint: string, id: string) {
-  return await axiosInstance.delete<T>(`${endpoint}/${id}`);
+  const res = await axiosInstance.delete<T>(`${endpoint}/${id}`);
+  return res.data;
 }
 
-export async function postAxios<T>(endpoint: string, arg: T) {
-  return await axiosInstance.post<T>(`${endpoint}`, arg);
+export async function postAxios<RT, BT>(endpoint: string, arg?: BT) {
+  const res = await axiosInstance.post<RT>(`${endpoint}`, arg);
+  return res.data;
 }
 
 export async function putAxios<RT, BT>(endpoint: string, id: string, arg: BT) {
-  return await axiosInstance.put<RT>(`${endpoint}/${id}`, arg);
+  const res = await axiosInstance.put<RT>(`${endpoint}/${id}`, arg);
+  return res.data;
 }

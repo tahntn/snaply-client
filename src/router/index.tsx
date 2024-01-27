@@ -8,6 +8,10 @@ import MainLayout from '@/layout/MainLayout';
 import { GuardPublicOnly } from '@/guard/GuardPublicOnly';
 import { GuardAuthenticated } from '@/guard/GuardAuthenticated';
 import { LoginPage, SignupPage } from '@/pages/AuthPage';
+import NoChat from '@/components/NoChat';
+import DetailConversation from '@/pages/ConversationsPage/DetailConversation';
+import FriendRequestPage from '@/pages/FriendRequestPage';
+import CommonLayout from '@/layout/CommonLayout';
 
 const Loadable = <P extends object>(Component: ComponentType<P>) => {
   const LazyComponents: FC<P> = (props: PropsWithChildren<P>) => {
@@ -39,11 +43,19 @@ const HomePage = Loadable(
   })
 );
 
+const SearchPage = Loadable(
+  lazy(() => {
+    return import('../pages/SearchPage');
+  })
+);
+
 const ConversationsPage = Loadable(
   lazy(() => {
     return import('../pages/ConversationsPage');
   })
 );
+
+const FriendsPage = Loadable(lazy(() => import('../pages/FriendsPage')));
 
 const SettingPage = Loadable(
   lazy(() => {
@@ -93,19 +105,46 @@ const lazyRoutes: RouteObject[] = [
         ),
         children: [
           {
-            element: <ConversationsPage />,
+            element: (
+              <ConversationsPage>
+                <Outlet />
+              </ConversationsPage>
+            ),
             path: pathNames.conversation,
+            children: [
+              { element: <DetailConversation />, path: ':conversationId' },
+              { element: <NoChat />, path: '' },
+            ],
           },
           {
-            element: <HomePage />,
-            path: pathNames.search,
+            path: '',
+            element: (
+              <CommonLayout>
+                <Outlet />
+              </CommonLayout>
+            ),
+            children: [
+              {
+                element: <SearchPage />,
+                path: pathNames.search,
+              },
+            ],
           },
+
           {
-            element: <HomePage />,
+            element: (
+              <FriendRequestPage>
+                <Outlet />
+              </FriendRequestPage>
+            ),
             path: pathNames.friendRequest,
           },
           {
-            element: <HomePage />,
+            element: (
+              <FriendsPage>
+                <Outlet />
+              </FriendsPage>
+            ),
             path: pathNames.friend,
           },
           {

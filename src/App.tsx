@@ -3,28 +3,29 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ErrorBoundary } from 'react-error-boundary';
 import { BrowserRouter } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-// import { JwtPayload, jwtDecode } from 'jwt-decode';
 import Router from './router';
 import { ThemeProvider } from './context/ThemeProvider';
 import FallbackRenderer from './components/FallbackRenderer';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from './components/ui/tooltip';
-// import moment from 'moment';
 import './App.css';
 import { storage } from './lib/storage';
-import { useAuthStore } from './store';
+import { useAuthStore, useGlobalStore } from './store';
 import { useToast } from './components/ui/use-toast';
 import { axiosInstance } from './api/apiConfig';
 import axios from 'axios';
 import { refreshAccessToken } from './services/auth.service';
 import { useLogout } from './hooks/useSignOut';
+import { DialogPreviewImage } from './components/Dialog';
+import PusherProvider from './context/PusherProvider';
 
 function App() {
   const { i18n } = useTranslation();
   const { getString } = storage;
-  const { setLogin, setLogout } = useAuthStore((state) => state);
+  const { setLogin } = useAuthStore((state) => state);
   const { toast } = useToast();
   const { mutate: logout } = useLogout();
+
   React.useEffect(() => {
     const refreshToken = getString('snalpy-refresh');
     const language = getString('snaply-language');
@@ -70,6 +71,9 @@ function App() {
       if (accessToken) {
         req.headers['Authorization'] = 'Bearer ' + accessToken;
         req.headers['Accept-Language'] = language;
+      }
+      if (req.data instanceof FormData) {
+        req.headers['Content-Type'] = 'multipart/form-data';
       }
       return req;
     });
@@ -121,19 +125,22 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider defaultTheme="light" storageKey="snaply-theme">
-      <TooltipProvider delayDuration={300}>
-        <BrowserRouter>
-          <ErrorBoundary fallbackRender={FallbackRenderer}>
-            <Router />
-          </ErrorBoundary>
-        </BrowserRouter>
-        <Toaster />
-        {import.meta.env.VITE_NODE_ENV === 'development' && (
-          <ReactQueryDevtools initialIsOpen={true} position="bottom-right" />
-        )}
-      </TooltipProvider>
-    </ThemeProvider>
+    <PusherProvider>
+      <ThemeProvider defaultTheme="light" storageKey="snaply-theme">
+        <TooltipProvider delayDuration={300}>
+          <BrowserRouter>
+            <ErrorBoundary fallbackRender={FallbackRenderer}>
+              <Router />
+            </ErrorBoundary>
+          </BrowserRouter>
+          <Toaster />
+          <DialogPreviewImage />
+          {import.meta.env.VITE_NODE_ENV === 'development' && (
+            <ReactQueryDevtools initialIsOpen={true} position="top-left" />
+          )}
+        </TooltipProvider>
+      </ThemeProvider>
+    </PusherProvider>
   );
 }
 
