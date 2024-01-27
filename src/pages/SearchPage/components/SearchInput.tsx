@@ -1,6 +1,6 @@
 import { InputWithIcon } from '@/components/InputWithIcon';
 import { Icons } from '@/components/ui/icons';
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface SearchInputProps {

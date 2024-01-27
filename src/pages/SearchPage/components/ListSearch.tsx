@@ -8,8 +8,7 @@ interface ListSearchProps {
 }
 
 const ListSearch: FC<ListSearchProps> = ({ keyword }) => {
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useSearchUsers(keyword);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSearchUsers(keyword);
 
   const { ref, inView } = useInView();
 
@@ -20,6 +19,7 @@ const ListSearch: FC<ListSearchProps> = ({ keyword }) => {
   }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
 
   if (data?.pages?.[0]?.data?.length === 0) {
+    // eslint-disable-next-line no-extra-boolean-cast
     if (!!keyword) {
       return <p className="text-center">Không tìm thấy kết quả nào</p>;
     }

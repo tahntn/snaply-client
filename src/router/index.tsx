@@ -37,11 +37,11 @@ const AuthLayout = Loadable(
   })
 );
 
-const HomePage = Loadable(
-  lazy(() => {
-    return import('../pages/HomePage/index');
-  })
-);
+// const HomePage = Loadable(
+//   lazy(() => {
+//     return import('../pages/HomePage/index');
+//   })
+// );
 
 const SearchPage = Loadable(
   lazy(() => {

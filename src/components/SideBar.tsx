@@ -1,24 +1,20 @@
 import { cn } from '@/lib/utils';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Icons } from './ui/icons';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { mainMenus, subMenus } from '@/constants';
 import { useGlobalStore } from '@/store';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import LogoLight from '../assets/images/logo/logo-light-none-text.png';
 import LogoDark from '../assets/images/logo/logo-dark-none-text.png';
 import { useTheme } from '@/context/ThemeProvider';
 import { useTranslation } from 'react-i18next';
-import { useGetMe } from '@/hooks';
-import { Skeleton } from './ui/skeleton';
 import ButtonMe from './Button/ButtonMe';
 
 const SideBar: React.FC = () => {
-  const { isMenuOpen, toggleMenu } = useGlobalStore((state) => state);
+  const { isMenuOpen } = useGlobalStore((state) => state);
   const { mainTheme } = useTheme();
   const { t } = useTranslation();
-  // const { data, isLoading } = useGetMe();
+
   return (
     <aside
       id="logo-sidebar"

@@ -1,11 +1,7 @@
 import React from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Icons } from '@/components/ui/icons';
-import { Skeleton } from '@/components/ui/skeleton';
+
 import { useDetailConversation, useGetMe, useUploadFile } from '@/hooks';
-import { IUser } from '@/types';
 import MessageList from './component/MessageList';
 import ChatMessage from './component/InputMessage/ChatMessage';
 import { useConversationStore } from '@/store';
@@ -29,20 +25,21 @@ const DetailConversation = () => {
   React.useEffect(() => {
     if (!ChatMessageRef?.current) return;
     const resizeObserver = new ResizeObserver(() => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
       setHeightChatMessage(() => ChatMessageRef.current?.clientHeight!);
     });
     resizeObserver.observe(ChatMessageRef.current);
     return () => resizeObserver.disconnect();
   }, []);
 
-  if (!!isError) {
-    return <Navigate replace to={'/conversation'} />;
-  }
-
   React.useEffect(() => {
     resetReplyMessage();
     deleteAllFiles();
-  }, [conversationId]);
+  }, [conversationId, resetReplyMessage, deleteAllFiles]);
+  if (isError) {
+    return <Navigate replace to={'/conversation'} />;
+  }
+
   return (
     <div className=" md:h-screen sm:h-[calc(100vh)] xs:h-[calc(100vh-64px)]" {...getRootProps()}>
       <div className="h-full w-full relative" onClick={handleClick}>
@@ -59,6 +56,7 @@ const DetailConversation = () => {
           <MessageList
             conversationId={conversationId!}
             currentUser={currentUser!}
+            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
             participants={data?.participants!}
           />
         </div>

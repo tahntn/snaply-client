@@ -2,8 +2,6 @@ import { useGetMe } from '@/hooks';
 import { IDetailConversation } from '@/types';
 import React from 'react';
 import SkeletonText from '../Skeleton/SkeletonText';
-import { Text } from '@radix-ui/themes';
-
 interface NameConversationProps {
   isLoading: boolean;
   conversation: IDetailConversation;
@@ -19,13 +17,14 @@ const NameConversation: React.FC<NameConversationProps> = ({
 }) => {
   const { data: currentUser } = useGetMe();
   const targetUser = React.useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
     return conversation?.participants?.find(
       (user) => user._id !== currentUser?.id && user.id !== currentUser?.id
     )!;
   }, [conversation?.participants, currentUser]);
   return isLoading ? (
     <SkeletonText className={classNameSkeleton} />
-  ) : !!conversation.isGroup ? (
+  ) : conversation.isGroup ? (
     <p className={classNameText}>{conversation.nameGroup}</p>
   ) : (
     <p className={classNameText}>{targetUser.username}</p>
