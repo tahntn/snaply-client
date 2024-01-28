@@ -33,6 +33,7 @@ const GiphySelect = () => {
   React.useEffect(() => {
     if (!GifMessageRef?.current) return;
     const resizeObserver = new ResizeObserver(() => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
       setWidthGifMessage(() => GifMessageRef.current?.clientWidth! - 10);
     });
     resizeObserver.observe(GifMessageRef.current);
@@ -46,7 +47,7 @@ const GiphySelect = () => {
           onChange={(e) => {
             setSearch(e.target.value);
           }}
-          startAndornment={<Icons.search className="h-[18px]" />}
+          startAndornment={<Icons.search className="h-[18px] text-border" />}
           className="px-2 outline-none"
         />
       </Box>

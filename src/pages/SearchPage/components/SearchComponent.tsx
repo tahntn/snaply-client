@@ -12,12 +12,13 @@ const SearchComponent = () => {
   const debouncedValueSearch = useDebounce(searchValue, 500);
 
   useEffect(() => {
+    // eslint-disable-next-line no-extra-boolean-cast
     if (!!debouncedValueSearch) {
       navigate(`?q=${debouncedValueSearch}`);
     } else {
       navigate('');
     }
-  }, [debouncedValueSearch]);
+  }, [debouncedValueSearch, navigate]);
 
   return (
     <div className="pt-10">

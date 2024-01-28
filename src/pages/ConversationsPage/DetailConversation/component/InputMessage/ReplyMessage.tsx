@@ -10,7 +10,7 @@ const ReplyMessage = () => {
   const { data: currentUser } = useGetMe();
   const { t } = useTranslation();
   return replyMessage?._id || replyMessage?.id ? (
-    <div className="w-full px-3 py-2 flex flex-col justify-center bg-[#0006] my-2 rounded-md ">
+    <div className="w-full px-3 py-2 flex flex-col justify-center bg-bg_reply my-2 rounded-md ">
       <div className="flex justify-between">
         <div className="flex items-center gap-4">
           <Icons.reply />

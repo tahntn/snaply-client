@@ -128,29 +128,22 @@ const lazyRoutes: RouteObject[] = [
                 element: <SearchPage />,
                 path: pathNames.search,
               },
+              {
+                element: <SettingPage />,
+                path: pathNames.setting,
+              },
+              {
+                element: <FriendRequestPage />,
+                path: pathNames.friendRequest,
+              },
+
+              {
+                element: <FriendsPage />,
+                path: pathNames.friend,
+              },
             ],
           },
 
-          {
-            element: (
-              <FriendRequestPage>
-                <Outlet />
-              </FriendRequestPage>
-            ),
-            path: pathNames.friendRequest,
-          },
-          {
-            element: (
-              <FriendsPage>
-                <Outlet />
-              </FriendsPage>
-            ),
-            path: pathNames.friend,
-          },
-          {
-            element: <SettingPage />,
-            path: pathNames.setting,
-          },
           {
             element: <Navigate to={pathNames.conversation} replace />,
             path: pathNames.home,

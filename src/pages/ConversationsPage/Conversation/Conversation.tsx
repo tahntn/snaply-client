@@ -15,7 +15,7 @@ const Conversation = () => {
         </Box>
         <Box className="mt-4">
           <InputWithIcon
-            startAndornment={<Icons.search className="h-[18px] text-black-500" />}
+            startAndornment={<Icons.search className="h-[18px] text-border" />}
             className="p-2 border-none"
             placeholder={t('conversation.form.placeholderSearch')}
           />

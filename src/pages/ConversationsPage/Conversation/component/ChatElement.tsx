@@ -28,13 +28,13 @@ const ChatElement: React.FC<ChatElementProps> = ({ conversation }) => {
       >
         <Box className="flex flex-row items-center gap-4">
           <AvatarUser
-            name={!!isGroup ? nameGroup! : targetUser?.username}
-            url={!!isGroup ? avatarGroup! : targetUser.avatar}
+            name={isGroup ? nameGroup! : targetUser?.username}
+            url={isGroup ? avatarGroup! : targetUser.avatar}
           />
 
           <Box className="flex flex-col gap-[0.2px]">
             <Text className="text-base font-semibold truncate max-w-[320px] opacity-0 lg:opacity-100">
-              {!!isGroup ? nameGroup : targetUser.username}
+              {isGroup ? nameGroup : targetUser.username}
             </Text>
             <Text className="text-sm">
               {lastActivity?.lastMessage?.senderId?.username}{' '}

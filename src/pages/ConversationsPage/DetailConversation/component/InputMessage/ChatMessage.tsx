@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 
 interface ChatMessageProps {}
 
-const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
+const ChatMessage: React.FC<ChatMessageProps> = () => {
   const { conversationId } = useParams();
   const { t } = useTranslation();
   const { fileUpload, deleteFile, isOpenGif, replyMessage, deleteAllFiles, resetReplyMessage } =
@@ -27,6 +27,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
   const [value, setValue] = React.useState('');
   const [isTyping, setIsTyping] = React.useState(false);
   const { getRootProps, getInputProps } = useUploadFile();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const typingTimeoutRef: any = React.useRef(null);
   const abortControllerRef = React.useRef(new AbortController());
   const sendTypingStatus = async (isTyping: boolean) => {
@@ -76,6 +77,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
       if (fileUpload.length > 0) {
         const resImages = await handleFileUpload(fileUpload);
 
+        // eslint-disable-next-line no-extra-boolean-cast
         if (!!value.trim()) {
           sendMessage({
             type: 'image',
@@ -102,6 +104,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
         replyTo: replyMessage?.id || replyMessage?._id,
       });
     } catch (error) {
+      /* empty */
     } finally {
       setValue(() => '');
       deleteAllFiles();
@@ -117,7 +120,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({}) => {
 
         <div
           className={cn(
-            'flex flex-col border border-input rounded-2xl  flex-1 text-sm bg-custom_5  px-3 ',
+            'flex flex-col border border-input rounded-2xl  flex-1 text-sm bg-custom_5 bg-[#f1f1f1] px-3 ',
             fileUpload.length > 0 ? 'flex-col p-3 gap-1' : 'items-center '
           )}
         >

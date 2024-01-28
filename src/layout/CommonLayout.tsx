@@ -1,3 +1,4 @@
+import NoChat from '@/components/NoChat';
 import { cn } from '@/lib/utils';
 import React from 'react';
 
@@ -7,18 +8,20 @@ interface CommonLayoutProps {
 
 const CommonLayout: React.FC<CommonLayoutProps> = ({ children }) => {
   return (
-    <div className={cn('h-screen w-full')}>
+    <div className={cn('h-screen w-full flex')}>
       <div
         className={cn(
           'bg-gray-100 max-w-[100%] h-full',
           'dark:bg-black_custom-500',
-          'xl:max-w-[30%] lg:max-w-[40%] md:max-w-[50%] sm:max-w-[100%]',
+          'xl:min-w-[30%] lg:min-w-[40%] md:min-w-[50%] sm:min-w-full xs:min-w-full',
           'lg:text-[16px]'
         )}
       >
         {children}
       </div>
-      <div className="flex-1 bg-slate-900"></div>
+      <div className="flex-1">
+        <NoChat />
+      </div>
     </div>
   );
 };

@@ -42,6 +42,8 @@
     --custom-3: #d7eaf8;
     --custom-4: #f6f8fb;
     --custom-5: #f3f4f6;
+
+    --bg-reply: #f8f8f8;
   }
 
   .dark {
@@ -80,6 +82,8 @@
     --custom-2: #293145;
     --custom-4: #303841;
     --custom-5: #f3f4f6;
+
+    --bg-reply: #212121;
   }
 }
 
