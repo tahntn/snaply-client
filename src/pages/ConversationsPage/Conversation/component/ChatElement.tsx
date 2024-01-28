@@ -17,6 +17,7 @@ const ChatElement: React.FC<ChatElementProps> = ({ conversation }) => {
       (user) => user._id !== currentUser?.id && user.id !== currentUser?.id
     )!;
   }, [participants, currentUser]);
+
   return (
     <Link to={(_id || id)!}>
       <Box
@@ -29,22 +30,22 @@ const ChatElement: React.FC<ChatElementProps> = ({ conversation }) => {
         <Box className="flex flex-row items-center gap-4">
           <AvatarUser
             name={!!isGroup ? nameGroup! : targetUser?.username}
-            url={!!isGroup ? avatarGroup! : targetUser.avatar}
+            url={!!isGroup ? avatarGroup! : targetUser?.avatar}
           />
 
           <Box className="flex flex-col gap-[0.2px]">
             <Text className="text-base font-semibold truncate max-w-[320px] opacity-0 lg:opacity-100">
-              {!!isGroup ? nameGroup : targetUser.username}
+              {!!isGroup ? nameGroup : targetUser?.username}
             </Text>
             <Text className="text-sm">
               {lastActivity?.lastMessage?.senderId?.username}{' '}
-              {lastActivity.lastMessage?.type === 'update' &&
+              {lastActivity?.lastMessage?.type === 'update' &&
                 lastActivity?.lastMessage?.title === 'new' &&
                 'đã tạo cuộc trò chuyện'}
-              {lastActivity.lastMessage?.type === 'update' &&
+              {lastActivity?.lastMessage?.type === 'update' &&
                 lastActivity?.lastMessage?.title === 'change_avatar_group' &&
                 'đã thay đổi ảnh nhóm'}
-              {lastActivity.lastMessage?.type === 'update' &&
+              {lastActivity?.lastMessage?.type === 'update' &&
                 lastActivity?.lastMessage?.title === 'change_name_group' &&
                 'đã thay đổi ảnh nhóm'}
               {lastActivity?.lastMessage?.type === 'text' && 'đã gửi một tin nhắn'}
