@@ -15,7 +15,6 @@ export const useCreateConversation = () => {
   return useMutation({
     mutationFn: (data: DataType) => postAxios<IDetailConversation, DataType>('conversation', data),
     onSuccess: (data) => {
-      console.log(data);
       navigate(`/conversation/${data._id || data.id}`);
     },
     onError: (error: any) => {

@@ -23,7 +23,6 @@ const GiphySelect = () => {
 
   const onGifClick = (gif: IGif, e: SyntheticEvent<HTMLElement, Event>) => {
     e.preventDefault();
-    console.log(gif);
     sendMessage({
       type: gif.type,
       url: gif.images.original.url,

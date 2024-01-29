@@ -37,6 +37,7 @@ const Header = () => {
                   {mainMenus(t).map((menu, i) => (
                     <li>
                       <NavLink
+                        key={i}
                         to={menu.link}
                         end
                         className={({ isActive }) =>

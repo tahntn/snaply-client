@@ -3,13 +3,11 @@ import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
-import { useConversationStore, useGlobalStore } from '@/store';
+import { useConversationStore } from '@/store';
 import { IMessage, IUser } from '@/types';
-import { Icon } from '@radix-ui/react-select';
 import { Text } from '@radix-ui/themes';
 import moment from 'moment';
 import React from 'react';
-import reactStringReplace from 'react-string-replace';
 import TextMessage from './Message/TextMessage';
 import ImageMessage from './Message/ImageMessage';
 import GifMessage from './Message/GifMessage';
@@ -20,11 +18,11 @@ const MessageItem: React.FC<
   IMessage & { currentUser: IUser; hasAvatar: boolean; isMessagesNew: boolean }
 > = (props) => {
   const {
-    conversationId,
+    // conversationId,
     createdAt,
-    updatedAt,
-    id,
-    isPin,
+    // updatedAt,
+    // id,
+    // isPin,
     senderId,
     title,
     type,
@@ -34,9 +32,8 @@ const MessageItem: React.FC<
     isMessagesNew,
     url,
   } = props;
-  console.log('🚀 ~ isMessagesNew:', type, isMessagesNew);
+
   const setReplyMessage = useConversationStore((state) => state.setReplyMessage);
-  const handleOpenDialogImage = useGlobalStore((state) => state.handleOpenDialogImage);
 
   return (
     <div className="w-full">
@@ -123,6 +120,7 @@ const MessageItem: React.FC<
                 variant="outline"
                 className="rounded-full w-8 h-8 py-0 px-0 flex items-center justify-center"
                 onClick={() => {
+                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
                   const { hasAvatar, isMessagesNew, ..._props } = props;
                   setReplyMessage(_props);
                 }}

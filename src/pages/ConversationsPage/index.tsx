@@ -1,19 +1,16 @@
 import React from 'react';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
-
-import useSearchUsers from '@/hooks/useSearchUsers';
 import Conversation from './Conversation/Conversation';
 
 import styles from './style/index.module.css';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 interface ConversationsPageProps {
   children: React.ReactNode;
 }
 
 const ConversationsPage: React.FC<ConversationsPageProps> = ({ children }) => {
-  const {} = useSearchUsers();
   const desktop = '(max-width: 1200px)';
   const tablet = '(max-width: 1000px)';
   const { conversationId } = useParams();

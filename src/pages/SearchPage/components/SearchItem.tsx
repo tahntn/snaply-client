@@ -15,7 +15,7 @@ const SearchItem: FC<SearchItemProps> = ({ user }) => {
       variant="outline"
       className="h-fit"
       onClick={() => {
-        handleOpenDialogOtherUser(user.id || user._id);
+        handleOpenDialogOtherUser((user.id || user._id)!);
       }}
     >
       <div className="flex gap-3 items-center   rounded-lg w-full">

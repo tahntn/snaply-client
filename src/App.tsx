@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -10,7 +11,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from './components/ui/tooltip';
 import './App.css';
 import { storage } from './lib/storage';
-import { useAuthStore, useGlobalStore } from './store';
+import { useAuthStore } from './store';
 import { useToast } from './components/ui/use-toast';
 import { axiosInstance } from './api/apiConfig';
 import axios from 'axios';
@@ -56,6 +57,7 @@ function App() {
 
   React.useEffect(() => {
     let isRefreshing = false;
+    // eslint-disable-next-line prefer-const
     let refreshSubscribers: any = [];
 
     const subscribeTokenRefresh = (cb: any) => {
@@ -99,7 +101,7 @@ function App() {
                 isRefreshing = false;
                 onRrefreshed(newToken.data.token);
               })
-              .catch((err) => {
+              .catch(() => {
                 toast({
                   variant: 'destructive',
                   title: 'Uh oh! Something went wrong. token expried',
@@ -109,7 +111,7 @@ function App() {
               });
           }
 
-          const retryOrigReq = new Promise((resolve, reject) => {
+          const retryOrigReq = new Promise((resolve) => {
             subscribeTokenRefresh((token: any) => {
               // replace the expired token and retry
               originalRequest.headers['Authorization'] = 'Bearer ' + token;

@@ -1,7 +1,6 @@
 import { useGetMe, useMessages } from '@/hooks';
-import { cn } from '@/lib/utils';
-import { IMessage, IMessages, IUser } from '@/types';
-import { Text } from '@radix-ui/themes';
+
+import { IMessage, IUser } from '@/types';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Navigate } from 'react-router-dom';
@@ -16,11 +15,11 @@ interface MessageListProps {
   participants: IUser[];
 }
 
-const MessageList: React.FC<MessageListProps> = ({ conversationId, participants }) => {
+const MessageList: React.FC<MessageListProps> = ({ conversationId }) => {
   const queryClient = useQueryClient();
   const pusher = usePusher();
   const { data: currentUser } = useGetMe();
-  const { data, isLoading, status, fetchNextPage, isError, hasNextPage, isFetchingNextPage } =
+  const { data, fetchNextPage, isError, hasNextPage, isFetchingNextPage } =
     useMessages(conversationId);
   const { ref, inView } = useInView();
   const [listUserTyping, setListUserTyping] = React.useState<IUser[]>([]);
@@ -30,15 +29,12 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId, participants 
     }
   }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
 
-  if (!!isError) {
-    return <Navigate replace to={'/conversation'} />;
-  }
-
   React.useEffect(() => {
     if (conversationId) {
       pusher.subscribe(conversationId);
 
       const newMessageHandler = (data: IMessage) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         queryClient.setQueryData(['messages', conversationId], (oldData: any) => {
           return {
             pages: [{ data: [data] }, ...oldData.pages],
@@ -70,7 +66,12 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId, participants 
         pusher.unbind('message:typing', userTyping);
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pusher, conversationId, currentUser]);
+
+  if (isError) {
+    return <Navigate replace to={'/conversation'} />;
+  }
   return (
     <div className="h-full max-h-full overflow-y-auto overflow-x-hidden flex-col-reverse flex gap-2 py-3 px-3">
       {listUserTyping?.length > 0 && <UserTyping listUserTyping={listUserTyping} />}
