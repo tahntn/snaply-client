@@ -21,9 +21,9 @@ const SearchItem: FC<SearchItemProps> = ({ user }) => {
       <div className="flex gap-3 items-center   rounded-lg w-full">
         <AvatarUser name={user.username} url={user.avatar} classNameAvatar="w-12 h-12" />
 
-        <div className="flex flex-col">
-          <h3 className="text-2xl font-semibold">{user.username}</h3>
-          <h4 className="text-base">{user.email}</h4>
+        <div className="flex flex-col items-start">
+          <h3 className="text-xl font-semibold">{user.username}</h3>
+          <h4 className="text-base font-medium">{user.email}</h4>
         </div>
       </div>
     </Button>

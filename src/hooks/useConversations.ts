@@ -5,6 +5,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 export const useConversations = (limit = 5) => {
   return useInfiniteQuery(
     ['conversation'],
+
     async ({ pageParam = 1 }) => {
       const res = await getAxios<IConversations>('/conversation', {
         page: pageParam,
@@ -19,6 +20,8 @@ export const useConversations = (limit = 5) => {
         }
         return undefined;
       },
+      refetchOnMount: true,
+      staleTime: 1000,
     }
   );
 };

@@ -24,10 +24,7 @@ const ConversationList = () => {
     }
   }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
 
-  let count = 0;
-
   React.useEffect(() => {
-    console.log('a');
     if (currentUser?.id) {
       pusher.subscribe(currentUser?.id);
 
@@ -41,18 +38,14 @@ const ConversationList = () => {
         });
       };
 
-      if (!count) {
-        pusher.bind('conversation:new', newConversationHandler);
-        count++;
-      }
+      pusher.bind('conversation:new', newConversationHandler);
 
       return () => {
         pusher.unsubscribe(currentUser.id!);
-        pusher.unbind('message:new', newConversationHandler);
+        pusher.unbind('conversation:new', newConversationHandler);
       };
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser?.id]);
+  }, [currentUser?.id, pusher, queryClient]);
 
   if (status === 'loading' || isLoading) {
     return <p>Loading...</p>;

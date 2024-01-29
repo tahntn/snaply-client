@@ -4,9 +4,12 @@ import { useDropzone } from 'react-dropzone';
 
 export const useUploadFile = () => {
   const { addFile, fileUpload } = useConversationStore((state) => state);
-  const onDrop = React.useCallback((acceptedFiles: File[]) => {
-    addFile(acceptedFiles);
-  }, []);
+  const onDrop = React.useCallback(
+    (acceptedFiles: File[]) => {
+      addFile(acceptedFiles);
+    },
+    [addFile]
+  );
   return useDropzone({
     onDrop,
     maxFiles: 10,

@@ -15,7 +15,7 @@ const InputWithIcon = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div
         className={cn(
-          'flex h-10 items-center rounded-md border border-input bg-white text-sm ring-offset-background ',
+          'flex h-10 items-center rounded-md border border-input bg-white text-sm ring-offset-background  text-border',
           className
         )}
       >

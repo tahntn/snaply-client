@@ -19,6 +19,8 @@ export const useMessages = (conversationId: string, limit = 10) => {
         }
         return undefined;
       },
+      refetchOnMount: true,
+      staleTime: 1000,
     }
   );
 };

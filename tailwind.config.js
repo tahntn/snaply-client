@@ -70,6 +70,8 @@ module.exports = {
         custom_3: 'var(--custom-3)',
         custom_4: 'var(--custom-4)',
         custom_5: 'var(--custom-5)',
+
+        bg_reply: 'var(--bg-reply)',
       },
 
       borderRadius: {
