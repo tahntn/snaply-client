@@ -39,7 +39,7 @@ const ChatElement: React.FC<ChatElementProps> = ({ conversation }) => {
             />
             <Text className="text-sm line-clamp-1">
               {lastActivity?.lastMessage?.senderId?.username}{' '}
-              {lastActivity.lastMessage?.type === 'update' &&
+              {lastActivity?.lastMessage?.type === 'update' &&
                 lastActivity?.lastMessage?.title === 'new' &&
                 t('conversation.createdAConversation')}
               {lastActivity.lastMessage?.type === 'update' &&
