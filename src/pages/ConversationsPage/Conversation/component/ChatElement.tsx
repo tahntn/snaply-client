@@ -1,6 +1,7 @@
-// import AvatarUser from '@/components/AvatarUser';
 import AvatarConversation from '@/components/Conversation/AvatarConversation';
 import NameConversation from '@/components/Conversation/NameConversation';
+
+import { useGetMe } from '@/hooks';
 
 import { cn, formatDateTime } from '@/lib/utils';
 import { IDetailConversation } from '@/types';
@@ -14,7 +15,7 @@ interface ChatElementProps {
 
 const ChatElement: React.FC<ChatElementProps> = ({ conversation }) => {
   const { _id, id, lastActivity } = conversation;
-  // const { data: currentUser } = useGetMe();
+  const { data: currentUser } = useGetMe();
   const { t } = useTranslation();
   return (
     <Link to={(_id || id)!}>
@@ -38,7 +39,10 @@ const ChatElement: React.FC<ChatElementProps> = ({ conversation }) => {
               classNameText="text-lg font-semibold line-clamp-1"
             />
             <Text className="text-sm line-clamp-1">
-              {lastActivity?.lastMessage?.senderId?.username}{' '}
+              {lastActivity?.lastMessage?.senderId?.id === currentUser?.id ||
+              lastActivity?.lastMessage?.senderId?._id === currentUser?.id
+                ? t('message.message.you')
+                : lastActivity?.lastMessage?.senderId.username}{' '}
               {lastActivity?.lastMessage?.type === 'update' &&
                 lastActivity?.lastMessage?.title === 'new' &&
                 t('conversation.createdAConversation')}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { useGlobalStore } from '@/store';
 import { useCreateConversation, useGetMe, userOtherUser } from '@/hooks';

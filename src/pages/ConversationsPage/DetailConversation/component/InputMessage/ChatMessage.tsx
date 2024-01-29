@@ -3,7 +3,7 @@ import { Icons } from '@/components/ui/icons';
 import { useSendMessage, useUploadFile } from '@/hooks';
 import { cn } from '@/lib/utils';
 import { useConversationStore } from '@/store';
-import React from 'react';
+import React, { KeyboardEvent } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import ButtonEmoji from './ButtonEmoji';
 import ButtonMore from './ButtonMore';
@@ -20,15 +20,21 @@ interface ChatMessageProps {}
 const ChatMessage: React.FC<ChatMessageProps> = () => {
   const { conversationId } = useParams();
   const { t } = useTranslation();
-  const { fileUpload, deleteFile, isOpenGif, replyMessage, deleteAllFiles, resetReplyMessage } =
-    useConversationStore((state) => state);
+  const {
+    fileUpload,
+    addFile,
+    deleteFile,
+    isOpenGif,
+    replyMessage,
+    deleteAllFiles,
+    resetReplyMessage,
+  } = useConversationStore((state) => state);
   const { mutate: sendMessage } = useSendMessage(conversationId!);
   const { mutate: uploadImage } = useUploadImageMessage();
   const [value, setValue] = React.useState('');
   const [isTyping, setIsTyping] = React.useState(false);
   const { getRootProps, getInputProps } = useUploadFile();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const typingTimeoutRef: any = React.useRef(null);
+  const typingTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   const abortControllerRef = React.useRef(new AbortController());
   const sendTypingStatus = async (isTyping: boolean) => {
     try {
@@ -52,11 +58,13 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
       abortControllerRef.current = new AbortController();
       await sendTypingStatus(true);
     }
-    clearTimeout(typingTimeoutRef.current);
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
     typingTimeoutRef.current = setTimeout(async () => {
       setIsTyping(false);
       await sendTypingStatus(false);
-    }, 2000);
+    }, 1000);
   };
 
   const handleFileUpload = (files: File[]) => {
@@ -85,7 +93,7 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
           });
           sendMessage({
             type: 'text',
-            title: value,
+            title: value.trim(),
             replyTo: replyMessage?.id || replyMessage?._id,
           });
           return;
@@ -100,7 +108,7 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
       }
       sendMessage({
         type: 'text',
-        title: value,
+        title: value.trim(),
         replyTo: replyMessage?.id || replyMessage?._id,
       });
     } catch (error) {
@@ -112,6 +120,29 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
     }
   };
 
+  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>): void => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      if (value.trim() || fileUpload.length > 0) {
+        handleSendMessage();
+      }
+      event.preventDefault();
+    }
+  };
+  const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    const clipboardData = e.clipboardData;
+    if (clipboardData && clipboardData.items) {
+      const newFiles: File[] = [];
+      for (const item of clipboardData.items) {
+        if (item.type.startsWith('image/')) {
+          const blob = item.getAsFile();
+          if (blob) {
+            newFiles.push(blob);
+          }
+        }
+      }
+      addFile(newFiles);
+    }
+  };
   return (
     <div className={cn('h-full')}>
       <div>{isOpenGif ? <SelectStickerOrGif /> : null}</div>
@@ -159,6 +190,8 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
             minRows={1}
             maxRows={6}
             onChange={handleChangeMessage}
+            onKeyDown={handleKeyDown}
+            onPaste={handlePaste}
             className={cn(
               'w-full resize-none  text-black max-h-[120px]  p-2 pb-3 placeholder:text-[#a4a4a4] focus-visible:outline-none text-sm  disabled:opacity-50 bg-transparent'
             )}
