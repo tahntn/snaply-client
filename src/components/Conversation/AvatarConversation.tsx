@@ -18,13 +18,14 @@ const AvatarConversation: React.FC<AvatarConversationProps> = ({
 }) => {
   const { data: currentUser } = useGetMe();
   const targetUser = React.useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
     return conversation?.participants?.find(
       (user) => user._id !== currentUser?.id && user.id !== currentUser?.id
     )!;
   }, [conversation?.participants, currentUser]);
   return isLoading ? (
     <SkeletonAvatar className={classNameSkeleton} />
-  ) : !!conversation.isGroup ? (
+  ) : conversation.isGroup ? (
     <AvatarUser
       name={conversation.nameGroup!}
       url={conversation.avatarGroup!}

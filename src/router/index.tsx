@@ -18,7 +18,7 @@ const Loadable = <P extends object>(Component: ComponentType<P>) => {
     return (
       <Suspense
         fallback={
-          <div className="h-screen w-screen flex items-center justify-center">
+          <div className="h-screen w-full flex items-center justify-center">
             <LoadingComponent className="h-10 w-10" />
           </div>
         }
@@ -117,6 +117,10 @@ const lazyRoutes: RouteObject[] = [
             ],
           },
           {
+            element: <Navigate to={pathNames.conversation} replace />,
+            path: pathNames.home,
+          },
+          {
             path: '',
             element: (
               <CommonLayout>
@@ -142,11 +146,6 @@ const lazyRoutes: RouteObject[] = [
                 path: pathNames.friend,
               },
             ],
-          },
-
-          {
-            element: <Navigate to={pathNames.conversation} replace />,
-            path: pathNames.home,
           },
           {
             element: <Page404 />,
