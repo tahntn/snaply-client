@@ -4,6 +4,7 @@ import { useGetMe } from '@/hooks';
 import { useConversationStore } from '@/store';
 import { Text } from '@radix-ui/themes';
 import { useTranslation } from 'react-i18next';
+import TextMessage from '../Message/TextMessage';
 
 const ReplyMessage = () => {
   const { replyMessage, resetReplyMessage } = useConversationStore((state) => state);
@@ -30,10 +31,12 @@ const ReplyMessage = () => {
           <Icons.close className="" />
         </Button>
       </div>
-      <div className="max-w-[75%]">
+      <div className="">
         {
-          <p className="line-clamp-1">
-            {replyMessage?.type === 'text' ? replyMessage?.title : 'Hình ảnh'}
+          <p className="break-words line-clamp-5">
+            {replyMessage?.type === 'text' && (
+              <TextMessage title={replyMessage.title!} className="" />
+            )}
           </p>
         }
       </div>
