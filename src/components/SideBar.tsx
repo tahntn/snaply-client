@@ -52,11 +52,10 @@ const SideBar: React.FC = () => {
               <li>
                 <NavLink
                   to={menu.link}
-                  end
                   className={({ isActive }) =>
                     cn(
                       'flex items-center  p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-700 group',
-                      isActive ? 'bg-gray-400 dark:bg-gray-700' : 'hi'
+                      isActive ? 'bg-gray-400 dark:bg-gray-700' : null
                     )
                   }
                 >
@@ -92,7 +91,12 @@ const SideBar: React.FC = () => {
               <li>
                 <NavLink
                   to={menu.link}
-                  className="flex items-center  p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-700 group"
+                  className={({ isActive }) =>
+                    cn(
+                      'flex items-center  p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-700 group',
+                      isActive ? 'bg-gray-400 dark:bg-gray-700' : null
+                    )
+                  }
                 >
                   <Tooltip>
                     <TooltipTrigger>

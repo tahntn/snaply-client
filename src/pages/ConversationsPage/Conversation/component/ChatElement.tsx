@@ -8,7 +8,7 @@ import { IDetailConversation } from '@/types';
 import { Box, Text } from '@radix-ui/themes';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 interface ChatElementProps {
   conversation: IDetailConversation;
 }
@@ -17,13 +17,14 @@ const ChatElement: React.FC<ChatElementProps> = ({ conversation }) => {
   const { _id, id, lastActivity } = conversation;
   const { data: currentUser } = useGetMe();
   const { t } = useTranslation();
+  const { conversationId } = useParams();
   return (
     <Link to={(_id || id)!}>
       <Box
         className={cn(
-          'w-full rounded-xl p-4 bg-white cursor-pointer relative',
-          'dark:bg-[#161c24]',
-          'hover:bg-gray-200 transition-all ease-linear'
+          'w-full rounded-xl p-4 bg-background  cursor-pointer relative',
+          'hover:bg-custom_2 hover:dark:bg-primary-foreground transition-all ease-linear',
+          conversationId === conversation._id && 'bg-custom_2 dark:bg-primary-foreground'
         )}
       >
         <Box className="flex flex-row items-center gap-4">

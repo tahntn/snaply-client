@@ -6,7 +6,7 @@ const useSearchUsers = (q: string, limit = 10) => {
   return useInfiniteQuery(
     ['messages', q],
     async ({ pageParam = 1 }) => {
-      if (!!q) {
+      if (q) {
         const res = await getAxios<ISearchUser>('/user/search', {
           q,
           page: pageParam,
@@ -25,7 +25,7 @@ const useSearchUsers = (q: string, limit = 10) => {
     {
       getNextPageParam: (res) => {
         if (res.data?.length > 0 && res.data?.length === res.pagination.limit) {
-          return res.pagination.page + 1;
+          return res.pagination.page! + 1;
         }
         return undefined;
       },

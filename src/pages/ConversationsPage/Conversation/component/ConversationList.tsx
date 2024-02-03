@@ -2,11 +2,11 @@ import React from 'react';
 import { Box, Text } from '@radix-ui/themes';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
-import { useQueryClient } from '@tanstack/react-query';
+import { InfiniteData, useQueryClient } from '@tanstack/react-query';
 import ChatElement from './ChatElement';
 import { useConversations, useGetMe } from '@/hooks';
 import { usePusher } from '@/context/PusherProvider';
-import { IDetailConversation } from '@/types';
+import { IConversations, IDetailConversation } from '@/types';
 
 const ConversationList = () => {
   const { t } = useTranslation();
@@ -23,6 +23,7 @@ const ConversationList = () => {
       fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
+  // console.log(queryClient.getQueryData(['conversation']));
 
   React.useEffect(() => {
     if (currentUser?.id) {
@@ -37,12 +38,30 @@ const ConversationList = () => {
           };
         });
       };
-
+      const updatedConversationHandler = (updatedConversation: IDetailConversation) => {
+        const dataConversation: InfiniteData<IConversations> | undefined = queryClient.getQueryData(
+          ['conversation']
+        );
+        const newPages = dataConversation?.pages.map((page) => ({
+          ...page,
+          data: page.data.filter((conversation) => conversation._id !== updatedConversation._id),
+        }));
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        queryClient.setQueryData(['conversation'], (prev: any) => {
+          return {
+            pages: [{ data: [updatedConversation] }, ...newPages!],
+            pageParams: [...prev.pageParams],
+          };
+        });
+      };
       pusher.bind('conversation:new', newConversationHandler);
+
+      pusher.bind('conversation:update', updatedConversationHandler);
 
       return () => {
         pusher.unsubscribe(currentUser.id!);
         pusher.unbind('conversation:new', newConversationHandler);
+        pusher.unbind('conversation:update', updatedConversationHandler);
       };
     }
   }, [currentUser?.id, pusher, queryClient]);
