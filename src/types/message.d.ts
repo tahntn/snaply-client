@@ -1,7 +1,7 @@
 import { IUser } from '.';
 
 export interface IPagination {
-  page: number;
+  page?: number;
   limit: number;
 }
 
