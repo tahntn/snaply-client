@@ -8,4 +8,11 @@ export const Conversation = {
     members: 'Thành viên',
     otherAction: 'Hành động khác',
   },
+  sentAMessage: 'đã gửi một tin nhắn.',
+  sentPictures: 'đã gửi hình ảnh.',
+  changedTheGroupPicture: 'đã thay đổi ảnh nhóm.',
+  changedTheGroupName: 'đã thay đổi tên nhóm.',
+  sentAGIF: 'đã gửi một GIF.',
+  sentASticker: 'đã gửi một nhãn dán.',
+  createdAConversation: 'đã tạo cuộc trò chuyện.',
 };

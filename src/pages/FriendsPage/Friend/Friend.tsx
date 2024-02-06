@@ -19,6 +19,7 @@ const Friend: React.FC = () => {
   const debouncedValueSearch = useDebounce(searchValue, 500);
 
   useEffect(() => {
+    // eslint-disable-next-line no-extra-boolean-cast
     if (!!debouncedValueSearch) {
       navigate(`?q=${debouncedValueSearch}`);
     } else {
@@ -43,8 +44,8 @@ const Friend: React.FC = () => {
           <InputWithIcon
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
-            startAndornment={<Icons.search className="h-[18px] text-background" />}
-            className="p-2 border-none text-background"
+            startAndornment={<Icons.search className="h-[18px] text-border" />}
+            className="p-2 border-none"
             placeholder={t('friend.form.placeholderSearch')}
           />
         </Box>

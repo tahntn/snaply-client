@@ -4,13 +4,15 @@ import { useGetMe } from '@/hooks';
 import { useConversationStore } from '@/store';
 import { Text } from '@radix-ui/themes';
 import { useTranslation } from 'react-i18next';
+import TextMessage from '../Message/TextMessage';
+import GifMessage from '../Message/GifMessage';
 
 const ReplyMessage = () => {
   const { replyMessage, resetReplyMessage } = useConversationStore((state) => state);
   const { data: currentUser } = useGetMe();
   const { t } = useTranslation();
   return replyMessage?._id || replyMessage?.id ? (
-    <div className="w-full px-3 py-2 flex flex-col justify-center bg-[#0006] my-2 rounded-md ">
+    <div className="w-full px-3 py-2 flex flex-col justify-center bg-bg_reply my-2 rounded-md ">
       <div className="flex justify-between">
         <div className="flex items-center gap-4">
           <Icons.reply />
@@ -30,10 +32,16 @@ const ReplyMessage = () => {
           <Icons.close className="" />
         </Button>
       </div>
-      <div className="max-w-[75%]">
+      <div className="">
         {
-          <p className="line-clamp-1">
-            {replyMessage?.type === 'text' ? replyMessage?.title : 'Hình ảnh'}
+          <p className="break-words line-clamp-5">
+            {replyMessage?.type === 'text' && (
+              <TextMessage title={replyMessage.title!} className="" />
+            )}
+            {replyMessage?.type === 'image' && 'Hình ảnh'}
+            {(replyMessage?.type === 'gif' || replyMessage?.type === 'sticker') && (
+              <GifMessage url={replyMessage.url!} className="max-h-[150px] py-3" />
+            )}
           </p>
         }
       </div>

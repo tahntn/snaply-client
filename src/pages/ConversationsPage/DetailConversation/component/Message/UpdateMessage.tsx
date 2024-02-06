@@ -21,6 +21,7 @@ const UpdateMessage: React.FC<UpdateMessageProps> = ({ user, title, createdAt })
   const { t } = useTranslation();
   const { data, isLoading } = useDetailConversation(conversationId!);
   const targetUser = React.useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
     return data?.participants.find(
       (user) => user._id !== currentUser?.id && user.id !== currentUser?.id
     )!;

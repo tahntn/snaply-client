@@ -66,8 +66,7 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId }) => {
         pusher.unbind('message:typing', userTyping);
       };
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pusher, conversationId, currentUser]);
+  }, [pusher, conversationId, currentUser, queryClient]);
 
   if (isError) {
     return <Navigate replace to={'/conversation'} />;

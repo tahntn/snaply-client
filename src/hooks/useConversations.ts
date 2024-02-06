@@ -1,13 +1,14 @@
 import { getAxios } from '@/api';
 import { IConversations } from '@/types';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { InfiniteData, useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useConversations = (limit = 5) => {
+  const queryClient = useQueryClient();
   return useInfiniteQuery(
     ['conversation'],
-    async ({ pageParam = 1 }) => {
+    async ({ pageParam = 0 }) => {
       const res = await getAxios<IConversations>('/conversation', {
-        page: pageParam,
+        offset: pageParam,
         limit,
       });
       return res;
@@ -15,10 +16,17 @@ export const useConversations = (limit = 5) => {
     {
       getNextPageParam: (res) => {
         if (res.data?.length > 0 && res.data?.length === res.pagination.limit) {
-          return res.pagination.page + 1;
+          const dataConversation: InfiniteData<IConversations> | undefined =
+            queryClient.getQueryData(['conversation']);
+          const total = dataConversation?.pages?.reduce((total, item) => {
+            return total + item.data.length;
+          }, 0);
+          return total;
         }
         return undefined;
       },
+      refetchOnMount: true,
+      staleTime: 1000,
     }
   );
 };

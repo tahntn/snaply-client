@@ -9,4 +9,11 @@ export const Conversation = {
     members: 'Members',
     otherAction: 'Other action',
   },
+  sentAMessage: 'sent a message.',
+  sentPictures: 'sent pictures.',
+  changedTheGroupPicture: 'changed the group picture.',
+  changedTheGroupName: 'changed the group name.',
+  sentAGIF: 'sent a GIF.',
+  sentASticker: 'sent a sticker.',
+  createdAConversation: 'created a conversation.',
 };

@@ -9,20 +9,15 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/context/ThemeProvider';
 import { useGetMe } from '@/hooks';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useNavigate } from 'react-router-dom';
 
 const SettingPage: React.FC = () => {
   const { t } = useTranslation();
   const { mainTheme } = useTheme();
   const { data, isLoading } = useGetMe();
+  const navigate = useNavigate();
   return (
-    <Box
-      className={cn(
-        'bg-gray-100 max-w-[100%]',
-        'dark:bg-black_custom-500',
-        'xl:max-w-[30%] lg:max-w-[40%] md:max-w-[50%] sm:max-w-[100%]',
-        'lg:text-[16px]'
-      )}
-    >
+    <Box>
       <Box className="overflow-y-auto overflow-x-hidden h-screen p-6">
         <Box className="flex items-center gap-4">
           <Icons.chevronLeft
@@ -30,6 +25,7 @@ const SettingPage: React.FC = () => {
               'cursor-pointer w-10 h-10 p-2 box-border rounded-full',
               'hover:bg-gray-500 transition-all duration-150 linear'
             )}
+            onClick={() => navigate(-1)}
           />
           <Text className="font-bold text-2xl">{t('setting.title')}</Text>
         </Box>

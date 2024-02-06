@@ -15,10 +15,12 @@ export const useMessages = (conversationId: string, limit = 10) => {
     {
       getNextPageParam: (res) => {
         if (res.data?.length > 0 && res.data?.length === res.pagination.limit) {
-          return res.pagination.page + 1;
+          return res.pagination.page! + 1;
         }
         return undefined;
       },
+      refetchOnMount: true,
+      staleTime: 1000,
     }
   );
 };

@@ -18,8 +18,8 @@ const SearchInput: FC<SearchInputProps> = ({ value, setValue }) => {
         onChange={(e) => {
           setValue(e.target.value);
         }}
-        startAndornment={<Icons.search className="h-[18px] text-background" />}
-        className="p-2 border-none text-background"
+        startAndornment={<Icons.search className="h-[18px] text-border" />}
+        className="p-2 border-none"
         placeholder={t('search.placeholder')}
       />
     </div>

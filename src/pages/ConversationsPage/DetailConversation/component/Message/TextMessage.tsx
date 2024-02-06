@@ -4,9 +4,10 @@ import reactStringReplace from 'react-string-replace';
 
 interface TextMessageProps {
   title: string;
+  className?: string;
 }
 
-const TextMessage: React.FC<TextMessageProps> = ({ title }) => {
+const TextMessage: React.FC<TextMessageProps> = ({ title, className }) => {
   const formattedTitle = React.useMemo(() => {
     return reactStringReplace(
       reactStringReplace(
@@ -27,7 +28,7 @@ const TextMessage: React.FC<TextMessageProps> = ({ title }) => {
     );
   }, [title]);
 
-  return <Text>{formattedTitle}</Text>;
+  return <Text className={className}>{formattedTitle}</Text>;
 };
 
 export default React.memo(TextMessage);

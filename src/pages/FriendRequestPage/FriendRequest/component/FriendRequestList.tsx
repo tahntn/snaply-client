@@ -27,7 +27,7 @@ const FriendRequestList: React.FC = () => {
   }
 
   return (
-    <Box className="p-6 pr-0 h-screen pt-[20px] ">
+    <Box className="p-6 pr-0 h-screen pt-[90px] ">
       <Box className="overflow-y-auto overflow-x-hidden pr-6 flex gap-3 flex-col h-full">
         {data &&
           data.pages?.map((listFriendRequest) =>
