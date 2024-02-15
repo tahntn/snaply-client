@@ -157,17 +157,6 @@ const MessageItem: React.FC<
                 <Icons.reply className="text-foreground cursor-pointer h-4 w-4" />
               </Button>
             </div>
-            {/* Reply message */}
-            {/* {replyTo?.id && (
-              <div
-                className={cn(
-                  'absolute top-[-28px] right-0 bg-slate-300 text-black font-medium text-sm',
-                  'rounded-lg px-2 py-2 z-[-1]'
-                )}
-              >
-                {replyTo.type === 'text' && <TextMessage title={replyTo.title!} />}{' '}
-              </div>
-            )} */}
           </div>
         </div>
       </div>
