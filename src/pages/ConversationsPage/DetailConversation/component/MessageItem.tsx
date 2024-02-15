@@ -31,9 +31,10 @@ const MessageItem: React.FC<
     hasAvatar,
     isMessagesNew,
     url,
+    replyTo,
   } = props;
 
-  const setReplyMessage = useConversationStore((state) => state.setReplyMessage);
+  const { setReplyMessage, focusInput } = useConversationStore((state) => state);
 
   return (
     <div className="w-full">
@@ -66,7 +67,8 @@ const MessageItem: React.FC<
             'sm:max-w-[80%]',
             'xs:max-w-[70%]',
             type === 'image' && 'md:max-w-[50%]',
-            type === 'update' && 'w-full sm:max-w-full'
+            type === 'update' && 'w-full sm:max-w-full',
+            replyTo?.type && 'md:max-w-[50%]'
           )}
         >
           {/* Name sender */}
@@ -90,9 +92,35 @@ const MessageItem: React.FC<
               type === 'text' && 'bg-custom_2 shadow px-3 py-3  break-words rounded-xl text-md ',
               type === 'text' &&
                 currentUser?.id === senderId?.id &&
-                ' text-background bg-foreground'
+                ' text-background bg-foreground',
+              replyTo?.id && 'mt-[20px]'
             )}
           >
+            {replyTo?.id && (
+              <div
+                className={cn(
+                  'shadow-sm shadow-slate-100 dark:shadow-slate-800 px-3 py-2 rounded-sm mb-3'
+                )}
+              >
+                <Icons.reply className="cursor-pointer h-6 w-6 mb-3" />
+                {replyTo?.type === 'text' && <TextMessage title={replyTo.title!} />}
+                {replyTo.type === 'gif' && (
+                  <GifMessage url={replyTo.url!} className="max-h-[200px]" />
+                )}
+                {replyTo.type === 'sticker' && (
+                  <GifMessage url={replyTo.url!} className="max-h-[200px]" />
+                )}
+                {replyTo.type === 'image' && (
+                  <ImageMessage
+                    imageList={replyTo.imageList!}
+                    classNameWrap={cn(
+                      'flex flex-wrap w-full items-stretch gap-1',
+                      currentUser?.id === senderId?.id && 'justify-end'
+                    )}
+                  />
+                )}
+              </div>
+            )}
             {type === 'update' && (
               <UpdateMessage createdAt={createdAt!} user={senderId} title={title!} />
             )}
@@ -123,11 +151,23 @@ const MessageItem: React.FC<
                   // eslint-disable-next-line @typescript-eslint/no-unused-vars
                   const { hasAvatar, isMessagesNew, ..._props } = props;
                   setReplyMessage(_props);
+                  focusInput();
                 }}
               >
                 <Icons.reply className="text-foreground cursor-pointer h-4 w-4" />
               </Button>
             </div>
+            {/* Reply message */}
+            {/* {replyTo?.id && (
+              <div
+                className={cn(
+                  'absolute top-[-28px] right-0 bg-slate-300 text-black font-medium text-sm',
+                  'rounded-lg px-2 py-2 z-[-1]'
+                )}
+              >
+                {replyTo.type === 'text' && <TextMessage title={replyTo.title!} />}{' '}
+              </div>
+            )} */}
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { cn } from '@/lib/utils';
 import { useGlobalStore } from '@/store';
+import { Text } from '@radix-ui/themes';
 import React from 'react';
 
 interface ImageMessageProps {
@@ -51,8 +52,9 @@ const ImageMessage: React.FC<ImageMessageProps> = ({ imageList, classNameWrap })
                 handleOpenDialogImage(image);
               }}
             >
-              <Button className="bg-transparent text-white ">
-                <Icons.eye className="mr-2" /> Preview image
+              <Button className="bg-transparent text-white text-xs">
+                <Icons.eye className="mr-2" />
+                <Text className="md:hidden lg:block">Preview image</Text>
               </Button>
             </div>
           </div>

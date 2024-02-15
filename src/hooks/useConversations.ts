@@ -27,6 +27,7 @@ export const useConversations = (limit = 5) => {
       },
       refetchOnMount: true,
       staleTime: 1000,
+      cacheTime: 0,
     }
   );
 };
