@@ -11,6 +11,7 @@ interface GlobalState {
   giphyUrl?: IGif | null;
   isOpenGif: boolean;
   valueGif: IValueGif;
+  shouldFocusInput: boolean;
 }
 
 export interface GlobalStore extends GlobalState {
@@ -21,9 +22,11 @@ export interface GlobalStore extends GlobalState {
   deleteAllFiles: () => void;
   setGiphyUrl: (url: IGif) => void;
   handleOpenGif: (value: IValueGif) => void;
+  focusInput: () => void;
 }
 
 const initialState: Pick<GlobalStore, keyof GlobalState> = {
+  shouldFocusInput: false,
   replyMessage: null,
   fileUpload: [],
   giphyUrl: null,
@@ -72,6 +75,12 @@ const useConversationStore = create<GlobalStore>()(
         }
       });
     },
+    focusInput: () =>
+      set((state) => {
+        {
+          state.shouldFocusInput = !state.shouldFocusInput;
+        }
+      }),
   }))
 );
 

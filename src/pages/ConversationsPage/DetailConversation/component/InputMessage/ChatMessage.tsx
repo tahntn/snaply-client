@@ -28,7 +28,10 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
     replyMessage,
     deleteAllFiles,
     resetReplyMessage,
+    shouldFocusInput,
   } = useConversationStore((state) => state);
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+
   const { mutate: sendMessage } = useSendMessage(conversationId!);
   const { mutate: uploadImage } = useUploadImageMessage();
   const [value, setValue] = React.useState('');
@@ -143,6 +146,12 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
       addFile(newFiles);
     }
   };
+
+  React.useEffect(() => {
+    if (textareaRef?.current) {
+      textareaRef.current.focus();
+    }
+  }, [shouldFocusInput]);
   return (
     <div className={cn('h-full')}>
       <div>{isOpenGif ? <SelectStickerOrGif /> : null}</div>
@@ -197,6 +206,8 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
             )}
             placeholder={t('message.input.placeholder')}
             value={value}
+            autoFocus
+            ref={textareaRef}
           />
         </div>
         {fileUpload.length === 0 && !isOpenGif && <ButtonMore />}

@@ -14,7 +14,7 @@ const AvatarUser: React.FC<AvatarUserProps> = ({ name, url, classNameAvatar }) =
     <Box className="relative">
       <Avatar className={cn('border border-input w-9 h-9', classNameAvatar)}>
         <AvatarImage src={url} />
-        <AvatarFallback className="uppercase">{name[0]}</AvatarFallback>
+        <AvatarFallback className="uppercase">{name?.[0]}</AvatarFallback>
       </Avatar>
 
       {/* <Badge className="absolute top-0 right-0 rounded-full border-2 border-background p-[4px] bg-green-400" /> */}
