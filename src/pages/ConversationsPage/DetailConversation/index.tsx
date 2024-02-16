@@ -60,11 +60,6 @@ const DetailConversation = () => {
             participants={data?.participants!}
           />
         </div>
-        {/* {replyMessage?.id && (
-          <div className="h-16 absolute bottom-20 border-t  right-0 left-0  border-card-foreground">
-            <ReplyMessage />
-          </div>
-        )} */}
         <div
           ref={ChatMessageRef}
           className={cn(
