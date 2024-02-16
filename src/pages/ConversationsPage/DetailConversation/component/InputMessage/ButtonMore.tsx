@@ -38,7 +38,7 @@ const ButtonMore = () => {
             <PopoverClose asChild onClick={() => handleOpenGif('gif')}>
               <div className="flex gap-3 items-center cursor-pointer">
                 <div>
-                  <Icons.gif className="h-5 w-5" />
+                  <Icons.gif className="h-5 w-5 dark:bg-white dark:rounded-sm" />
                 </div>
                 <Text>{t('message.more.gif')}</Text>
               </div>

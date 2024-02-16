@@ -160,8 +160,11 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
 
         <div
           className={cn(
-            'flex flex-col border border-input rounded-2xl  flex-1 text-sm bg-custom_5 bg-[#f1f1f1] px-3 ',
-            fileUpload.length > 0 ? 'flex-col p-3 gap-1' : 'items-center '
+            'flex flex-col border border-input rounded-2xl  flex-1 text-sm bg-custom_5 bg-[#f1f1f1] px-3',
+            fileUpload.length > 0 ? 'flex-col p-3 gap-1' : 'items-center',
+            fileUpload.length === 0 && !isOpenGif
+              ? 'max-w-[calc(100%-140px)]'
+              : 'max-w-[calc(100%-100px)]'
           )}
         >
           <ReplyMessage />
@@ -182,7 +185,7 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
                     alt={`Uploaded ${index}`}
                     className="h-full w-full object-cover  rounded-sm v"
                   />
-                  <div className="absolute h-4 w-4 bg-slate-50 top-[3px] right-[3px] rounded-full shadow-xl flex items-center justify-center cursor-pointer">
+                  <div className="absolute h-4 w-4 bg-muted top-[3px] right-[3px] rounded-full shadow-xl flex items-center justify-center cursor-pointer">
                     <Icons.close
                       className="h-3/4"
                       onClick={() => {
