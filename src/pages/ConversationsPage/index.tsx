@@ -30,7 +30,9 @@ const ConversationsPage: React.FC<ConversationsPageProps> = ({ children }) => {
         conversationId ? (
           children
         ) : (
-          <Conversation />
+          <div className="bg-gray-100 dark:bg-black_custom-500">
+            <Conversation />
+          </div>
         )
       ) : (
         <PanelGroup autoSaveId="example" direction="horizontal">

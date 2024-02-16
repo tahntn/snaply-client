@@ -2,7 +2,7 @@ import { getAxios } from '@/api';
 import { IConversations } from '@/types';
 import { InfiniteData, useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 
-export const useConversations = (limit = 5) => {
+export const useConversations = (limit = 10) => {
   const queryClient = useQueryClient();
   return useInfiniteQuery(
     ['conversation'],

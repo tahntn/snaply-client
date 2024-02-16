@@ -4,7 +4,7 @@ import React from 'react';
 import SkeletonText from '../Skeleton/SkeletonText';
 interface NameConversationProps {
   isLoading: boolean;
-  conversation: IDetailConversation;
+  conversation?: IDetailConversation;
   classNameSkeleton?: string;
   classNameText?: string;
 }
@@ -24,7 +24,7 @@ const NameConversation: React.FC<NameConversationProps> = ({
   }, [conversation?.participants, currentUser]);
   return isLoading ? (
     <SkeletonText className={classNameSkeleton} />
-  ) : conversation.isGroup ? (
+  ) : conversation?.isGroup ? (
     <p className={classNameText}>{conversation.nameGroup}</p>
   ) : (
     <p className={classNameText}>{targetUser.username}</p>

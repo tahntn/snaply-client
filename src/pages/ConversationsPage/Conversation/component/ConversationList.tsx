@@ -7,6 +7,7 @@ import ChatElement from './ChatElement';
 import { useConversations, useGetMe } from '@/hooks';
 import { usePusher } from '@/context/PusherProvider';
 import { IConversations, IDetailConversation } from '@/types';
+import ChatLoading from './ChatLoading';
 
 const ConversationList = () => {
   const { t } = useTranslation();
@@ -15,7 +16,7 @@ const ConversationList = () => {
   const { data: currentUser } = useGetMe();
   const { ref, inView } = useInView();
 
-  const { data, isLoading, status, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useConversations();
 
   React.useEffect(() => {
@@ -66,11 +67,17 @@ const ConversationList = () => {
     }
   }, [currentUser?.id, pusher, queryClient]);
 
-  if (status === 'loading' || isLoading) {
-    return <p>Loading...</p>;
+  if (isLoading) {
+    return (
+      <div className="flex gap-5 pb-5 flex-col">
+        {Array.from(Array(10)).map((_, index) => (
+          <ChatLoading key={index} />
+        ))}
+      </div>
+    );
   }
 
-  if (status === 'error') {
+  if (isError) {
     return <p>Error</p>;
   }
   return (
@@ -78,8 +85,11 @@ const ConversationList = () => {
       <Text className="text-lg font-semibold">{t('conversation.allConversation')}</Text>
       {data &&
         data.pages?.map((listConversation) =>
-          listConversation?.data?.map((conversation) => <ChatElement conversation={conversation} />)
+          listConversation?.data?.map((conversation) => (
+            <ChatElement conversation={conversation} key={conversation._id || conversation.id} />
+          ))
         )}
+      {isFetchingNextPage && Array.from(Array(5)).map((_, index) => <ChatLoading key={index} />)}
       <div ref={ref} style={{ height: '20px' }} />
     </Box>
   );
