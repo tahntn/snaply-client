@@ -6,7 +6,7 @@ import { useGetMe } from '@/hooks';
 
 interface AvatarConversationProps {
   isLoading: boolean;
-  conversation: IDetailConversation;
+  conversation?: IDetailConversation;
   classNameSkeleton?: string;
   classNameAvatar?: string;
 }
@@ -25,7 +25,7 @@ const AvatarConversation: React.FC<AvatarConversationProps> = ({
   }, [conversation?.participants, currentUser]);
   return isLoading ? (
     <SkeletonAvatar className={classNameSkeleton} />
-  ) : conversation.isGroup ? (
+  ) : conversation?.isGroup ? (
     <AvatarUser
       name={conversation.nameGroup!}
       url={conversation.avatarGroup!}
