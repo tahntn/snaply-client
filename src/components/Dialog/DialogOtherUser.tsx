@@ -8,12 +8,14 @@ import { Text } from '@radix-ui/themes';
 import { Button } from '../ui/button';
 import SkeletonAvatar from '../Skeleton/SkeletonAvatar';
 import SkeletonText from '../Skeleton/SkeletonText';
+import { useCreateFriendRequest } from '@/hooks/useCreateFriendRequest';
 const DialogOtherUser = () => {
   const { isOpenDialogOtherUser, idOtherUser, handleCloseDialogOtherUser } = useGlobalStore(
     (state) => state
   );
 
   const { mutate: createConversation } = useCreateConversation();
+  const { mutate: createFriendRequest } = useCreateFriendRequest();
   const { data: currentUser } = useGetMe();
   const { data, isLoading } = userOtherUser(idOtherUser!);
   return (
@@ -48,8 +50,18 @@ const DialogOtherUser = () => {
           </div>
 
           <div className="flex justify-center items-center gap-2 pt-4">
-            <Button>
-              <Icons.userPlus className="w-5 h-5" />
+            <Button
+              onClick={() => {
+                if (!data?.friendShip) {
+                  createFriendRequest((data?.data._id || data?.data.id)!);
+                }
+              }}
+            >
+              {data?.friendShip?.status === 'accept' ? (
+                <Icons.user className="w-5 h-5" />
+              ) : (
+                <Icons.userPlus className="w-5 h-5" />
+              )}
 
               {isLoading || !data ? (
                 <SkeletonText className="w-20 bg-white ml-2" />

@@ -4,6 +4,7 @@ import { Box } from '@radix-ui/themes';
 import React from 'react';
 import { useFriendRequest } from '@/hooks';
 import FriendRequestElement from './FriendRequestElement';
+import LoadingComponent from '@/components/LoadingComponent';
 
 const FriendRequestList: React.FC = () => {
   const { ref, inView } = useInView();
@@ -19,7 +20,11 @@ const FriendRequestList: React.FC = () => {
   }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
 
   if (status === 'loading' || isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="h-screen w-full flex items-center justify-center">
+        <LoadingComponent className="h-10 w-10" />
+      </div>
+    );
   }
 
   if (status === 'error') {
