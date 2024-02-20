@@ -6,6 +6,7 @@ import { useFriends } from '@/hooks/useFriends';
 import { cn } from '@/lib/utils';
 import FriendElement from './FriendElement';
 import { useTranslation } from 'react-i18next';
+import LoadingComponent from '@/components/LoadingComponent';
 
 interface ListSearchProps {
   keyword: string;
@@ -24,7 +25,11 @@ const FriendList: React.FC<ListSearchProps> = ({ keyword }) => {
   }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
 
   if (status === 'loading' || isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="h-screen w-full flex items-center justify-center">
+        <LoadingComponent className="h-10 w-10" />
+      </div>
+    );
   }
 
   if (status === 'error') {
