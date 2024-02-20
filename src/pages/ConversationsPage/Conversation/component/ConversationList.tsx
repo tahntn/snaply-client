@@ -24,7 +24,6 @@ const ConversationList = () => {
       fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
-  // console.log(queryClient.getQueryData(['conversation']));
 
   React.useEffect(() => {
     if (currentUser?.id) {
