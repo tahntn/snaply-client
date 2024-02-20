@@ -45,6 +45,7 @@ import {
   LogOut,
   Pin,
   CircleDashed,
+  Pencil,
   // type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -97,6 +98,7 @@ export const Icons = {
   logOut: LogOut,
   pin: Pin,
   circleDashed: CircleDashed,
+  pencil: Pencil,
   userSearch: ({ ...props }: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

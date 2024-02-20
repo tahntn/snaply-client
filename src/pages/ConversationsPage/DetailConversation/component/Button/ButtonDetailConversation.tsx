@@ -9,6 +9,8 @@ import { Separator } from '@/components/ui/separator';
 import AvatarUser from '@/components/AvatarUser';
 import { useTranslation } from 'react-i18next';
 import { Text } from '@radix-ui/themes';
+import { cn } from '@/lib/utils';
+import DialogChangeNameGroup from '@/components/Dialog/DialogChangeNameGroup';
 
 const ButtonDetailConversation = () => {
   const { conversationId } = useParams();
@@ -30,12 +32,23 @@ const ButtonDetailConversation = () => {
             classNameAvatar="h-24 w-24  "
             classNameSkeleton="h-10 w-10"
           />
-          <NameConversation
-            isLoading={isLoading}
-            conversation={conversation!}
-            classNameText="text-xl font-bold line-clamp-2 text-center"
-            classNameSkeleton="h-5  bg-foreground flex-1"
-          />
+          <div className=" relative group">
+            <NameConversation
+              isLoading={isLoading}
+              conversation={conversation!}
+              classNameText="text-xl font-bold line-clamp-2 text-center w-[90%]"
+              classNameSkeleton="h-5  bg-foreground flex-1"
+            />
+
+            <div
+              className={cn(
+                'hidden absolute  top-1/2 -translate-y-1/2  right-[0px]',
+                conversation?.isGroup && 'group-hover:block'
+              )}
+            >
+              <DialogChangeNameGroup nameGroup={conversation?.nameGroup || ''} />
+            </div>
+          </div>
         </SheetHeader>
         <Separator className="w-full my-5" />
         <div className="max-h-[calc(100vh-240px)] overflow-auto">

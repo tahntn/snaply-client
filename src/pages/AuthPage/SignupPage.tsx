@@ -25,6 +25,7 @@ const SignupPage = () => {
     },
   });
   const onSubmit = (data: signupBody & { confirmPassword: string }) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { confirmPassword, ..._data } = data;
     signup(_data);
   };
