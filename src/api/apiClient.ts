@@ -1,6 +1,9 @@
 import { axiosInstance } from './apiConfig';
 
-export async function getAxios<T>(endpoint: string, params?: Record<string, string | number>) {
+export async function getAxios<T>(
+  endpoint: string,
+  params?: Record<string, string | number | undefined>
+) {
   const res = await axiosInstance.get<T>(endpoint, { params });
   return res.data;
 }
