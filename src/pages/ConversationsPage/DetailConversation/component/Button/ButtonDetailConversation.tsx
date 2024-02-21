@@ -26,17 +26,24 @@ const ButtonDetailConversation = () => {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader className="flex flex-col items-center">
-          <AvatarConversation
-            isLoading={isLoading}
-            conversation={conversation!}
-            classNameAvatar="h-24 w-24  "
-            classNameSkeleton="h-10 w-10"
-          />
+          <div>
+            <AvatarConversation
+              isLoading={isLoading}
+              conversation={conversation!}
+              classNameAvatar="h-24 w-24  "
+              classNameSkeleton="h-10 w-10"
+              classNameWrap="relative group"
+            >
+              <div className="absolute hidden group-hover:flex items-center justify-center inset-0 cursor-pointer rounded-full backdrop-blur-md">
+                <Icons.pencil className="w-[30px] h-[30px ]" />
+              </div>
+            </AvatarConversation>
+          </div>
           <div className="w-full relative group">
             <NameConversation
               isLoading={isLoading}
               conversation={conversation!}
-              classNameText="text-xl font-bold line-clamp-2 text-center w-[90%]"
+              classNameText="text-xl font-bold line-clamp-2 text-center break-words"
               classNameSkeleton="h-5  bg-foreground flex-1"
             />
 
