@@ -16,7 +16,7 @@ const SignupPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
   const form = useForm({
-    resolver: yupResolver(signupSchema()),
+    resolver: yupResolver(signupSchema(t)),
     defaultValues: {
       email: '',
       password: '',
