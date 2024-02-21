@@ -15,16 +15,37 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '../ui/form'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-
+import { useUpdateGroupConversation } from '@/hooks';
+import React from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { IDetailConversation } from '@/types';
+import LoadingComponent from '../LoadingComponent';
 interface DialogChangeNameGroupProps {
   nameGroup: string;
+  idConversation: string;
 }
 
-const DialogChangeNameGroup: React.FC<DialogChangeNameGroupProps> = ({ nameGroup }) => {
+const DialogChangeNameGroup: React.FC<DialogChangeNameGroupProps> = ({
+  nameGroup,
+  idConversation,
+}) => {
+  const [open, setOpen] = React.useState(false);
+  const queryClient = useQueryClient();
   const schema = yup.object().shape({
     name: yup.string().required(),
   });
-
+  const { mutate: updateConversation, isLoading } = useUpdateGroupConversation(
+    idConversation,
+    () => {
+      queryClient.setQueryData(['conversation', idConversation], (prev?: IDetailConversation) => {
+        return {
+          ...prev!,
+          nameGroup: form.getValues('name'),
+        };
+      });
+      setOpen(false);
+    }
+  );
   const form = useForm({
     resolver: yupResolver(schema),
     values: {
@@ -32,9 +53,23 @@ const DialogChangeNameGroup: React.FC<DialogChangeNameGroupProps> = ({ nameGroup
     },
   });
 
-  const onSubmit = () => {};
+  const onSubmit = ({ name }: { name: string }) => {
+    if (name.trim() === nameGroup) {
+      setOpen(false);
+      return;
+    }
+    updateConversation({
+      nameGroup: name,
+    });
+  };
+
+  React.useEffect(() => {
+    if (!open) {
+      form.reset();
+    }
+  }, [open, form]);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <div
           className={cn(
@@ -76,12 +111,13 @@ const DialogChangeNameGroup: React.FC<DialogChangeNameGroupProps> = ({ nameGroup
             />
             <div className="flex justify-end gap-2">
               <DialogClose asChild>
-                <Button size={'sm'} type="button" variant="secondary">
+                <Button size={'sm'} type="button" variant="secondary" disabled={isLoading}>
                   Close
                 </Button>
               </DialogClose>
-              <Button size={'sm'} type="submit">
+              <Button size={'sm'} disabled={isLoading} type="submit">
                 Submit
+                {isLoading && <LoadingComponent className="ml-2 h-4 w-4 animate-spin" />}
               </Button>
             </div>
           </form>

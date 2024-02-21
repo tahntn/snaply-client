@@ -32,7 +32,7 @@ const ButtonDetailConversation = () => {
             classNameAvatar="h-24 w-24  "
             classNameSkeleton="h-10 w-10"
           />
-          <div className=" relative group">
+          <div className="w-full relative group">
             <NameConversation
               isLoading={isLoading}
               conversation={conversation!}
@@ -46,7 +46,10 @@ const ButtonDetailConversation = () => {
                 conversation?.isGroup && 'group-hover:block'
               )}
             >
-              <DialogChangeNameGroup nameGroup={conversation?.nameGroup || ''} />
+              <DialogChangeNameGroup
+                nameGroup={conversation?.nameGroup || ''}
+                idConversation={(conversation?._id || conversation?.id)!}
+              />
             </div>
           </div>
         </SheetHeader>
