@@ -1,7 +1,9 @@
 import { axiosInstance } from './apiConfig';
 
-// method
-export async function getAxios<T>(endpoint: string, params?: Record<string, any>) {
+export async function getAxios<T>(
+  endpoint: string,
+  params?: Record<string, string | number | undefined>
+) {
   const res = await axiosInstance.get<T>(endpoint, { params });
   return res.data;
 }
@@ -16,7 +18,7 @@ export async function postAxios<RT, BT>(endpoint: string, arg?: BT) {
   return res.data;
 }
 
-export async function putAxios<RT, BT>(endpoint: string, id: string, arg: BT) {
-  const res = await axiosInstance.put<RT>(`${endpoint}/${id}`, arg);
+export async function patchAxios<RT, BT>(endpoint: string, id: string, arg: BT) {
+  const res = await axiosInstance.patch<RT>(`${endpoint}/${id}`, arg);
   return res.data;
 }

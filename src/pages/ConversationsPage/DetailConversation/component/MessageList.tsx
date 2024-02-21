@@ -8,18 +8,19 @@ import MessageItem from './MessageItem';
 import { usePusher } from '@/context/PusherProvider';
 import { useQueryClient } from '@tanstack/react-query';
 import UserTyping from './UserTyping';
+import LoadingComponent from '@/components/LoadingComponent';
 
 interface MessageListProps {
   conversationId: string;
   currentUser: IUser;
-  participants: IUser[];
+  participants?: IUser[];
 }
 
 const MessageList: React.FC<MessageListProps> = ({ conversationId }) => {
   const queryClient = useQueryClient();
   const pusher = usePusher();
   const { data: currentUser } = useGetMe();
-  const { data, fetchNextPage, isError, hasNextPage, isFetchingNextPage } =
+  const { data, fetchNextPage, isError, isLoading, hasNextPage, isFetchingNextPage } =
     useMessages(conversationId);
   const { ref, inView } = useInView();
   const [listUserTyping, setListUserTyping] = React.useState<IUser[]>([]);
@@ -68,6 +69,13 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId }) => {
     }
   }, [pusher, conversationId, currentUser, queryClient]);
 
+  if (isLoading) {
+    return (
+      <div className="h-full w-full flex items-center justify-center">
+        <LoadingComponent className="h-10 w-10" />
+      </div>
+    );
+  }
   if (isError) {
     return <Navigate replace to={'/conversation'} />;
   }
@@ -119,7 +127,11 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId }) => {
           );
         })
       )}
-
+      {isFetchingNextPage && (
+        <div className="h-20 w-full flex items-center justify-center">
+          <LoadingComponent className="h-10 w-10" />
+        </div>
+      )}
       <div ref={ref} style={{ height: '20px' }} />
     </div>
   );

@@ -20,6 +20,7 @@ export const useCreateConversation = () => {
       handleCloseDialogOtherUser();
       navigate(`/conversation/${data._id || data.id}`);
     },
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       toast({

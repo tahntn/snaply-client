@@ -67,7 +67,7 @@ const MessageItem: React.FC<
             'sm:max-w-[80%]',
             'xs:max-w-[70%]',
             type === 'image' && 'md:max-w-[50%]',
-            type === 'update' && 'w-full sm:max-w-full',
+            type === 'update' && 'w-full sm:max-w-full xs:max-w-full',
             replyTo?.type && 'md:max-w-[50%]'
           )}
         >

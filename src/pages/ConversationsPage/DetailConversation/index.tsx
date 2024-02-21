@@ -56,8 +56,7 @@ const DetailConversation = () => {
           <MessageList
             conversationId={conversationId!}
             currentUser={currentUser!}
-            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-            participants={data?.participants!}
+            participants={data?.participants}
           />
         </div>
         <div

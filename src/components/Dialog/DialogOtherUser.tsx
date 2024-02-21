@@ -59,6 +59,8 @@ const DialogOtherUser = () => {
             >
               {data?.friendShip?.status === 'accept' ? (
                 <Icons.user className="w-5 h-5" />
+              ) : data?.friendShip?.status === 'pending' ? (
+                <Icons.circleDashed />
               ) : (
                 <Icons.userPlus className="w-5 h-5" />
               )}

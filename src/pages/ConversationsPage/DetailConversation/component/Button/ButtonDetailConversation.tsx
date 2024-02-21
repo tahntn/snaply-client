@@ -9,6 +9,8 @@ import { Separator } from '@/components/ui/separator';
 import AvatarUser from '@/components/AvatarUser';
 import { useTranslation } from 'react-i18next';
 import { Text } from '@radix-ui/themes';
+import { cn } from '@/lib/utils';
+import DialogChangeNameGroup from '@/components/Dialog/DialogChangeNameGroup';
 
 const ButtonDetailConversation = () => {
   const { conversationId } = useParams();
@@ -24,18 +26,39 @@ const ButtonDetailConversation = () => {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader className="flex flex-col items-center">
-          <AvatarConversation
-            isLoading={isLoading}
-            conversation={conversation!}
-            classNameAvatar="h-24 w-24  "
-            classNameSkeleton="h-10 w-10"
-          />
-          <NameConversation
-            isLoading={isLoading}
-            conversation={conversation!}
-            classNameText="text-xl font-bold line-clamp-2 text-center"
-            classNameSkeleton="h-5  bg-foreground flex-1"
-          />
+          <div>
+            <AvatarConversation
+              isLoading={isLoading}
+              conversation={conversation!}
+              classNameAvatar="h-24 w-24  "
+              classNameSkeleton="h-10 w-10"
+              classNameWrap="relative group"
+            >
+              <div className="absolute hidden group-hover:flex items-center justify-center inset-0 cursor-pointer rounded-full backdrop-blur-md">
+                <Icons.pencil className="w-[30px] h-[30px ]" />
+              </div>
+            </AvatarConversation>
+          </div>
+          <div className="w-full relative group">
+            <NameConversation
+              isLoading={isLoading}
+              conversation={conversation!}
+              classNameText="text-xl font-bold line-clamp-2 text-center break-words"
+              classNameSkeleton="h-5  bg-foreground flex-1"
+            />
+
+            <div
+              className={cn(
+                'hidden absolute  top-1/2 -translate-y-1/2  right-[0px]',
+                conversation?.isGroup && 'group-hover:block'
+              )}
+            >
+              <DialogChangeNameGroup
+                nameGroup={conversation?.nameGroup || ''}
+                idConversation={(conversation?._id || conversation?.id)!}
+              />
+            </div>
+          </div>
         </SheetHeader>
         <Separator className="w-full my-5" />
         <div className="max-h-[calc(100vh-240px)] overflow-auto">

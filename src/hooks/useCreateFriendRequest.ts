@@ -1,22 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { postAxios } from '@/api';
 import { useToast } from '@/components/ui/use-toast';
-import { useGlobalStore } from '@/store';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useCreateFriendRequest = () => {
-  const handleCloseDialogOtherUser = useGlobalStore((state) => state.handleCloseDialogOtherUser);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (targetUserId: string) => postAxios(`friend/create/${targetUserId}`),
-    onSuccess: () => {
+    onSuccess: (data: any) => {
+      queryClient.setQueryData(['other-user', data.targetUserId], (prev: any) => ({
+        data: prev.data,
+        friendShip: data,
+      }));
       toast({
         variant: 'default',
         title: 'Success',
         description: 'Create friend request successfully',
       });
-      handleCloseDialogOtherUser();
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       toast({
         variant: 'destructive',
