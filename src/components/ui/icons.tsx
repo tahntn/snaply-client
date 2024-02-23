@@ -46,6 +46,7 @@ import {
   Pin,
   CircleDashed,
   Pencil,
+  ChevronsRight,
   // type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -99,6 +100,7 @@ export const Icons = {
   pin: Pin,
   circleDashed: CircleDashed,
   pencil: Pencil,
+  chevronsRight: ChevronsRight,
   userSearch: ({ ...props }: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

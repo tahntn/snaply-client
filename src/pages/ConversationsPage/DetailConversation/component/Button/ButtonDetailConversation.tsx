@@ -3,7 +3,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTrigger } from '@/components/ui/
 import { Icons } from '@/components/ui/icons';
 import { useDetailConversation, useGetMe } from '@/hooks';
 import { useParams } from 'react-router-dom';
-import AvatarConversation from '@/components/Conversation/AvatarConversation';
+// import AvatarConversation from '@/components/Conversation/AvatarConversation';
 import NameConversation from '@/components/Conversation/NameConversation';
 import { Separator } from '@/components/ui/separator';
 import AvatarUser from '@/components/AvatarUser';
@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { Text } from '@radix-ui/themes';
 import { cn } from '@/lib/utils';
 import DialogChangeNameGroup from '@/components/Dialog/DialogChangeNameGroup';
+import ButtonDetailAvatarConversation from './ButtonDetailAvatarConversation';
 
 const ButtonDetailConversation = () => {
   const { conversationId } = useParams();
@@ -26,19 +27,8 @@ const ButtonDetailConversation = () => {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader className="flex flex-col items-center">
-          <div>
-            <AvatarConversation
-              isLoading={isLoading}
-              conversation={conversation!}
-              classNameAvatar="h-24 w-24  "
-              classNameSkeleton="h-10 w-10"
-              classNameWrap="relative group"
-            >
-              <div className="absolute hidden group-hover:flex items-center justify-center inset-0 cursor-pointer rounded-full backdrop-blur-md">
-                <Icons.pencil className="w-[30px] h-[30px ]" />
-              </div>
-            </AvatarConversation>
-          </div>
+          <ButtonDetailAvatarConversation isLoading={isLoading} conversation={conversation!} />
+
           <div className="w-full relative group">
             <NameConversation
               isLoading={isLoading}

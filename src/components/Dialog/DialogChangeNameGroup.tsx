@@ -82,7 +82,7 @@ const DialogChangeNameGroup: React.FC<DialogChangeNameGroupProps> = ({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Change name group?</DialogTitle>
+          <DialogTitle>Change group name?</DialogTitle>
           <DialogDescription>
             Changing the name of group chat changes it for everyone
           </DialogDescription>
