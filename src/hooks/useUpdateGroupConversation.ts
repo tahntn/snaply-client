@@ -7,12 +7,15 @@ interface DataType {
   avatarGroup?: string;
 }
 
-export const useUpdateGroupConversation = (conversationId: string, cb?: () => void) => {
+export const useUpdateGroupConversation = (
+  conversationId: string,
+  cb?: (data?: IDetailConversation) => void
+) => {
   return useMutation({
     mutationFn: (data: DataType) =>
       patchAxios<IDetailConversation, DataType>(`conversation`, conversationId, data),
-    onSuccess: () => {
-      cb && cb();
+    onSuccess: (data) => {
+      cb && cb(data);
     },
   });
 };

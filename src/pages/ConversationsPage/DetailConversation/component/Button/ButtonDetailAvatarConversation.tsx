@@ -16,8 +16,10 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Icons } from '@/components/ui/icons';
 import { Separator } from '@/components/ui/separator';
+import { useUpdateGroupConversation, useUploadSingleImage } from '@/hooks';
 import { useGlobalStore } from '@/store';
 import { IDetailConversation } from '@/types';
+import { useQueryClient } from '@tanstack/react-query';
 import React, { ChangeEvent } from 'react';
 
 interface ButtonDetailAvatarConversationProps {
@@ -29,6 +31,25 @@ const ButtonDetailAvatarConversation: React.FC<ButtonDetailAvatarConversationPro
   isLoading,
   conversation,
 }) => {
+  const queryClient = useQueryClient();
+  const { mutateAsync } = useUploadSingleImage();
+
+  const { mutate: updateConversation } = useUpdateGroupConversation(
+    (conversation?._id || conversation?.id)!,
+    (data) => {
+      console.log('🚀 ~ data:', data);
+      queryClient.setQueryData(
+        ['conversation', (conversation?._id || conversation?.id)!],
+        (prev?: IDetailConversation) => {
+          return {
+            ...prev!,
+            nameGroup: data?.avatarGroup,
+          };
+        }
+      );
+    }
+  );
+  const [loadingSubmit, setLoadingSubmit] = React.useState(false);
   const handleOpenDialogImage = useGlobalStore((state) => state.handleOpenDialogImage);
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
   const [open, setOpen] = React.useState(false);
@@ -38,7 +59,27 @@ const ButtonDetailAvatarConversation: React.FC<ButtonDetailAvatarConversationPro
     }
   };
 
-  const handSubmit = () => {};
+  const handSubmit = async () => {
+    try {
+      setLoadingSubmit(true);
+      if (!selectedFile) {
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+
+      const res = await mutateAsync(formData);
+      updateConversation({
+        avatarGroup: res.url,
+      });
+      // eslint-disable-next-line no-empty
+    } catch (error) {
+    } finally {
+      setLoadingSubmit(false);
+      setOpen(false);
+    }
+  };
 
   React.useEffect(() => {
     if (selectedFile) {
@@ -112,14 +153,14 @@ const ButtonDetailAvatarConversation: React.FC<ButtonDetailAvatarConversationPro
                 setOpen(false);
                 setSelectedFile(null);
               }}
-              disabled={isLoading}
+              disabled={loadingSubmit}
             >
               Close
             </Button>
 
-            <Button size={'sm'} disabled={isLoading} onClick={handSubmit}>
+            <Button size={'sm'} disabled={loadingSubmit} onClick={handSubmit}>
               Submit
-              {isLoading && <LoadingComponent className="ml-2 h-4 w-4 animate-spin" />}
+              {loadingSubmit && <LoadingComponent className="ml-2 h-4 w-4 animate-spin" />}
             </Button>
           </div>
         </DialogContent>
