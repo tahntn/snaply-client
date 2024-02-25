@@ -111,7 +111,7 @@ const DialogChangeNameGroup: React.FC<DialogChangeNameGroupProps> = ({
             />
             <div className="flex justify-end gap-2">
               <DialogClose asChild>
-                <Button size={'sm'} type="button" variant="secondary" disabled={isLoading}>
+                <Button size={'sm'} type="button" variant="outline" disabled={isLoading}>
                   Close
                 </Button>
               </DialogClose>

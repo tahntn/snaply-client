@@ -6,14 +6,13 @@ import React from 'react';
 import SettingItem from './SettingItem';
 import { settingList } from '@/constants/setting';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/context/ThemeProvider';
 import { useGetMe } from '@/hooks';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useNavigate } from 'react-router-dom';
+import { DialogLanguage, DialogTheme } from '@/components/Dialog';
 
 const SettingPage: React.FC = () => {
   const { t } = useTranslation();
-  const { mainTheme } = useTheme();
   const { data, isLoading } = useGetMe();
   const navigate = useNavigate();
   return (
@@ -62,17 +61,18 @@ const SettingPage: React.FC = () => {
         </Box>
         {/* List options */}
         <Box className="mt-4 flex flex-col ">
-          {settingList(t, mainTheme)?.map((settingItem) => (
+          {settingList(t)?.map((settingItem) => (
             <SettingItem
               key={settingItem.id}
               title={settingItem.title}
               Icon={settingItem.Icon}
-              isDarkMode={settingItem?.id === 'darkMode'}
-              isLanguage={settingItem?.id === 'language'}
+              id={settingItem.id}
             />
           ))}
         </Box>
       </Box>
+      <DialogTheme />
+      <DialogLanguage />
     </Box>
   );
 };

@@ -16,4 +16,8 @@ export const Conversation = {
   sentAGIF: 'sent a GIF.',
   sentASticker: 'sent a sticker.',
   createdAConversation: 'created a conversation.',
+  noChat: {
+    selectConversation: 'Select a conversation or start a',
+    newOne: 'new one.',
+  },
 };

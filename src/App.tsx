@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next';
 import Router from './router';
 import { ThemeProvider } from './context/ThemeProvider';
 import FallbackRenderer from './components/FallbackRenderer';
-import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from './components/ui/tooltip';
 import './App.css';
 import { storage } from './lib/storage';
@@ -19,6 +18,7 @@ import { refreshAccessToken } from './services/auth.service';
 import { useLogout } from './hooks/useSignOut';
 import { DialogPreviewImage } from './components/Dialog';
 import PusherProvider from './context/PusherProvider';
+import { Toaster } from './components/ui/sonner';
 
 function App() {
   const { i18n } = useTranslation();
@@ -135,7 +135,7 @@ function App() {
               <Router />
             </ErrorBoundary>
           </BrowserRouter>
-          <Toaster />
+          <Toaster position="top-right" richColors />
           <DialogPreviewImage />
           {import.meta.env.VITE_NODE_ENV === 'development' && (
             <ReactQueryDevtools initialIsOpen={true} position="top-left" />

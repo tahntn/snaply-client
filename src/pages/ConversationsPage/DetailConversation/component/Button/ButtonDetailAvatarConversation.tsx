@@ -148,7 +148,7 @@ const ButtonDetailAvatarConversation: React.FC<ButtonDetailAvatarConversationPro
             <Button
               size={'sm'}
               type="button"
-              variant="secondary"
+              variant="outline"
               onClick={() => {
                 setOpen(false);
                 setSelectedFile(null);
