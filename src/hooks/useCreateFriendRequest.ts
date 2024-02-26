@@ -1,30 +1,24 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { postAxios } from '@/api';
-import { useToast } from '@/components/ui/use-toast';
+import { IFriend, idOtherUser } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-
+import { toast } from 'sonner';
 export const useCreateFriendRequest = () => {
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (targetUserId: string) => postAxios(`friend/create/${targetUserId}`),
-    onSuccess: (data: any) => {
-      queryClient.setQueryData(['other-user', data.targetUserId], (prev: any) => ({
-        data: prev.data,
+    mutationFn: (targetUserId: string) =>
+      postAxios<IFriend, { id: string }>(`friend/create/${targetUserId}`),
+    onSuccess: (data) => {
+      queryClient.setQueryData(['other-user', data.targetUserId], (prev?: idOtherUser) => ({
+        ...prev!,
         friendShip: data,
       }));
-      toast({
-        variant: 'default',
-        title: 'Success',
-        description: 'Create friend request successfully',
-      });
-    },
-    onError: (error: any) => {
-      toast({
-        variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
-        description: error.response?.data?.message || 'Đã có lỗi xảy ra vui lòng đăng nhập lại',
-      });
+      toast.success(
+        'Success',
+
+        {
+          description: 'Create friend request successfully',
+        }
+      );
     },
   });
 };

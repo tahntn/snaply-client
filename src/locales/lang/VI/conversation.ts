@@ -19,4 +19,8 @@ export const Conversation = {
     selectConversation: 'Chọn một cuộc trò chuyện hoặc bắt đầu một',
     newOne: 'cuộc trò chuyện mới.',
   },
+  group: {
+    changeGroupName: 'Thay đổi tên nhóm ?',
+    nameGroup: 'Tên nhóm',
+  },
 };

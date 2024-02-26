@@ -20,4 +20,10 @@ export const Conversation = {
     selectConversation: 'Select a conversation or start a',
     newOne: 'new one.',
   },
+  group: {
+    changeGroupName: 'Change group name ?',
+    groupName: 'Group name',
+    changeGroupAvatar: 'Change group avatar ?',
+    confirmChangeGroupAvatar: 'Are you sure you want to change the group avatar ?',
+  },
 };

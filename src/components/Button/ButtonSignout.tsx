@@ -12,8 +12,10 @@ import {
 import { Icons } from '../ui/icons';
 import { useLogout } from '@/hooks/index';
 import { storage } from '@/lib/storage';
+import { useTranslation } from 'react-i18next';
 
 export function ButtonSignout() {
+  const { t } = useTranslation();
   const { mutate: logout } = useLogout();
   const { getString } = storage;
   const handleLogout = () => {
@@ -27,21 +29,21 @@ export function ButtonSignout() {
           <div>
             <Icons.logOut className="mr-2 h-4-w-4" />
           </div>
-          <p>Log out</p>
+          <p>{t('setting.logout.logout')}</p>
         </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">Logout</DialogTitle>
-          <DialogDescription>Are you sure you want to logout</DialogDescription>
+          <DialogTitle className="text-2xl font-bold">{t('setting.logout.logout')}</DialogTitle>
+          <DialogDescription>{t('setting.logout.confirmLogout')}</DialogDescription>
         </DialogHeader>
 
         <DialogFooter>
           <DialogClose>
-            <Button variant={'outline'}>Cancel</Button>
+            <Button variant={'outline'}>{t('setting.cancel')}</Button>
           </DialogClose>
           <DialogClose>
-            <Button onClick={handleLogout}>Logout</Button>
+            <Button onClick={handleLogout}>{t('setting.logout.logout')}</Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

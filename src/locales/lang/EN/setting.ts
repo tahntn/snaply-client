@@ -2,6 +2,8 @@ export const Setting = {
   title: 'Settings',
   cancel: 'Cancel',
   apply: 'Apply',
+  close: 'Close',
+  submit: 'Submit',
   option: {
     account: 'Account',
     language: 'Language',
@@ -20,4 +22,8 @@ export const Setting = {
   },
 
   featureUnderDevelopment: 'This feature is under development and will be updated soon!',
+  logout: {
+    logout: 'Log out',
+    confirmLogout: 'Are you sure you want to logout?',
+  },
 };

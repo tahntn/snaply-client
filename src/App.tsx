@@ -11,7 +11,7 @@ import { TooltipProvider } from './components/ui/tooltip';
 import './App.css';
 import { storage } from './lib/storage';
 import { useAuthStore } from './store';
-import { useToast } from './components/ui/use-toast';
+import { toast } from 'sonner';
 import { axiosInstance } from './api/apiConfig';
 import axios from 'axios';
 import { refreshAccessToken } from './services/auth.service';
@@ -24,7 +24,6 @@ function App() {
   const { i18n } = useTranslation();
   const { getString } = storage;
   const { setLogin } = useAuthStore((state) => state);
-  const { toast } = useToast();
   const { mutate: logout } = useLogout();
 
   React.useEffect(() => {
@@ -102,9 +101,7 @@ function App() {
                 onRrefreshed(newToken.data.token);
               })
               .catch(() => {
-                toast({
-                  variant: 'destructive',
-                  title: 'Uh oh! Something went wrong. token expried',
+                toast.error('Uh oh! Something went wrong. token expried', {
                   description: 'Phiên bản đã hết hạn vui lòng đăng nhập lại',
                 });
                 logout(refreshToken!);
