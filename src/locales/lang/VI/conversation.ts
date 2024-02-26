@@ -15,4 +15,12 @@ export const Conversation = {
   sentAGIF: 'đã gửi một GIF.',
   sentASticker: 'đã gửi một nhãn dán.',
   createdAConversation: 'đã tạo cuộc trò chuyện.',
+  noChat: {
+    selectConversation: 'Chọn một cuộc trò chuyện hoặc bắt đầu một',
+    newOne: 'cuộc trò chuyện mới.',
+  },
+  group: {
+    changeGroupName: 'Thay đổi tên nhóm ?',
+    nameGroup: 'Tên nhóm',
+  },
 };

@@ -16,4 +16,14 @@ export const Conversation = {
   sentAGIF: 'sent a GIF.',
   sentASticker: 'sent a sticker.',
   createdAConversation: 'created a conversation.',
+  noChat: {
+    selectConversation: 'Select a conversation or start a',
+    newOne: 'new one.',
+  },
+  group: {
+    changeGroupName: 'Change group name ?',
+    groupName: 'Group name',
+    changeGroupAvatar: 'Change group avatar ?',
+    confirmChangeGroupAvatar: 'Are you sure you want to change the group avatar ?',
+  },
 };

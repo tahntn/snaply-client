@@ -1,13 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { postAxios } from '@/api';
-import { useToast } from '@/components/ui/use-toast';
 import { storage } from '@/lib/storage';
 import { useAuthStore } from '@/store';
 import { loginBody, signupBody } from '@/types';
 import { useMutation } from '@tanstack/react-query';
-
+import { toast } from 'sonner';
 type UserBodyType<T extends 'login' | 'register'> = T extends 'login' ? loginBody : signupBody;
 export const useAuth = (type: 'login' | 'register') => {
-  const { toast } = useToast();
   const { setLogin } = useAuthStore((state) => state);
   return useMutation({
     mutationFn: (user: UserBodyType<typeof type>) => {
@@ -22,9 +21,7 @@ export const useAuth = (type: 'login' | 'register') => {
       }
     },
     onError: (error: any) => {
-      toast({
-        variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
+      toast.error('Uh oh! Something went wrong.', {
         description: error.response?.data?.message || 'Đã có lỗi xảy ra vui lòng đăng nhập lại',
       });
     },

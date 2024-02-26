@@ -2,7 +2,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -20,6 +19,7 @@ import React from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { IDetailConversation } from '@/types';
 import LoadingComponent from '../LoadingComponent';
+import { useTranslation } from 'react-i18next';
 interface DialogChangeNameGroupProps {
   nameGroup: string;
   idConversation: string;
@@ -29,6 +29,7 @@ const DialogChangeNameGroup: React.FC<DialogChangeNameGroupProps> = ({
   nameGroup,
   idConversation,
 }) => {
+  const { t } = useTranslation();
   const [open, setOpen] = React.useState(false);
   const queryClient = useQueryClient();
   const schema = yup.object().shape({
@@ -82,10 +83,7 @@ const DialogChangeNameGroup: React.FC<DialogChangeNameGroupProps> = ({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Change group name?</DialogTitle>
-          <DialogDescription>
-            Changing the name of group chat changes it for everyone
-          </DialogDescription>
+          <DialogTitle>{t('conversation.group.changeGroupName')}</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -99,7 +97,7 @@ const DialogChangeNameGroup: React.FC<DialogChangeNameGroupProps> = ({
                     <FormControl>
                       <Textarea
                         rows={4}
-                        placeholder="Name group"
+                        placeholder={t('conversation.group.groupName')}
                         className="w-full resize-none"
                         {...field}
                       />
@@ -111,12 +109,12 @@ const DialogChangeNameGroup: React.FC<DialogChangeNameGroupProps> = ({
             />
             <div className="flex justify-end gap-2">
               <DialogClose asChild>
-                <Button size={'sm'} type="button" variant="secondary" disabled={isLoading}>
-                  Close
+                <Button size={'sm'} type="button" variant="outline" disabled={isLoading}>
+                  {t('setting.close')}
                 </Button>
               </DialogClose>
               <Button size={'sm'} disabled={isLoading} type="submit">
-                Submit
+                {t('setting.submit')}
                 {isLoading && <LoadingComponent className="ml-2 h-4 w-4 animate-spin" />}
               </Button>
             </div>

@@ -21,6 +21,7 @@ import { useGlobalStore } from '@/store';
 import { IDetailConversation } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { ChangeEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ButtonDetailAvatarConversationProps {
   isLoading: boolean;
@@ -33,11 +34,10 @@ const ButtonDetailAvatarConversation: React.FC<ButtonDetailAvatarConversationPro
 }) => {
   const queryClient = useQueryClient();
   const { mutateAsync } = useUploadSingleImage();
-
+  const { t } = useTranslation();
   const { mutate: updateConversation } = useUpdateGroupConversation(
     (conversation?._id || conversation?.id)!,
     (data) => {
-      console.log('🚀 ~ data:', data);
       queryClient.setQueryData(
         ['conversation', (conversation?._id || conversation?.id)!],
         (prev?: IDetailConversation) => {
@@ -130,8 +130,10 @@ const ButtonDetailAvatarConversation: React.FC<ButtonDetailAvatarConversationPro
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Change group avatar</DialogTitle>
-            <DialogDescription>Are you sure you want to change the group avatar?</DialogDescription>
+            <DialogTitle>{t('conversation.group.changeGroupAvatar')}</DialogTitle>
+            <DialogDescription>
+              {t('conversation.group.confirmChangeGroupAvatar')}
+            </DialogDescription>
           </DialogHeader>
           <div className="flex gap-3 items-center justify-center">
             <Avatar className="h-16 w-16">
@@ -148,18 +150,18 @@ const ButtonDetailAvatarConversation: React.FC<ButtonDetailAvatarConversationPro
             <Button
               size={'sm'}
               type="button"
-              variant="secondary"
+              variant="outline"
               onClick={() => {
                 setOpen(false);
                 setSelectedFile(null);
               }}
               disabled={loadingSubmit}
             >
-              Close
+              {t('setting.close')}
             </Button>
 
             <Button size={'sm'} disabled={loadingSubmit} onClick={handSubmit}>
-              Submit
+              {t('setting.submit')}
               {loadingSubmit && <LoadingComponent className="ml-2 h-4 w-4 animate-spin" />}
             </Button>
           </div>

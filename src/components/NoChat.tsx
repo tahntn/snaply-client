@@ -1,8 +1,10 @@
 import { cn } from '@/lib/utils';
 import { Box, Text } from '@radix-ui/themes';
 import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 function NoChat({ ...other }) {
+  const { t } = useTranslation();
   return (
     <div
       className={cn('flex justify-center flex-col items-center h-full gap-4', 'md:px-5 lg:px-3')}
@@ -323,10 +325,10 @@ function NoChat({ ...other }) {
           />
         </svg>
       </Box>
-      <Text className="lg:text-lg font-semibold md:text-base xl:text-2xl">
-        Select a conversation or start a{' '}
+      <Text className="lg:text-lg font-semibold md:text-base xl:text-2xl text-center">
+        {t('conversation.noChat.selectConversation')}{' '}
         <Link to={'/conversation'} className="underline underline-offset-2">
-          new one
+          {t('conversation.noChat.newOne')}{' '}
         </Link>
       </Text>
     </div>
