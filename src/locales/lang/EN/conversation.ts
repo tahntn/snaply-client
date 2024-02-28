@@ -8,6 +8,7 @@ export const Conversation = {
   detailConversation: {
     members: 'Members',
     otherAction: 'Other action',
+    messagePinned: 'Message pinned',
   },
   sentAMessage: 'sent a message.',
   sentPictures: 'sent pictures.',

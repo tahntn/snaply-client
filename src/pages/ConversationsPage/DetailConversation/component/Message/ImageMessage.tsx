@@ -7,7 +7,7 @@ import React from 'react';
 
 interface ImageMessageProps {
   imageList: string[];
-  classNameWrap: string;
+  classNameWrap?: string;
 }
 
 const ImageMessage: React.FC<ImageMessageProps> = ({ imageList, classNameWrap }) => {

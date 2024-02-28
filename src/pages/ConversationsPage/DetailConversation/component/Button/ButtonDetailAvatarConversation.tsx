@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Icons } from '@/components/ui/icons';
 import { Separator } from '@/components/ui/separator';
-import { useUpdateGroupConversation, useUploadSingleImage } from '@/hooks';
+import { useToastError, useUpdateGroupConversation, useUploadSingleImage } from '@/hooks';
 import { useGlobalStore } from '@/store';
 import { IDetailConversation } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
@@ -35,6 +35,7 @@ const ButtonDetailAvatarConversation: React.FC<ButtonDetailAvatarConversationPro
   const queryClient = useQueryClient();
   const { mutateAsync } = useUploadSingleImage();
   const { t } = useTranslation();
+  const { throwError } = useToastError();
   const { mutate: updateConversation } = useUpdateGroupConversation(
     (conversation?._id || conversation?.id)!,
     (data) => {
@@ -73,8 +74,8 @@ const ButtonDetailAvatarConversation: React.FC<ButtonDetailAvatarConversationPro
       updateConversation({
         avatarGroup: res.url,
       });
-      // eslint-disable-next-line no-empty
     } catch (error) {
+      throwError(error);
     } finally {
       setLoadingSubmit(false);
       setOpen(false);

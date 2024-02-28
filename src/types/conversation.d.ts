@@ -17,6 +17,7 @@ export interface IDetailConversation {
     lastMessage: IMessage;
   };
   participants: IUser[];
+  pinnedMessagesCount: number;
 }
 
 export interface IConversations {

@@ -27,4 +27,8 @@ export const Setting = {
     changeGroupAvatar: 'Thay đổi ảnh đại diện nhóm ?',
     confirmChangeGroupAvatar: 'Bạn có chắc chắn muốn thay đổi ảnh đại diện nhóm không ?',
   },
+  error: {
+    errorOccurred: 'Đã có lỗi xảy ra, vui lòng thử lại sau!',
+    sessionExpired: 'Phiên bản đã hết hạn, vui lòng đăng nhập lại',
+  },
 };
