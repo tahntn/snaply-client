@@ -17,6 +17,7 @@ import AvatarUser from '../AvatarUser';
 import TextMessage from '@/pages/ConversationsPage/DetailConversation/component/Message/TextMessage';
 import { Button } from '../ui/button';
 import ImageMessage from '@/pages/ConversationsPage/DetailConversation/component/Message/ImageMessage';
+import { Separator } from '../ui/separator';
 
 interface DialogPinnedMessageProps {
   pinnedMessagesCount?: number;
@@ -28,22 +29,9 @@ const DialogPinnedMessage: React.FC<DialogPinnedMessageProps> = ({
   conversationId,
 }) => {
   const { t } = useTranslation();
-
-  const { data, fetchNextPage, isError, isLoading, hasNextPage, isFetchingNextPage } = useMessages(
-    conversationId,
-    5,
-    true
-  );
-  const { ref, inView } = useInView();
-
-  React.useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
-
+  const [open, setOpen] = React.useState(false);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <div className="flex items-center gap-2 cursor-pointer w-full">
           <div className="pt-[4px]">
@@ -64,10 +52,7 @@ const DialogPinnedMessage: React.FC<DialogPinnedMessageProps> = ({
             {t('conversation.detailConversation.messagePinned')}
           </DialogTitle>
         </DialogHeader>
-        <div className="max-h-[calc(100vh-300px)] overflow-auto flex gap-5 flex-col px-5">
-          {data?.pages.map((page) => page.data.map((messsage) => renderItem(messsage)))}
-          <div ref={ref} style={{ height: '10px' }} />
-        </div>
+        {open && <ListMessage conversationId={conversationId} />}
       </DialogContent>
     </Dialog>
   );
@@ -75,23 +60,58 @@ const DialogPinnedMessage: React.FC<DialogPinnedMessageProps> = ({
 
 export default DialogPinnedMessage;
 
-const renderItem = (messsage: IMessage) => (
-  <div className="flex gap-3 items-end">
-    <AvatarUser
-      name={messsage.senderId.username?.[0]}
-      url={messsage.senderId?.avatar}
-      // classNameAvatar="w-12 h-12"
-    />
-    <div className="flex-1 flex flex-col">
-      <Text className="font-semibold text-xl ">{messsage.senderId.username}</Text>
-      {messsage.type === 'text' ? (
-        <TextMessage title={messsage.title!} />
-      ) : (
-        <ImageMessage imageList={messsage.imageList!} />
-      )}
+const ListMessage = ({ conversationId }: { conversationId: string }) => {
+  const { data, fetchNextPage, isError, isLoading, hasNextPage, isFetchingNextPage } = useMessages(
+    conversationId,
+    5,
+    true
+  );
+  const { ref, inView } = useInView();
+
+  React.useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
+  if (isError) {
+    return 'Error';
+  }
+  if (isLoading) {
+    return 'Loading...';
+  }
+  return (
+    <div className="max-h-[calc(100vh-300px)] overflow-y-auto overflow-x-hidden flex gap-5 flex-col pt-5 pb-2 px-2">
+      {data?.pages.map((page) => page.data.map((message) => <MessageItem message={message} />))}
+      {isFetchingNextPage && 'Loading...'}
+      <div ref={ref}></div>
     </div>
-    <Button size={'sm'} variant={'outline'} className="rounded-full">
-      <Icons.moreHorizontal />
-    </Button>
-  </div>
+  );
+};
+
+const MessageItem = ({ message }: { message: IMessage }) => (
+  <>
+    <div className="flex gap-3 items-end">
+      <AvatarUser name={message.senderId.username?.[0]} url={message.senderId?.avatar} />
+      <div className="flex-1 flex flex-col">
+        <Text className="font-semibold text-xl ">{message.senderId.username}</Text>
+        {message.type === 'text' ? (
+          <TextMessage title={message.title!} />
+        ) : (
+          <ImageMessage
+            imageList={message.imageList!}
+            classNameWrap={
+              'flex flex-wrap w-full items-stretch gap-1 overflow-y-hidden justify-start'
+            }
+            classNameImg="h-[100px] w-[100px]"
+            classNameWrapImage="w-[100px]"
+            isShowText={false}
+          />
+        )}
+      </div>
+      <Button size={'sm'} variant={'outline'} className="rounded-full">
+        <Icons.moreHorizontal />
+      </Button>
+    </div>
+    <Separator />
+  </>
 );

@@ -43,10 +43,11 @@ import {
   UserPlus,
   Sticker,
   LogOut,
-  Pin,
   CircleDashed,
   Pencil,
   ChevronsRight,
+  Pin,
+  PinOff,
   // type Icon as LucideIcon,
 } from 'lucide-react';
 
@@ -101,6 +102,7 @@ export const Icons = {
   circleDashed: CircleDashed,
   pencil: Pencil,
   chevronsRight: ChevronsRight,
+  pinOff: PinOff,
   userSearch: ({ ...props }: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

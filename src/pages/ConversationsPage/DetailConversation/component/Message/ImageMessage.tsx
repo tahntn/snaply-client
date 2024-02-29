@@ -8,9 +8,18 @@ import React from 'react';
 interface ImageMessageProps {
   imageList: string[];
   classNameWrap?: string;
+  classNameWrapImage?: string;
+  classNameImg?: string;
+  isShowText?: boolean;
 }
 
-const ImageMessage: React.FC<ImageMessageProps> = ({ imageList, classNameWrap }) => {
+const ImageMessage: React.FC<ImageMessageProps> = ({
+  imageList,
+  classNameWrap,
+  classNameWrapImage,
+  classNameImg,
+  isShowText = true,
+}) => {
   const handleOpenDialogImage = useGlobalStore((state) => state.handleOpenDialogImage);
   return (
     <div className={classNameWrap}>
@@ -34,18 +43,20 @@ const ImageMessage: React.FC<ImageMessageProps> = ({ imageList, classNameWrap })
               'max-h-[300px] border rounded-xl overflow-hidden group/image relative ',
               widthItem === 1 && 'max-w-[calc(calc(100%/3)-3px)]',
               widthItem === 2 && 'w-[calc(calc(100%/2)-2px)]',
-              widthItem === 3 && 'max-w-[calc(calc(100%/1)-0px)]'
+              widthItem === 3 && 'max-w-[calc(calc(100%/1)-0px)]',
+              classNameWrapImage
             )}
           >
             <img
               src={image}
               className={cn(
-                ' object-cover  shadow-lg w-full h-full transition-transform transform group-hover/image:scale-105'
+                ' object-cover shadow-lg w-full h-full transition-transform transform group-hover/image:scale-105',
+                classNameImg
               )}
             />
             <div
               className={cn(
-                'hidden absolute cursor-pointer group-hover/image:block  inset-0 bg-black bg-opacity-50 opacity-0 group-hover/image:opacity-100 transition-opacity',
+                'hidden absolute cursor-pointer group-hover/image:block inset-0 bg-black bg-opacity-50 opacity-0 group-hover/image:opacity-100 transition-opacity',
                 'group-hover/image:flex group-hover/image:items-center group-hover/image:justify-center'
               )}
               onClick={() => {
@@ -54,7 +65,7 @@ const ImageMessage: React.FC<ImageMessageProps> = ({ imageList, classNameWrap })
             >
               <Button className="bg-transparent text-white text-xs">
                 <Icons.eye className="mr-2" />
-                <Text className="md:hidden lg:block">Preview image</Text>
+                {isShowText && <Text className="md:hidden lg:block">Preview image</Text>}
               </Button>
             </div>
           </div>

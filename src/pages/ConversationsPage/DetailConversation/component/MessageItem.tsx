@@ -13,16 +13,18 @@ import ImageMessage from './Message/ImageMessage';
 import GifMessage from './Message/GifMessage';
 import StickerMessage from './Message/StickerMessage';
 import UpdateMessage from './Message/UpdateMessage';
+import { DialogPinMessage } from '@/components/Dialog';
 
 const MessageItem: React.FC<
   IMessage & { currentUser: IUser; hasAvatar: boolean; isMessagesNew: boolean }
 > = (props) => {
   const {
-    // conversationId,
+    conversationId,
     createdAt,
     // updatedAt,
-    // id,
-    // isPin,
+    id,
+    _id,
+    isPin,
     senderId,
     title,
     type,
@@ -33,9 +35,8 @@ const MessageItem: React.FC<
     url,
     replyTo,
   } = props;
-
   const { setReplyMessage, focusInput } = useConversationStore((state) => state);
-
+  const [open, setOpen] = React.useState(false);
   return (
     <div className="w-full">
       {isMessagesNew && (type === 'image' || type === 'text') && (
@@ -140,10 +141,23 @@ const MessageItem: React.FC<
             {/* Action with message */}
             <div
               className={cn(
-                'hidden absolute px-5 group-hover:block top-1/2 transition transform -translate-y-1/2 ',
+                'hidden absolute px-5 group-hover:flex top-1/2 transition transform -translate-y-1/2  gap-2',
                 currentUser?.id === senderId?.id ? 'right-full' : 'left-full'
               )}
             >
+              {(type === 'text' || type === 'image') && (
+                <Button
+                  variant="outline"
+                  className="rounded-full w-8 h-8 py-0 px-0 flex items-center justify-center"
+                  onClick={() => setOpen(true)}
+                >
+                  {isPin ? (
+                    <Icons.pinOff className="text-foreground cursor-pointer h-3 w-3" />
+                  ) : (
+                    <Icons.pin className="text-foreground cursor-pointer h-3 w-3" />
+                  )}
+                </Button>
+              )}
               <Button
                 variant="outline"
                 className="rounded-full w-8 h-8 py-0 px-0 flex items-center justify-center"
@@ -160,6 +174,13 @@ const MessageItem: React.FC<
           </div>
         </div>
       </div>
+      <DialogPinMessage
+        open={open}
+        setOpen={setOpen}
+        isPin={isPin}
+        conversationId={conversationId}
+        messageId={(id || _id)!}
+      />
     </div>
   );
 };
