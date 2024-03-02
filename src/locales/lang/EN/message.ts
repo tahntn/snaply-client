@@ -24,5 +24,7 @@ export const Message = {
     unpinMessage: 'Unpin message',
     pinMessageSuccess: 'Pin message successful!',
     unpinMessageSuccess: 'Unpin message successful!',
+    noPinnedMessages: 'No messages pinned yet',
+    pinnedMessagesPlaceholder: 'Pinned messages will appear here',
   },
 };

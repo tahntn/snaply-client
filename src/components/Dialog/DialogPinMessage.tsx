@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import {
   Dialog,
@@ -13,6 +14,8 @@ import { Button } from '../ui/button';
 import { usePinMessage } from '@/hooks';
 import LoadingComponent from '../LoadingComponent';
 import { toast } from 'sonner';
+import { useQueryClient } from '@tanstack/react-query';
+import { IDetailConversation } from '@/types';
 interface DialogPinMessageProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,8 +32,53 @@ const DialogPinMessage: React.FC<DialogPinMessageProps> = ({
   messageId,
 }) => {
   const { t } = useTranslation();
-  const { mutateAsync, isLoading } = usePinMessage(conversationId, messageId, () => {
-    //xử lý trong queryclient (để sau làm)
+  const queryclient = useQueryClient();
+  const { mutateAsync, isLoading } = usePinMessage(conversationId, messageId, (data) => {
+    queryclient.setQueryData(['conversation', conversationId], (prev?: IDetailConversation) => {
+      return {
+        ...prev!,
+        pinnedMessagesCount: prev!.pinnedMessagesCount + (isPin ? -1 : 1),
+      };
+    });
+    queryclient.setQueryData(['messages', conversationId], (prev: any) => {
+      const updatedPages = prev.pages.map((page: any) => ({
+        ...page,
+        data: page.data.map((message: any) => {
+          if (message.id === messageId || message._id === messageId) {
+            return { ...message, isPin: data.isPin };
+          }
+          return message;
+        }),
+      }));
+      return {
+        pageParams: prev.pageParams,
+        pages: updatedPages,
+      };
+    });
+    const pinnedMessages = queryclient.getQueryData(['pinned-messages', conversationId]);
+    if (pinnedMessages) {
+      queryclient.setQueryData(['pinned-messages', conversationId], (oldData: any) => {
+        if (!isPin) {
+          return {
+            pages: [{ data: [data] }, ...oldData.pages],
+            pageParams: [...oldData.pageParams],
+          };
+        }
+        const updatedPages = oldData.pages.map((page: any) => ({
+          data: page.data.filter((message: any) => {
+            return message.id !== messageId;
+          }),
+        }));
+
+        return {
+          pageParams: oldData.pageParams,
+          pages: updatedPages.map((page: any, index: number) => ({
+            data: page.data,
+            pagination: oldData.pages?.[index]?.pagination,
+          })),
+        };
+      });
+    }
   });
   const handleSubmit = () => {
     mutateAsync();

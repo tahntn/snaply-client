@@ -16,7 +16,11 @@ import UpdateMessage from './Message/UpdateMessage';
 import { DialogPinMessage } from '@/components/Dialog';
 
 const MessageItem: React.FC<
-  IMessage & { currentUser: IUser; hasAvatar: boolean; isMessagesNew: boolean }
+  IMessage & {
+    currentUser: IUser;
+    hasAvatar: boolean;
+    isMessagesNew: boolean;
+  }
 > = (props) => {
   const {
     conversationId,

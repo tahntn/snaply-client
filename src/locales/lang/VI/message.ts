@@ -24,5 +24,7 @@ export const Message = {
     unpinMessage: 'Bỏ ghim tin nhắn',
     pinMessageSuccess: 'Ghim tin nhắn thành công!',
     unpinMessageSuccess: 'Bỏ ghim tin nhắn thành công!',
+    noPinnedMessages: 'Chưa ghim tin nhắn nào',
+    pinnedMessagesPlaceholder: 'Tin nhắn đã ghim sẽ hiển thị ở đây',
   },
 };

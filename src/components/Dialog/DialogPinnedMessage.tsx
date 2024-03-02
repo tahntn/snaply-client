@@ -18,6 +18,9 @@ import TextMessage from '@/pages/ConversationsPage/DetailConversation/component/
 import { Button } from '../ui/button';
 import ImageMessage from '@/pages/ConversationsPage/DetailConversation/component/Message/ImageMessage';
 import { Separator } from '../ui/separator';
+import LoadingComponent from '../LoadingComponent';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { DialogPinMessage } from '.';
 
 interface DialogPinnedMessageProps {
   pinnedMessagesCount?: number;
@@ -52,7 +55,9 @@ const DialogPinnedMessage: React.FC<DialogPinnedMessageProps> = ({
             {t('conversation.detailConversation.messagePinned')}
           </DialogTitle>
         </DialogHeader>
-        {open && <ListMessage conversationId={conversationId} />}
+        <div className="min-h-[300px]">
+          {open && <ListMessage conversationId={conversationId} />}
+        </div>
       </DialogContent>
     </Dialog>
   );
@@ -67,6 +72,7 @@ const ListMessage = ({ conversationId }: { conversationId: string }) => {
     true
   );
   const { ref, inView } = useInView();
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -77,41 +83,83 @@ const ListMessage = ({ conversationId }: { conversationId: string }) => {
     return 'Error';
   }
   if (isLoading) {
-    return 'Loading...';
+    return (
+      <div className="h-full w-full flex items-center justify-center">
+        <LoadingComponent className="h-10 w-10" />
+      </div>
+    );
   }
   return (
-    <div className="max-h-[calc(100vh-300px)] overflow-y-auto overflow-x-hidden flex gap-5 flex-col pt-5 pb-2 px-2">
-      {data?.pages.map((page) => page.data.map((message) => <MessageItem message={message} />))}
-      {isFetchingNextPage && 'Loading...'}
-      <div ref={ref}></div>
-    </div>
+    <>
+      {data.pages?.[0]?.data?.length > 0 ? (
+        <div className="max-h-[calc(100vh-300px)] min-h-full overflow-y-auto overflow-x-hidden flex gap-5 flex-col pt-5 pb-2 px-2">
+          {data?.pages.map((page) => page.data.map((message) => <MessageItem message={message} />))}
+          {isFetchingNextPage && (
+            <div className="h-full w-full flex items-center justify-center mb-10">
+              <LoadingComponent className="h-10 w-10" />
+            </div>
+          )}
+          <div ref={ref}></div>
+        </div>
+      ) : (
+        <div className="min-h-full w-full flex flex-col items-center ">
+          <div className="border p-4 rounded-md border-spacing-1 mt-10 mb-6">
+            <Icons.pin />
+          </div>
+          <h2 className="text-lg font-medium">{t('message.pin.noPinnedMessages')}</h2>
+          <h4 className="text-md">{t('message.pin.pinnedMessagesPlaceholder')}</h4>
+        </div>
+      )}
+    </>
   );
 };
 
-const MessageItem = ({ message }: { message: IMessage }) => (
-  <>
-    <div className="flex gap-3 items-end">
-      <AvatarUser name={message.senderId.username?.[0]} url={message.senderId?.avatar} />
-      <div className="flex-1 flex flex-col">
-        <Text className="font-semibold text-xl ">{message.senderId.username}</Text>
-        {message.type === 'text' ? (
-          <TextMessage title={message.title!} />
-        ) : (
-          <ImageMessage
-            imageList={message.imageList!}
-            classNameWrap={
-              'flex flex-wrap w-full items-stretch gap-1 overflow-y-hidden justify-start'
-            }
-            classNameImg="h-[100px] w-[100px]"
-            classNameWrapImage="w-[100px]"
-            isShowText={false}
-          />
-        )}
+const MessageItem = ({ message }: { message: IMessage }) => {
+  const { t } = useTranslation();
+  const [open, setOpen] = React.useState(false);
+  return (
+    <>
+      <div className="flex gap-3 items-end">
+        <AvatarUser name={message.senderId.username?.[0]} url={message.senderId?.avatar} />
+        <div className="flex-1 flex flex-col">
+          <Text className="font-semibold text-xl ">{message.senderId.username}</Text>
+          {message.type === 'text' ? (
+            <TextMessage title={message.title!} />
+          ) : (
+            <ImageMessage
+              imageList={message.imageList!}
+              classNameWrap={
+                'flex flex-wrap w-full items-stretch gap-1 overflow-y-hidden justify-start'
+              }
+              classNameImg="h-[100px] w-[100px]"
+              classNameWrapImage="w-[100px]"
+              isShowText={false}
+            />
+          )}
+        </div>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button size={'sm'} variant={'outline'} className="rounded-full">
+              <Icons.moreHorizontal />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-fit">
+            <div className="space-y-2">
+              <h4 className="font-medium leading-none cursor-pointer" onClick={() => setOpen(true)}>
+                {t('message.pin.unpinMessage')}
+              </h4>
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
-      <Button size={'sm'} variant={'outline'} className="rounded-full">
-        <Icons.moreHorizontal />
-      </Button>
-    </div>
-    <Separator />
-  </>
-);
+      <Separator />
+      <DialogPinMessage
+        open={open}
+        setOpen={setOpen}
+        isPin={true}
+        conversationId={message.conversationId}
+        messageId={(message.id || message._id)!}
+      />
+    </>
+  );
+};

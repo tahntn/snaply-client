@@ -1,13 +1,17 @@
 import { postAxios } from '@/api';
+import { IMessage } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 
-export const usePinMessage = (conversationId: string, messageId: string, cb?: () => void) => {
+export const usePinMessage = (
+  conversationId: string,
+  messageId: string,
+  cb?: (data: IMessage) => void
+) => {
   return useMutation({
     mutationFn: () =>
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      postAxios<any, any>(`conversation/${conversationId}/message/${messageId}/pin`),
-    onSuccess: () => {
-      cb && cb();
+      postAxios<IMessage, object>(`conversation/${conversationId}/message/${messageId}/pin`),
+    onSuccess: (data) => {
+      cb && cb(data);
     },
   });
 };
