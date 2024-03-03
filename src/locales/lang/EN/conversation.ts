@@ -27,4 +27,5 @@ export const Conversation = {
     changeGroupAvatar: 'Change group avatar ?',
     confirmChangeGroupAvatar: 'Are you sure you want to change the group avatar ?',
   },
+  noConversations: "You don't have any conversations yet",
 };

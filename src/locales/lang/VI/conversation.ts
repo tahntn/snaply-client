@@ -24,4 +24,5 @@ export const Conversation = {
     changeGroupName: 'Thay đổi tên nhóm ?',
     nameGroup: 'Tên nhóm',
   },
+  noConversations: 'Bạn chưa có cuộc trò chuyện nào',
 };

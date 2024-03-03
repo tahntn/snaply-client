@@ -8,7 +8,8 @@ import { useConversations, useGetMe } from '@/hooks';
 import { usePusher } from '@/context/PusherProvider';
 import { IConversations, IDetailConversation } from '@/types';
 import ChatLoading from './ChatLoading';
-
+import noConversation from '@/assets/images/icons/empty-conversation.png';
+import ErrorComponent from '@/components/ErrorComponent';
 const ConversationList = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
@@ -77,7 +78,7 @@ const ConversationList = () => {
   }
 
   if (isError) {
-    return <p>Error</p>;
+    return <ErrorComponent />;
   }
   return (
     <Box className="flex gap-5 pb-5 flex-col overflow-y-auto max-h-[750px] pr-4 overflow-x-hidden">
@@ -88,6 +89,12 @@ const ConversationList = () => {
             <ChatElement conversation={conversation} key={conversation._id || conversation.id} />
           ))
         )}
+      {data.pages?.[0]?.data?.length === 0 && (
+        <div className="flex gap-2 flex-col items-center justify-center  mt-6">
+          <img src={noConversation} className="max-h-[100px]" />
+          <h2 className="text-lg font-medium text-center">{t('conversation.noConversations')}</h2>
+        </div>
+      )}
       {isFetchingNextPage && Array.from(Array(5)).map((_, index) => <ChatLoading key={index} />)}
       <div ref={ref} style={{ height: '20px' }} />
     </Box>

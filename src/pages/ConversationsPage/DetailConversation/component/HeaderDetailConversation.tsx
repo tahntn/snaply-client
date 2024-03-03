@@ -46,7 +46,13 @@ const HeaderDetailConversation: React.FC<HeaderDetailConversationProps> = ({ dat
           classNameSkeleton="h-5  bg-foreground flex-1"
         />
       </div>
-      <ButtonDetailConversation />
+      {isLoading ? (
+        <Button variant="outline" size="icon" className="rounded-full h-8 w-8">
+          <Icons.info className="w-full h-full" />
+        </Button>
+      ) : (
+        <ButtonDetailConversation />
+      )}
     </div>
   );
 };

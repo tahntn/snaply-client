@@ -7,6 +7,7 @@ import ChatMessage from './component/InputMessage/ChatMessage';
 import { useConversationStore } from '@/store';
 import { cn } from '@/lib/utils';
 import HeaderDetailConversation from './component/HeaderDetailConversation';
+import LoadingComponent from '@/components/LoadingComponent';
 
 const DetailConversation = () => {
   const { conversationId } = useParams();
@@ -53,11 +54,17 @@ const DetailConversation = () => {
             paddingBottom: `${heightChatMessage}px`,
           }}
         >
-          <MessageList
-            conversationId={conversationId!}
-            currentUser={currentUser!}
-            participants={data?.participants}
-          />
+          {isLoading ? (
+            <div className="h-full w-full flex items-center justify-center">
+              <LoadingComponent />
+            </div>
+          ) : (
+            <MessageList
+              conversationId={conversationId!}
+              currentUser={currentUser!}
+              participants={data?.participants}
+            />
+          )}
         </div>
         <div
           ref={ChatMessageRef}

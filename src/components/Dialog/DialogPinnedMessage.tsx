@@ -21,6 +21,7 @@ import { Separator } from '../ui/separator';
 import LoadingComponent from '../LoadingComponent';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { DialogPinMessage } from '.';
+import { Navigate } from 'react-router-dom';
 
 interface DialogPinnedMessageProps {
   pinnedMessagesCount?: number;
@@ -80,7 +81,7 @@ const ListMessage = ({ conversationId }: { conversationId: string }) => {
     }
   }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
   if (isError) {
-    return 'Error';
+    return <Navigate replace to={'/conversation'} />;
   }
   if (isLoading) {
     return (
