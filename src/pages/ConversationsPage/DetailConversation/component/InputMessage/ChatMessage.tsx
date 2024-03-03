@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
-import { useSendMessage, useUploadFile } from '@/hooks';
+import { useSendMessage, useToastError, useUploadFile } from '@/hooks';
 import { cn } from '@/lib/utils';
 import { useConversationStore } from '@/store';
 import React, { KeyboardEvent } from 'react';
@@ -31,7 +31,7 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
     shouldFocusInput,
   } = useConversationStore((state) => state);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
-
+  const { throwError } = useToastError();
   const { mutate: sendMessage } = useSendMessage(conversationId!);
   const { mutate: uploadImage } = useUploadImageMessage();
   const [value, setValue] = React.useState('');
@@ -49,7 +49,7 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
         { signal: abortControllerRef.current.signal }
       );
     } catch (error) {
-      console.error('Error sending typing status:', error);
+      throwError(error);
     }
   };
 
@@ -87,9 +87,7 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
     try {
       if (fileUpload.length > 0) {
         const resImages = await handleFileUpload(fileUpload);
-
-        // eslint-disable-next-line no-extra-boolean-cast
-        if (!!value.trim()) {
+        if (value.trim()) {
           sendMessage({
             type: 'image',
             imageList: resImages.map((res) => encodeURI(res.url)),
@@ -115,7 +113,7 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
         replyTo: replyMessage?.id || replyMessage?._id,
       });
     } catch (error) {
-      /* empty */
+      throwError(error);
     } finally {
       setValue(() => '');
       deleteAllFiles();

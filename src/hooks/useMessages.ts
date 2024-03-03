@@ -2,13 +2,14 @@ import { getAxios } from '@/api';
 import { IMessages } from '@/types';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-export const useMessages = (conversationId: string, limit = 10) => {
+export const useMessages = (conversationId: string, limit = 10, is_pin?: boolean) => {
   return useInfiniteQuery(
-    ['messages', conversationId],
+    [is_pin ? 'pinned-messages' : 'messages', conversationId],
     async ({ pageParam = 1 }) => {
       const res = await getAxios<IMessages>(`/conversation/${conversationId}/message`, {
         page: pageParam,
         limit,
+        is_pin,
       });
       return res;
     },

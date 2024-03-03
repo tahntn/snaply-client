@@ -7,6 +7,7 @@ export const Conversation = {
   detailConversation: {
     members: 'Thành viên',
     otherAction: 'Hành động khác',
+    messagePinned: 'Tin nhắn đã ghim',
   },
   sentAMessage: 'đã gửi một tin nhắn.',
   sentPictures: 'đã gửi hình ảnh.',

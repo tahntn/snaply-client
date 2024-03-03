@@ -21,7 +21,7 @@ import PusherProvider from './context/PusherProvider';
 import { Toaster } from './components/ui/sonner';
 
 function App() {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const { getString } = storage;
   const { setLogin } = useAuthStore((state) => state);
   const { mutate: logout } = useLogout();
@@ -101,9 +101,7 @@ function App() {
                 onRrefreshed(newToken.data.token);
               })
               .catch(() => {
-                toast.error('Uh oh! Something went wrong. token expried', {
-                  description: 'Phiên bản đã hết hạn vui lòng đăng nhập lại',
-                });
+                toast.error(t('setting.error.errorOccurred'));
                 logout(refreshToken!);
               });
           }

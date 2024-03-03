@@ -3,15 +3,14 @@ import { Sheet, SheetContent, SheetHeader, SheetTrigger } from '@/components/ui/
 import { Icons } from '@/components/ui/icons';
 import { useDetailConversation, useGetMe } from '@/hooks';
 import { useParams } from 'react-router-dom';
-// import AvatarConversation from '@/components/Conversation/AvatarConversation';
 import NameConversation from '@/components/Conversation/NameConversation';
 import { Separator } from '@/components/ui/separator';
 import AvatarUser from '@/components/AvatarUser';
 import { useTranslation } from 'react-i18next';
-import { Text } from '@radix-ui/themes';
 import { cn } from '@/lib/utils';
 import DialogChangeNameGroup from '@/components/Dialog/DialogChangeNameGroup';
 import ButtonDetailAvatarConversation from './ButtonDetailAvatarConversation';
+import { DialogPinnedMessage } from '@/components/Dialog';
 
 const ButtonDetailConversation = () => {
   const { conversationId } = useParams();
@@ -70,15 +69,11 @@ const ButtonDetailConversation = () => {
             {t('conversation.detailConversation.otherAction')}
           </h3>
           <ul className="my-4">
-            <li className="flex items-center gap-2">
-              <div className="pt-[4px]">
-                <Icons.pin className="h-5 w-5" />
-              </div>
-              <Text className="text-lg font-medium flex-1 lin">Tin nhắn đã ghim</Text>
-              <Text className="text-lg font-medium ">2</Text>
-              <div className="pt-[4px]">
-                <Icons.chevronRight className="h-6 w-6" />
-              </div>
+            <li>
+              <DialogPinnedMessage
+                conversationId={(conversation?._id || conversation?.id)!}
+                pinnedMessagesCount={conversation?.pinnedMessagesCount}
+              />
             </li>
           </ul>
         </div>
