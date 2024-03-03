@@ -14,7 +14,7 @@ import GifMessage from './Message/GifMessage';
 import StickerMessage from './Message/StickerMessage';
 import UpdateMessage from './Message/UpdateMessage';
 import { DialogPinMessage } from '@/components/Dialog';
-
+import pinImage from '@/assets/images/icons/pin.png';
 const MessageItem: React.FC<
   IMessage & {
     currentUser: IUser;
@@ -141,6 +141,12 @@ const MessageItem: React.FC<
             )}
             {type === 'gif' && <GifMessage url={url!} />}
             {type === 'sticker' && <StickerMessage url={url!} />}
+            {isPin && (
+              <div className="absolute top-[-10px] right-[-10px]">
+                {/* <Icons.pin className="text-[red]" /> */}
+                <img src={pinImage} className="h-5 w-5" />
+              </div>
+            )}
 
             {/* Action with message */}
             <div
