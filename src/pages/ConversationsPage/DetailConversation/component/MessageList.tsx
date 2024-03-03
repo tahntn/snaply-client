@@ -9,6 +9,9 @@ import { usePusher } from '@/context/PusherProvider';
 import { useQueryClient } from '@tanstack/react-query';
 import UserTyping from './UserTyping';
 import LoadingComponent from '@/components/LoadingComponent';
+import { Icons } from '@/components/ui/icons';
+import { Button } from '@/components/ui/button';
+import { useConversationStore } from '@/store';
 
 interface MessageListProps {
   conversationId: string;
@@ -22,7 +25,11 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId }) => {
   const { data: currentUser } = useGetMe();
   const { data, fetchNextPage, isError, isLoading, hasNextPage, isFetchingNextPage } =
     useMessages(conversationId);
+  const { isOpenGif } = useConversationStore((state) => state);
   const { ref, inView } = useInView();
+  const listRef = React.useRef<HTMLDivElement>(null);
+
+  const [showScrollButton, setShowScrollButton] = React.useState(false);
   const [listUserTyping, setListUserTyping] = React.useState<IUser[]>([]);
   React.useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -42,6 +49,9 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId }) => {
             pageParams: [...oldData.pageParams],
           };
         });
+        if (data.senderId?.id === currentUser?.id) {
+          scrollToBottom('auto');
+        }
       };
 
       const userTyping = (data: { isTyping: boolean; userTyping: IUser }) => {
@@ -69,6 +79,37 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId }) => {
     }
   }, [pusher, conversationId, currentUser, queryClient]);
 
+  React.useEffect(() => {
+    const handleScroll = () => {
+      if (listRef.current) {
+        console.log(listRef.current.scrollTop);
+
+        setShowScrollButton(listRef.current.scrollTop < -300);
+      }
+    };
+
+    if (listRef.current) {
+      listRef.current.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      if (listRef.current) {
+        listRef.current.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
+  const scrollToBottom = React.useCallback((behavior: ScrollBehavior | undefined) => {
+    if (listRef.current) {
+      listRef.current.scrollTo({
+        top: listRef.current.scrollHeight,
+        behavior,
+      });
+    }
+  }, []);
+
+  React.useEffect(() => {
+    scrollToBottom('auto');
+  }, [conversationId, scrollToBottom]);
   if (isLoading) {
     return (
       <div className="h-full w-full flex items-center justify-center">
@@ -80,9 +121,11 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId }) => {
     return <Navigate replace to={'/conversation'} />;
   }
   return (
-    <div className="h-full max-h-full overflow-y-auto overflow-x-hidden flex-col-reverse flex gap-2 py-3 px-3">
+    <div
+      ref={listRef}
+      className="h-full relative max-h-full overflow-y-auto overflow-x-hidden flex-col-reverse flex gap-2 py-3 px-3"
+    >
       {listUserTyping?.length > 0 && <UserTyping listUserTyping={listUserTyping} />}
-
       {data?.pages.map((page, indexPage) =>
         page.data.map((message, indexMessage) => {
           let prevMessage: IMessage;
@@ -132,7 +175,17 @@ const MessageList: React.FC<MessageListProps> = ({ conversationId }) => {
           <LoadingComponent className="h-10 w-10" />
         </div>
       )}
-      <div ref={ref} style={{ height: '20px' }} />
+      <div ref={ref} />
+      {showScrollButton && !isOpenGif && (
+        <Button
+          onClick={() => scrollToBottom('smooth')}
+          size={'sm'}
+          variant={'outline'}
+          className="fixed bottom-[90px] right-3 z-10 w-6 h-6 p-1   rounded-full"
+        >
+          <Icons.arrowDown />
+        </Button>
+      )}
     </div>
   );
 };

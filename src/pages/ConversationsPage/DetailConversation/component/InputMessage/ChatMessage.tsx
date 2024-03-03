@@ -32,8 +32,8 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
   } = useConversationStore((state) => state);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const { throwError } = useToastError();
-  const { mutate: sendMessage } = useSendMessage(conversationId!);
-  const { mutate: uploadImage } = useUploadImageMessage();
+  const { mutateAsync: sendMessage } = useSendMessage(conversationId!);
+  const { mutateAsync: uploadImage } = useUploadImageMessage();
   const [value, setValue] = React.useState('');
   const [isTyping, setIsTyping] = React.useState(false);
   const { getRootProps, getInputProps } = useUploadFile();

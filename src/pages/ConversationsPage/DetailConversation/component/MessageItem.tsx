@@ -42,7 +42,7 @@ const MessageItem: React.FC<
   const { setReplyMessage, focusInput } = useConversationStore((state) => state);
   const [open, setOpen] = React.useState(false);
   return (
-    <div className="w-full">
+    <div className="w-full" id={id || _id}>
       {isMessagesNew && (type === 'image' || type === 'text') && (
         <div className="flex w-full justify-center items-center gap-3 px-10 my-4">
           <Separator className="flex-1" />
