@@ -1,3 +1,5 @@
+import LoadingComponent from '@/components/LoadingComponent';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { cn } from '@/lib/utils';
@@ -47,13 +49,18 @@ const ImageMessage: React.FC<ImageMessageProps> = ({
               classNameWrapImage
             )}
           >
-            <img
-              src={image}
+            <Avatar
               className={cn(
-                ' object-cover shadow-lg w-full h-full transition-transform transform group-hover/image:scale-105',
+                ' shadow-lg w-full h-full rounded-none transition-transform transform group-hover/image:scale-105',
                 classNameImg
               )}
-            />
+            >
+              <AvatarImage src={image} className="aspect-auto object-cover" />
+              <AvatarFallback className="h-full w-fit flex items-center justify-center">
+                <LoadingComponent />
+              </AvatarFallback>
+            </Avatar>
+
             <div
               className={cn(
                 'hidden absolute cursor-pointer group-hover/image:block inset-0 bg-black bg-opacity-50 opacity-0 group-hover/image:opacity-100 transition-opacity',
