@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 interface DataType {
   participants: string[];
   isGroup: boolean;
+  nameGroup?: string;
 }
 
 export const useCreateConversation = () => {

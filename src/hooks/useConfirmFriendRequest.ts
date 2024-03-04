@@ -1,22 +1,17 @@
 import { postAxios } from '@/api';
 import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
-import { useFriendRequest } from '.';
+import { useTranslation } from 'react-i18next';
 
-export const useConfirmFriendRequest = (idFriendRequest: string) => {
-  const { refetch } = useFriendRequest({
-    type: 'friendRequests',
-  });
-
+export const useConfirmFriendRequest = (idFriendRequest: string, onSuccess: () => void) => {
+  const { t } = useTranslation();
   return useMutation({
     mutationFn: () => {
       return postAxios(`/friend/confirm/${idFriendRequest}`);
     },
     onSuccess: () => {
-      toast.success('Success', {
-        description: 'Confirm friend request successfully',
-      });
-      refetch();
+      toast.success(t('friend.confirmFriendRequestSuccess'));
+      onSuccess();
     },
   });
 };

@@ -12,8 +12,7 @@ const SearchComponent = () => {
   const debouncedValueSearch = useDebounce(searchValue, 500);
 
   useEffect(() => {
-    // eslint-disable-next-line no-extra-boolean-cast
-    if (!!debouncedValueSearch) {
+    if (debouncedValueSearch.trim() && !!debouncedValueSearch.trim()) {
       navigate(`?q=${debouncedValueSearch}`);
     } else {
       navigate('');
@@ -24,7 +23,7 @@ const SearchComponent = () => {
     <div className="pt-10">
       <SearchInput value={searchValue} setValue={setSearchValue} />
       <div className="mt-5">
-        <ListSearch keyword={debouncedValueSearch} />
+        <ListSearch keyword={debouncedValueSearch.trim()} />
       </div>
     </div>
   );

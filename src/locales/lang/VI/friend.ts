@@ -3,10 +3,15 @@ export const Friend = {
   form: {
     placeholderSearch: 'Tìm kiếm bạn bè...',
     notFound: 'Không tìm thấy kết quả nào',
+    noFriends: 'Bạn chưa có bạn bè.',
   },
   addFriend: 'Thêm bạn bè',
   friend: 'Bạn bè',
   confirm: 'Xác nhận',
   pending: 'Đang chờ',
   message: 'Nhắn tin',
+  createFriendRequestSuccess: 'Tạo yêu cầu kết bạn thành công.',
+  confirmFriendRequestSuccess: 'Xác nhận yêu cầu kết bạn thành công.',
+  block: 'Chặn',
+  remove: 'Xóa',
 };

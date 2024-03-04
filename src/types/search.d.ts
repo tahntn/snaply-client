@@ -12,7 +12,7 @@ export interface idOtherUser {
 
 interface IFriend {
   createdAt: Date;
-  id: Date;
+  id: string;
   status: 'accept' | 'pending';
   targetUserId: string;
   updatedAt: Date;

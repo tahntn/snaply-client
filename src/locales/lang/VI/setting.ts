@@ -22,10 +22,8 @@ export const Setting = {
   },
   featureUnderDevelopment: 'Tính năng này đang trong quá trình phát triển và sẽ sớm được cập nhật!',
   logout: {
-    logout: 'Logout',
+    logout: 'Đăng xuất',
     confirmLogout: 'Bạn có chắc chắn muốn đăng xuất không?',
-    changeGroupAvatar: 'Thay đổi ảnh đại diện nhóm ?',
-    confirmChangeGroupAvatar: 'Bạn có chắc chắn muốn thay đổi ảnh đại diện nhóm không ?',
   },
   error: {
     errorOccurred: 'Đã có lỗi xảy ra, vui lòng thử lại sau!',

@@ -33,11 +33,13 @@ const UpdateMessage: React.FC<UpdateMessageProps> = ({ user, title, createdAt })
         <>
           <div className="flex flex-col items-center justify-center mb-10">
             <AvatarUser
-              name={targetUser?.username}
-              url={targetUser?.avatar}
+              name={data?.isGroup ? data.nameGroup! : targetUser?.username}
+              url={data?.isGroup ? data.avatarGroup! : targetUser?.avatar}
               classNameAvatar="h-36 w-36 mb-5"
             />
-            <h5 className="text-4xl font-medium">{targetUser?.username}</h5>
+            <h5 className="text-4xl font-medium">
+              {data?.isGroup ? data.nameGroup! : targetUser?.username}
+            </h5>
           </div>
           <div className="flex w-full justify-center items-center gap-3 px-10 my-4">
             <Separator className="flex-1" />

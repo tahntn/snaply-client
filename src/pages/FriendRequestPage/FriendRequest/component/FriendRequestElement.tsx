@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Text } from '@radix-ui/themes';
 import { cn } from '@/lib/utils';
 import AvatarUser from '@/components/AvatarUser';
@@ -7,15 +8,36 @@ import { useConfirmFriendRequest } from '@/hooks/useConfirmFriendRequest';
 import useDenyFriendRequest from '@/hooks/useDenyFriendRequest';
 import { IDataFriendRequest } from '@/types/friendRequest';
 import { useGlobalStore } from '@/store';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface FriendRequestElementProps {
   friendRequest: IDataFriendRequest;
 }
 
 const FriendRequestElement: React.FC<FriendRequestElementProps> = ({ friendRequest }) => {
+  const queryClient = useQueryClient();
   const { handleOpenDialogOtherUser } = useGlobalStore((state) => state);
   const { username, avatar } = friendRequest.user;
-  const { mutate: confirmFriendRequest } = useConfirmFriendRequest(friendRequest._id!);
+  const { mutate: confirmFriendRequest } = useConfirmFriendRequest(friendRequest._id!, () => {
+    const listFriendRequest = queryClient.getQueryData(['friendRequest']);
+    if (listFriendRequest) {
+      queryClient.setQueryData(['friendRequest'], (oldData: any) => {
+        const updatedPages = oldData.pages.map((page: any) => ({
+          data: page.data.filter((message: any) => {
+            return message._id !== friendRequest._id;
+          }),
+        }));
+
+        return {
+          pageParams: oldData.pageParams,
+          pages: updatedPages.map((page: any, index: number) => ({
+            data: page.data,
+            pagination: oldData.pages?.[index]?.pagination,
+          })),
+        };
+      });
+    }
+  });
   const { mutate: denyFriendRequest } = useDenyFriendRequest(friendRequest._id!);
 
   const { t } = useTranslation();
@@ -32,12 +54,10 @@ const FriendRequestElement: React.FC<FriendRequestElementProps> = ({ friendReque
         className="flex flex-row items-center gap-4"
         onClick={() => handleOpenDialogOtherUser(friendRequest.user.id! || friendRequest.user._id!)}
       >
-        <AvatarUser name={username} url={avatar} />
+        <AvatarUser name={username} url={avatar} classNameAvatar="w-7 h-7" />
 
         <Box className="flex flex-col gap-[0.2px]">
-          <Text className="text-base font-semibold truncate max-w-[320px] opacity-0 lg:opacity-100">
-            {username}
-          </Text>
+          <Text className="text-base font-semibold truncate max-w-[320px]">{username}</Text>
           <Text className="text-sm text-gray-400">{t('friendRequest.sendYouARequest')}</Text>
         </Box>
       </Box>

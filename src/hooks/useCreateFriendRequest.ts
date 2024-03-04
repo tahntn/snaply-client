@@ -1,9 +1,11 @@
 import { postAxios } from '@/api';
 import { IFriend, idOtherUser } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 export const useCreateFriendRequest = () => {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
   return useMutation({
     mutationFn: (targetUserId: string) =>
       postAxios<IFriend, { id: string }>(`friend/create/${targetUserId}`),
@@ -12,13 +14,7 @@ export const useCreateFriendRequest = () => {
         ...prev!,
         friendShip: data,
       }));
-      toast.success(
-        'Success',
-
-        {
-          description: 'Create friend request successfully',
-        }
-      );
+      toast.success(t('friend.createFriendRequestSuccess'));
     },
   });
 };

@@ -22,8 +22,7 @@ const ListSearch: FC<ListSearchProps> = ({ keyword }) => {
   }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
 
   if (data?.pages?.[0]?.data?.length === 0) {
-    // eslint-disable-next-line no-extra-boolean-cast
-    if (!!keyword) {
+    if (keyword && !!keyword) {
       return <NoResults />;
     }
     return (

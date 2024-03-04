@@ -10,7 +10,6 @@ export const useDetailConversation = (conversationId: string) => {
     () => getAxios<IDetailConversation | undefined>(`/conversation/${conversationId}`),
     {
       onError: (error) => {
-        console.log('🚀 ~ useDetailConversation ~ error:', error);
         throwError(error);
       },
       retry: 0,

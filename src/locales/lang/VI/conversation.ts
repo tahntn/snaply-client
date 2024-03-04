@@ -21,8 +21,12 @@ export const Conversation = {
     newOne: 'cuộc trò chuyện mới.',
   },
   group: {
+    createGroupChat: 'Tạo nhóm chat',
+    newGroupChat: 'Nhóm chat mới',
     changeGroupName: 'Thay đổi tên nhóm ?',
-    nameGroup: 'Tên nhóm',
+    groupName: 'Tên nhóm',
+    changeGroupAvatar: 'Thay đổi ảnh đại diện nhóm ?',
+    confirmChangeGroupAvatar: 'Bạn có chắc chắn muốn thay đổi ảnh đại diện nhóm không ?',
   },
   noConversations: 'Bạn chưa có cuộc trò chuyện nào',
 };

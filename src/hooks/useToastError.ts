@@ -7,8 +7,6 @@ export const useToastError = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (error: any, error2?: string) => {
       const _error = (error.response?.data?.message || error2) as string | undefined;
-      console.log('hi');
-
       toast.error(_error || t('setting.error.errorOccurred'));
     },
     []

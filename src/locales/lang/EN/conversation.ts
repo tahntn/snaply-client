@@ -22,9 +22,11 @@ export const Conversation = {
     newOne: 'new one.',
   },
   group: {
+    createGroupChat: 'Create group chat',
+    newGroupChat: 'New group chat',
     changeGroupName: 'Change group name ?',
     groupName: 'Group name',
-    changeGroupAvatar: 'Change group avatar ?',
+    changeGroupAvatar: 'Change group avatar?',
     confirmChangeGroupAvatar: 'Are you sure you want to change the group avatar ?',
   },
   noConversations: "You don't have any conversations yet",
