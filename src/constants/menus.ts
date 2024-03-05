@@ -1,7 +1,11 @@
 import { Icons } from '@/components/ui/icons';
 import { TFunction } from 'i18next';
 
-export const mainMenus = (t: TFunction<'translation', undefined>) => [
+export const mainMenus = (
+  t: TFunction<'translation', undefined>,
+  totalFriend?: number,
+  totalFriendRequest?: number
+) => [
   {
     id: 'search',
     link: '/search',
@@ -19,13 +23,14 @@ export const mainMenus = (t: TFunction<'translation', undefined>) => [
     link: 'friend',
     title: t('sidebar.menu.friend'),
     icon: Icons.users,
+    noti: totalFriend || 0,
   },
   {
     id: 'friend-request',
     link: 'friend-request',
     title: t('sidebar.menu.friendRequest'),
     icon: Icons.userRoundPlus,
-    noti: 2,
+    noti: totalFriendRequest || 0,
   },
 ];
 

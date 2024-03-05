@@ -9,12 +9,14 @@ import LogoDark from '../assets/images/logo/logo-dark-none-text.png';
 import { useTheme } from '@/context/ThemeProvider';
 import { useTranslation } from 'react-i18next';
 import ButtonMe from './Button/ButtonMe';
+import { useGetTotalFriend } from '@/hooks/useGetTotalFriend';
 
 const SideBar: React.FC = () => {
   const { isMenuOpen } = useGlobalStore((state) => state);
   const { mainTheme } = useTheme();
   const { t } = useTranslation();
-
+  const { data: totalFriend } = useGetTotalFriend();
+  const { data: totalRequestFriend } = useGetTotalFriend('friendRequests');
   return (
     <aside
       id="logo-sidebar"
@@ -48,13 +50,13 @@ const SideBar: React.FC = () => {
             </h2>
           </NavLink>
           <ul className="space-y-3 font-medium">
-            {mainMenus(t).map((menu, i) => (
+            {mainMenus(t, totalFriend, totalRequestFriend).map((menu, i) => (
               <li key={i}>
                 <NavLink
                   to={menu.link}
                   className={({ isActive }) =>
                     cn(
-                      'flex items-center  p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-700 group',
+                      'flex items-center  p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-700 group relative',
                       isActive ? 'bg-gray-400 dark:bg-gray-700' : null
                     )
                   }
@@ -67,6 +69,17 @@ const SideBar: React.FC = () => {
                       {!isMenuOpen && <p className="text-white dark:text-gray-800">{menu.title}</p>}
                     </TooltipContent>
                   </Tooltip>
+                  {typeof menu?.noti === 'number' ? (
+                    <div
+                      className={cn(
+                        'absolute top-[-3px] right-[-3px]',
+                        ' text-background p-2 font-semibold text-xs bg-secondary-foreground rounded-full h-5 w-5 flex items-center justify-center bg-opacity-100',
+                        menu.noti > 99 && 'text-[8px]'
+                      )}
+                    >
+                      {menu.noti > 99 ? '99+' : menu.noti}
+                    </div>
+                  ) : null}
                   <div
                     className={`flex-1 flex items-center duration-500  ${
                       !isMenuOpen && 'opacity-0 translate-x-2 overflow-hidden'
