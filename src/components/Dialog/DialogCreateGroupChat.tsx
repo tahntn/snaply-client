@@ -37,7 +37,7 @@ const DialogCreateGroupChat = () => {
         </TooltipTrigger>
         <TooltipContent sideOffset={10}>{t('conversation.group.createGroupChat')}</TooltipContent>
       </Tooltip>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] max-h-[calc(100vh-100px)]">
         <DialogHeader>
           <DialogTitle>{t('conversation.group.newGroupChat')}</DialogTitle>
         </DialogHeader>

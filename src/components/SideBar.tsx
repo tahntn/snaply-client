@@ -49,7 +49,7 @@ const SideBar: React.FC = () => {
           </NavLink>
           <ul className="space-y-3 font-medium">
             {mainMenus(t).map((menu, i) => (
-              <li>
+              <li key={i}>
                 <NavLink
                   to={menu.link}
                   className={({ isActive }) =>
@@ -88,7 +88,7 @@ const SideBar: React.FC = () => {
           </ul>
           <ul className="pt-5 mt-5 space-y-2 border-t border-gray-500 dark:border-gray-700 font-medium">
             {subMenus(t).map((menu, i) => (
-              <li>
+              <li key={i}>
                 <NavLink
                   to={menu.link}
                   className={({ isActive }) =>

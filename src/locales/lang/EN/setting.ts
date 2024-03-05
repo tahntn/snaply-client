@@ -30,5 +30,6 @@ export const Setting = {
     errorOccurred: 'An error has occurred, please try again later!',
     sessionExpired: 'Session has expired, please log in again',
     apiUnavailable: 'API is currently unavailable. Please try again later.',
+    connectionLost: 'Connection lost!',
   },
 };
