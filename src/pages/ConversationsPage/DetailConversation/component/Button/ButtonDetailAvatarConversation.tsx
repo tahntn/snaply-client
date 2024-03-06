@@ -44,7 +44,7 @@ const ButtonDetailAvatarConversation: React.FC<ButtonDetailAvatarConversationPro
         (prev?: IDetailConversation) => {
           return {
             ...prev!,
-            nameGroup: data?.avatarGroup,
+            avatarGroup: data?.avatarGroup,
           };
         }
       );

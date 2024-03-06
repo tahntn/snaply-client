@@ -81,7 +81,7 @@ const ConversationList = () => {
     return <ErrorComponent />;
   }
   return (
-    <Box className="flex gap-5 pb-5 flex-col overflow-y-auto max-h-[750px] pr-4 overflow-x-hidden">
+    <Box className="flex gap-5 pb-5 flex-col overflow-y-auto sm:max-h-[calc(100vh-140px)] xs:max-h-[calc(100vh-200px)] pr-4 overflow-x-hidden min-h-[calc(100vh-300px)]">
       <Text className="text-lg font-semibold">{t('conversation.allConversation')}</Text>
       {data &&
         data.pages?.map((listConversation) =>

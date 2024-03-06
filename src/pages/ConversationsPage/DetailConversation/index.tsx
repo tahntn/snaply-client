@@ -42,7 +42,10 @@ const DetailConversation = () => {
   }
 
   return (
-    <div className=" md:h-screen sm:h-[calc(100vh)] xs:h-[calc(100vh-64px)]" {...getRootProps()}>
+    <div
+      className=" md:h-screen sm:h-[calc(100vh)] xs:h-[calc(100vh)] xs:pt-[60px]  "
+      {...getRootProps()}
+    >
       <div className="h-full w-full relative" onClick={handleClick}>
         <HeaderDetailConversation data={data} isLoading={isLoading} currentUser={currentUser!} />
         <div

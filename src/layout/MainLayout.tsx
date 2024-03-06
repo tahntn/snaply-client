@@ -17,7 +17,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
       <div
         className={cn(
-          !isMobile ? 'duration-500 h-screen -translate-x-full sm:translate-x-0' : 'pt-16',
+          !isMobile ? 'duration-500 h-screen -translate-x-full sm:translate-x-0' : 'h-screen',
           isMenuOpen ? 'sm:ml-64' : 'sm:ml-20'
         )}
       >

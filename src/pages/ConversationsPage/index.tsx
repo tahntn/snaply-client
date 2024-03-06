@@ -30,7 +30,7 @@ const ConversationsPage: React.FC<ConversationsPageProps> = ({ children }) => {
         conversationId ? (
           children
         ) : (
-          <div className="bg-gray-100 dark:bg-black_custom-500">
+          <div className="bg-gray-100 dark:bg-black_custom-500 h-full">
             <Conversation />
           </div>
         )

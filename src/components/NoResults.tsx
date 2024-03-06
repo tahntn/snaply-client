@@ -13,7 +13,7 @@ const NoResults: React.FC<NoResultsProps> = ({ classNameWrap, classNameImg, clas
   const { mainTheme } = useTheme();
   const { t } = useTranslation();
   return (
-    <div className={cn('flex flex-col items-center', classNameWrap)}>
+    <div className={cn(' flex flex-col items-center', classNameWrap)}>
       <img
         src={mainTheme === 'light' ? noResultsDark : noResultsLight}
         alt="no_result"

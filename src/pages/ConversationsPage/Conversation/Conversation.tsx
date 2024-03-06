@@ -10,8 +10,8 @@ const Conversation = () => {
   const { t } = useTranslation();
   return (
     <Box className="h-full">
-      <Box className="p-6">
-        <Box className="flex items-center justify-between">
+      <Box className="sm:p-6 xs:px-6 pb-1 xs:pt-[90px]">
+        <Box className="h-full flex items-center justify-between">
           <Text className="font-bold text-2xl">{t('conversation.title')}</Text>
           <DialogCreateGroupChat />
         </Box>
