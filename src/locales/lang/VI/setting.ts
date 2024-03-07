@@ -25,6 +25,9 @@ export const Setting = {
     logout: 'Đăng xuất',
     confirmLogout: 'Bạn có chắc chắn muốn đăng xuất không?',
   },
+  account: {
+    account: 'Tài khoản',
+  },
   error: {
     errorOccurred: 'Đã có lỗi xảy ra, vui lòng thử lại sau!',
     sessionExpired: 'Phiên bản đã hết hạn, vui lòng đăng nhập lại',

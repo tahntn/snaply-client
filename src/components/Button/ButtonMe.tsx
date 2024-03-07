@@ -3,6 +3,8 @@ import { useGetMe } from '@/hooks';
 import { Skeleton } from '../ui/skeleton';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { ButtonSignout } from './ButtonSignout';
+import { Separator } from '../ui/separator';
+import ButtonUser from './ButtonUser';
 
 const ButtonMe = () => {
   const { data, isLoading } = useGetMe();
@@ -21,7 +23,11 @@ const ButtonMe = () => {
         )}
       </PopoverTrigger>
       <PopoverContent className="w-fit" align="start">
-        <ButtonSignout />
+        <div className="grid gap-4">
+          <ButtonUser />
+          <Separator />
+          <ButtonSignout />
+        </div>
       </PopoverContent>
     </Popover>
   );

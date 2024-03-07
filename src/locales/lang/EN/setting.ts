@@ -26,6 +26,9 @@ export const Setting = {
     logout: 'Log out',
     confirmLogout: 'Are you sure you want to logout?',
   },
+  account: {
+    account: 'Account',
+  },
   error: {
     errorOccurred: 'An error has occurred, please try again later!',
     sessionExpired: 'Session has expired, please log in again',
