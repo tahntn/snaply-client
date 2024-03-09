@@ -35,4 +35,6 @@ export const Setting = {
     apiUnavailable: 'API is currently unavailable. Please try again later.',
     connectionLost: 'Connection lost!',
   },
+  updateSuccess: 'Update successful',
+  changePassword: 'Change password?',
 };

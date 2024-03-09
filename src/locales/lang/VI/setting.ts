@@ -34,4 +34,6 @@ export const Setting = {
     apiUnavailable: 'API hiện không khả dụng. Vui lòng thử lại sau.',
     connectionLost: 'Mất kết nối!',
   },
+  updateSuccess: 'Cập nhật thành công',
+  changePassword: 'Đổi mật khẩu?',
 };

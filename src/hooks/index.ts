@@ -19,3 +19,4 @@ export * from './useUpdateGroupConversation';
 export * from './useUploadSingleImage';
 export * from './useToastError';
 export * from './usePinMessage';
+export * from './useUpdateUser';

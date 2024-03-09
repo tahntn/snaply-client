@@ -18,7 +18,7 @@ export async function postAxios<RT, BT>(endpoint: string, arg?: BT) {
   return res.data;
 }
 
-export async function patchAxios<RT, BT>(endpoint: string, id: string, arg: BT) {
-  const res = await axiosInstance.patch<RT>(`${endpoint}/${id}`, arg);
+export async function patchAxios<RT, BT>(endpoint: string, id: string | undefined, arg: BT) {
+  const res = await axiosInstance.patch<RT>(`${endpoint}/${id ? id : ''}`, arg);
   return res.data;
 }
