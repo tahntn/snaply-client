@@ -1,4 +1,11 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import { Button } from '../ui/button';
 import addGroupDark from '@/assets/images/icons/add-group-dark.png';
 import addGroupLight from '@/assets/images/icons/add-group-light.png';
@@ -18,10 +25,14 @@ import { Input } from '../ui/input';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useTranslation } from 'react-i18next';
+import emptyLight from '@/assets/images/icons/empty.png';
+import emptyDark from '@/assets/images/icons/empty-dark.png';
+
 const DialogCreateGroupChat = () => {
   const { t } = useTranslation();
   const { mainTheme } = useTheme();
   const [open, setOpen] = React.useState(false);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <Tooltip>
@@ -40,6 +51,7 @@ const DialogCreateGroupChat = () => {
       <DialogContent className="sm:max-w-[425px] max-h-[calc(100vh-100px)]">
         <DialogHeader>
           <DialogTitle>{t('conversation.group.newGroupChat')}</DialogTitle>
+          <DialogDescription>{t('friend.createGroupChat')}</DialogDescription>
         </DialogHeader>
         <div>
           <UserList setOpen={setOpen} />
@@ -53,6 +65,7 @@ export default DialogCreateGroupChat;
 
 const UserList = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
   const { t } = useTranslation();
+  const { mainTheme } = useTheme();
   const { mutateAsync: createConversation, isLoading: isLoadingCreateConversation } =
     useCreateConversation();
   const { ref, inView } = useInView();
@@ -133,6 +146,17 @@ const UserList = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
                       {t('conversation.detailConversation.members')}
                     </FormLabel>
                   </div>
+                  {!data?.pages?.[0]?.data?.length && (
+                    <div className="flex gap-2 flex-col items-center justify-center  pt-6">
+                      <img
+                        src={mainTheme === 'dark' ? emptyDark : emptyLight}
+                        className="max-h-[100px]"
+                      />
+                      <h2 className="text-lg font-medium text-center">
+                        {t('friend.form.noFriends')}
+                      </h2>
+                    </div>
+                  )}
                   {data.pages?.map((listFriendRequest) =>
                     listFriendRequest?.data?.map((friendRequest) => (
                       <FormField

@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { Separator } from '@/components/ui/separator';
@@ -15,6 +14,7 @@ import StickerMessage from './Message/StickerMessage';
 import UpdateMessage from './Message/UpdateMessage';
 import { DialogPinMessage } from '@/components/Dialog';
 import pinImage from '@/assets/images/icons/pin.png';
+import AvatarUser from '@/components/AvatarUser';
 const MessageItem: React.FC<
   IMessage & {
     currentUser: IUser;
@@ -59,10 +59,7 @@ const MessageItem: React.FC<
       >
         {/* Avatar */}
         {hasAvatar && currentUser?.id !== senderId?.id && type !== 'update' && (
-          <Avatar>
-            <AvatarImage src={senderId.avatar} />
-            <AvatarFallback className="uppercase">{senderId.username?.[0]}</AvatarFallback>
-          </Avatar>
+          <AvatarUser url={senderId?.avatar} name={senderId.username?.[0]} />
         )}
 
         {/*Info  Message */}

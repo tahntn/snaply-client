@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import DialogChangeNameGroup from '@/components/Dialog/DialogChangeNameGroup';
 import ButtonDetailAvatarConversation from './ButtonDetailAvatarConversation';
 import { DialogPinnedMessage } from '@/components/Dialog';
+import AvatarConversation from '@/components/Conversation/AvatarConversation';
 
 const ButtonDetailConversation = () => {
   const { conversationId } = useParams();
@@ -26,7 +27,17 @@ const ButtonDetailConversation = () => {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader className="flex flex-col items-center">
-          <ButtonDetailAvatarConversation isLoading={isLoading} conversation={conversation!} />
+          {conversation?.isGroup ? (
+            <ButtonDetailAvatarConversation isLoading={isLoading} conversation={conversation!} />
+          ) : (
+            <AvatarConversation
+              isLoading={isLoading}
+              conversation={conversation!}
+              classNameAvatar="h-24 w-24  "
+              classNameSkeleton="h-10 w-10"
+              classNameWrap="relative group"
+            ></AvatarConversation>
+          )}
 
           <div className="w-full relative group">
             <NameConversation

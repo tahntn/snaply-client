@@ -69,9 +69,9 @@ function App() {
     axiosInstance.interceptors.request.use(async (req) => {
       const accessToken = getString('snalpy-access');
       const language = i18n.language;
+      req.headers['Accept-Language'] = language;
       if (accessToken) {
         req.headers['Authorization'] = 'Bearer ' + accessToken;
-        req.headers['Accept-Language'] = language;
       }
       if (req.data instanceof FormData) {
         req.headers['Content-Type'] = 'multipart/form-data';
@@ -119,6 +119,19 @@ function App() {
         }
       }
     );
+  }, []);
+
+  React.useEffect(() => {
+    const handleNetworkChange = () => {
+      if (!navigator.onLine) {
+        toast.error(t('setting.error.connectionLost'));
+      }
+    };
+
+    window.addEventListener('offline', handleNetworkChange);
+    return () => {
+      window.removeEventListener('offline', handleNetworkChange);
+    };
   }, []);
 
   return (

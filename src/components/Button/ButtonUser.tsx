@@ -10,23 +10,27 @@ import {
 } from '@/components/ui/dialog';
 import { useTranslation } from 'react-i18next';
 import { Icons } from '../ui/icons';
-import { useGetMe, useToastError, useUpdateUser } from '@/hooks';
+import { useGetMe, useToastError, useUpdateUser, useUploadSingleImage } from '@/hooks';
 import SkeletonAvatar from '../Skeleton/SkeletonAvatar';
 import AvatarUser from '../AvatarUser';
 import SkeletonText from '../Skeleton/SkeletonText';
 import { Separator } from '../ui/separator';
 import { Input } from '../ui/input';
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 const ButtonUser = () => {
+  const [open, setOpen] = React.useState(false);
   const queryClient = useQueryClient();
   const { throwError } = useToastError();
   const { t } = useTranslation();
   const { data, isLoading } = useGetMe();
   const [isEditName, setIsEditName] = React.useState(true);
   const [isEditEmail, setIsEditEmail] = React.useState(true);
+  const [isEditAvatar, setIsEditAvatar] = React.useState(true);
   const [username, setUsername] = React.useState(data?.username);
   const [email, setEmail] = React.useState(data?.email);
+  const [avatar, setAvatar] = React.useState<File | null>(null);
+  const { mutateAsync, isLoading: isLoadingUpload } = useUploadSingleImage();
   const { mutateAsync: updateUser, isLoading: isLoadingUpdateUser } = useUpdateUser((data) => {
     queryClient.setQueryData(['me'], () => data);
   });
@@ -50,8 +54,39 @@ const ButtonUser = () => {
       throwError(error);
     }
   };
+
+  const handleClickAvatar = async () => {
+    try {
+      if (isEditAvatar) {
+        setIsEditAvatar((prev) => !prev);
+        return;
+      }
+
+      if (!avatar) {
+        return;
+      }
+      const formData = new FormData();
+      formData.append('file', avatar);
+      const res = await mutateAsync(formData);
+      await updateUser({
+        avatar: res.url,
+      });
+      setIsEditAvatar((prev) => !prev);
+    } catch (error) {
+      throwError(error);
+    } finally {
+      setAvatar(null);
+    }
+  };
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setAvatar(event.target.files[0]);
+    }
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <div className="flex gap-1 items-center cursor-pointer">
           <div>
@@ -69,17 +104,39 @@ const ButtonUser = () => {
             {isLoading ? (
               <>
                 <SkeletonAvatar className="h-20 w-20" />
-                <SkeletonText className="text-2xl w-5" />
+                <SkeletonText className="text-2xl w-20" />
               </>
             ) : (
               <>
-                <AvatarUser classNameAvatar="h-20 w-20" url={data!.avatar} name={data!.username} />
+                <AvatarUser classNameAvatar="h-20 w-20" url={data?.avatar} name={data!.username} />
                 <h4 className="text-2xl font-semibold">{data?.username}</h4>
               </>
             )}
           </div>
           <Separator className="my-6" />
           <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1">
+              <h4 className="text-xl font-semibold text-foreground">Avatar</h4>
+
+              <div className="flex gap-1 items-center">
+                <Input
+                  className="flex-1"
+                  type="file"
+                  disabled={isEditAvatar}
+                  onChange={handleFileChange}
+                />
+                <Button
+                  onClick={handleClickAvatar}
+                  disabled={isLoadingUpdateUser || isLoadingUpload}
+                >
+                  {isEditAvatar ? (
+                    <Icons.pencil className="h-[18px] w-[18px] text-background" />
+                  ) : (
+                    <Icons.check className="h-[18px] w-[18px] text-background" />
+                  )}
+                </Button>
+              </div>
+            </div>
             <div className="flex flex-col gap-1">
               <h4 className="text-xl font-semibold text-foreground">{t('signup.form.username')}</h4>
 

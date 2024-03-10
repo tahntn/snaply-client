@@ -37,4 +37,6 @@ export const Setting = {
   },
   updateSuccess: 'Update successful',
   changePassword: 'Change password?',
+  editAvatar: 'Edit Avatar',
+  viewAvatar: 'View Avatar',
 };

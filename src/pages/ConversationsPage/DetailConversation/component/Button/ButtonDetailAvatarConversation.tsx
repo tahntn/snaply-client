@@ -1,6 +1,7 @@
+import AvatarUser from '@/components/AvatarUser';
 import AvatarConversation from '@/components/Conversation/AvatarConversation';
 import LoadingComponent from '@/components/LoadingComponent';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -108,11 +109,10 @@ const ButtonDetailAvatarConversation: React.FC<ButtonDetailAvatarConversationPro
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-fit " translate="yes" placeholder="bottom-right">
           <div className="relative  p-1 text-base hover:bg-accent rounded-sm mb-1">
-            Edit Avatar
+            {t('setting.editAvatar')}
             <input
               type="file"
               className="absolute inset-0 opacity-0  z-10"
-              onSubmit={(e) => console.log(e)}
               onChange={handleFileChange}
             />
           </div>
@@ -123,7 +123,7 @@ const ButtonDetailAvatarConversation: React.FC<ButtonDetailAvatarConversationPro
             }
             className="p-1  text-base hover:bg-accent cursor-pointer rounded-sm mt-1 "
           >
-            View Avatar
+            {t('setting.viewAvatar')}
           </div>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -137,14 +137,18 @@ const ButtonDetailAvatarConversation: React.FC<ButtonDetailAvatarConversationPro
             </DialogDescription>
           </DialogHeader>
           <div className="flex gap-3 items-center justify-center">
-            <Avatar className="h-16 w-16">
-              <AvatarImage src={conversation.avatarGroup} />
-              <AvatarFallback>{conversation.nameGroup?.[0]}</AvatarFallback>
-            </Avatar>
+            <AvatarUser
+              url={conversation?.avatarGroup}
+              name={conversation.nameGroup?.[0]}
+              classNameAvatar="h-16 w-16"
+            />
+
             <Icons.chevronsRight className="h-8 w-8" />
-            <Avatar className="h-16 w-16">
-              {selectedFile && <AvatarImage src={URL.createObjectURL(selectedFile!)} />}
-            </Avatar>
+            <AvatarUser
+              url={selectedFile ? URL.createObjectURL(selectedFile!) : ''}
+              name={conversation.nameGroup?.[0]}
+              classNameAvatar="h-16 w-16"
+            />
           </div>
 
           <div className="flex justify-end gap-2 mt-5">

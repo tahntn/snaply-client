@@ -36,4 +36,6 @@ export const Setting = {
   },
   updateSuccess: 'Cập nhật thành công',
   changePassword: 'Đổi mật khẩu?',
+  editAvatar: 'Chỉnh sửa hình đại diện',
+  viewAvatar: 'Xem hình đại diện',
 };
