@@ -20,3 +20,4 @@ export * from './useUploadSingleImage';
 export * from './useToastError';
 export * from './usePinMessage';
 export * from './useUpdateUser';
+export * from './useChangePasswprd';

@@ -18,12 +18,14 @@ import { Separator } from '../ui/separator';
 import { Input } from '../ui/input';
 import React, { ChangeEvent } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useSettingStore } from '@/store';
 const ButtonUser = () => {
   const [open, setOpen] = React.useState(false);
   const queryClient = useQueryClient();
   const { throwError } = useToastError();
   const { t } = useTranslation();
   const { data, isLoading } = useGetMe();
+  const handleOpenDialogPassword = useSettingStore((state) => state.handleOpenDialogPassword);
   const [isEditName, setIsEditName] = React.useState(true);
   const [isEditEmail, setIsEditEmail] = React.useState(true);
   const [isEditAvatar, setIsEditAvatar] = React.useState(true);
@@ -183,7 +185,7 @@ const ButtonUser = () => {
           </div>
           <Separator className="my-6 mb-3" />
           <div>
-            <Button variant="link" className="px-1 py-1">
+            <Button variant="link" className="px-1 py-1" onClick={handleOpenDialogPassword}>
               {t('setting.changePassword')}
             </Button>
           </div>

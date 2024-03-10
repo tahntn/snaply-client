@@ -3,16 +3,19 @@ import { create } from 'zustand';
 interface GlobalState {
   openDialogTheme: boolean;
   openDialogLanguage: boolean;
+  openChangePassword: boolean;
 }
 
 export interface GlobalStore extends GlobalState {
   handleOpenDialogTheme: () => void;
   handleOpenDialogLanguage: () => void;
+  handleOpenDialogPassword: () => void;
 }
 
 const initialState: Pick<GlobalStore, keyof GlobalState> = {
   openDialogTheme: false,
   openDialogLanguage: false,
+  openChangePassword: false,
 };
 
 const useSettingStore = create<GlobalStore>()((set) => ({
@@ -25,6 +28,12 @@ const useSettingStore = create<GlobalStore>()((set) => ({
     set((state) => {
       return {
         openDialogLanguage: !state.openDialogLanguage,
+      };
+    }),
+  handleOpenDialogPassword: () =>
+    set((state) => {
+      return {
+        openChangePassword: !state.openChangePassword,
       };
     }),
 }));

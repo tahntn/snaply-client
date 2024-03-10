@@ -1,13 +1,14 @@
-import { DialogOtherUser } from '@/components/Dialog';
+import { DialogChangePassword, DialogOtherUser } from '@/components/Dialog';
 import Header from '@/components/Header';
 import SideBar from '@/components/SideBar';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { cn } from '@/lib/utils';
-import { useGlobalStore } from '@/store';
+import { useGlobalStore, useSettingStore } from '@/store';
 import React from 'react';
 
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isOpenDialogOtherUser, isMenuOpen } = useGlobalStore((state) => state);
+  const openChangePassword = useSettingStore((state) => state.openChangePassword);
   const mobile = '(max-width: 640px)';
   const isMobile = useMediaQuery(mobile);
 
@@ -24,6 +25,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         {children}
       </div>
       {isOpenDialogOtherUser && <DialogOtherUser />}
+      {openChangePassword && <DialogChangePassword />}
     </div>
   );
 };
