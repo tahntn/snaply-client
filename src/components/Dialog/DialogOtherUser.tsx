@@ -11,8 +11,6 @@ import SkeletonAvatar from '../Skeleton/SkeletonAvatar';
 import SkeletonText from '../Skeleton/SkeletonText';
 import { useCreateFriendRequest } from '@/hooks/useCreateFriendRequest';
 import { useTranslation } from 'react-i18next';
-import { useQueryClient } from '@tanstack/react-query';
-import { idOtherUser } from '@/types';
 const DialogOtherUser = () => {
   const { isOpenDialogOtherUser, idOtherUser, handleCloseDialogOtherUser } = useGlobalStore(
     (state) => state
@@ -22,41 +20,10 @@ const DialogOtherUser = () => {
   const { mutate: createFriendRequest } = useCreateFriendRequest();
   const { data: currentUser } = useGetMe();
   const { data, isLoading } = useOtherUser(idOtherUser!);
-  const queryClient = useQueryClient();
-  const { mutate: confirmFriendRequest } = useConfirmFriendRequest(data?.friendShip?.id!, () => {
-    const listFriendRequest = queryClient.getQueryData(['friendRequest']);
-    if (listFriendRequest) {
-      queryClient.setQueryData(['friendRequest'], (oldData: any) => {
-        const updatedPages = oldData.pages.map((page: any) => ({
-          data: page.data.filter((message: any) => {
-            return message._id !== data?.friendShip?.id;
-          }),
-        }));
-
-        return {
-          pageParams: oldData.pageParams,
-          pages: updatedPages.map((page: any, index: number) => ({
-            data: page.data,
-            pagination: oldData.pages?.[index]?.pagination,
-          })),
-        };
-      });
-    }
-
-    const otherUser = queryClient.getQueryData(['other-user', idOtherUser]) as idOtherUser;
-    if (otherUser) {
-      queryClient.setQueryData(['other-user', idOtherUser], () => {
-        const newData = {
-          ...otherUser,
-          friendShip: {
-            ...otherUser.friendShip,
-            status: 'accept',
-          },
-        };
-        return newData;
-      });
-    }
-  });
+  const { mutate: confirmFriendRequest } = useConfirmFriendRequest(
+    data?.friendShip?.id!,
+    idOtherUser || undefined
+  );
   return (
     <Dialog open={!!isOpenDialogOtherUser} onOpenChange={handleCloseDialogOtherUser}>
       <DialogContent className="sm:max-w-[425px]">

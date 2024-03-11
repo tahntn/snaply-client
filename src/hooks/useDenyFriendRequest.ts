@@ -1,22 +1,24 @@
 import { toast } from 'sonner';
-import { useFriendRequest } from '.';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postAxios } from '@/api';
+import { useTranslation } from 'react-i18next';
 
-const useDenyFriendRequest = (idFriendRequest: string) => {
-  const { refetch } = useFriendRequest({
-    type: 'friendRequests',
-  });
-
+const useDenyFriendRequest = (idFriendRequest: string, onSuccess: () => void) => {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
   return useMutation({
     mutationFn: () => {
       return postAxios(`/friend/deny/${idFriendRequest}`);
     },
     onSuccess: () => {
-      toast('Success', {
-        description: 'Deny friend request successfully',
-      });
-      refetch();
+      onSuccess();
+      const totalFriendRequest = queryClient.getQueryData(['total-friend-request']) as
+        | number
+        | undefined;
+      if (totalFriendRequest) {
+        queryClient.setQueryData(['total-friend-request'], () => totalFriendRequest - 1);
+      }
+      toast.success(t('friend.denyFriendRequestSuccess'));
     },
   });
 };

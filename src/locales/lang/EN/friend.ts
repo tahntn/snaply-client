@@ -12,6 +12,7 @@ export const Friend = {
   message: 'Message',
   createFriendRequestSuccess: 'Create friend request successfully.',
   confirmFriendRequestSuccess: 'Confirm friend request successfully.',
+  denyFriendRequestSuccess: 'Deny friend request successfully',
   block: 'Block',
   remove: 'Remove',
   createGroupChat: 'Create a new group chat, at least add 2 friends',

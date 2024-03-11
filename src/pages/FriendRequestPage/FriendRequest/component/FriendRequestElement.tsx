@@ -18,7 +18,11 @@ const FriendRequestElement: React.FC<FriendRequestElementProps> = ({ friendReque
   const queryClient = useQueryClient();
   const { handleOpenDialogOtherUser } = useGlobalStore((state) => state);
   const { username, avatar } = friendRequest.user;
-  const { mutate: confirmFriendRequest } = useConfirmFriendRequest(friendRequest._id!, () => {
+  const { mutate: confirmFriendRequest } = useConfirmFriendRequest(
+    friendRequest._id!,
+    friendRequest.user.id || friendRequest.user._id
+  );
+  const { mutate: denyFriendRequest } = useDenyFriendRequest(friendRequest._id!, () => {
     const listFriendRequest = queryClient.getQueryData(['friendRequest']);
     if (listFriendRequest) {
       queryClient.setQueryData(['friendRequest'], (oldData: any) => {
@@ -38,7 +42,6 @@ const FriendRequestElement: React.FC<FriendRequestElementProps> = ({ friendReque
       });
     }
   });
-  const { mutate: denyFriendRequest } = useDenyFriendRequest(friendRequest._id!);
 
   const { t } = useTranslation();
 
