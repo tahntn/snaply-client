@@ -1,17 +1,17 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-type Theme = 'dark' | 'light' | 'system';
+export type ThemeType = 'dark' | 'light' | 'system';
 
 type ThemeProviderProps = {
   children: React.ReactNode;
-  defaultTheme?: Theme;
+  defaultTheme?: ThemeType;
   storageKey?: string;
 };
 
 type ThemeProviderState = {
-  theme: Theme;
-  mainTheme: Theme;
-  setTheme: (theme: Theme) => void;
+  theme: ThemeType;
+  mainTheme: ThemeType;
+  setTheme: (theme: ThemeType) => void;
 };
 
 const initialState: ThemeProviderState = {
@@ -28,10 +28,10 @@ export function ThemeProvider({
   storageKey = 'snaply-theme',
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
+  const [theme, setTheme] = useState<ThemeType>(
+    () => (localStorage.getItem(storageKey) as ThemeType) || defaultTheme
   );
-  const [mainTheme, setMainTheme] = useState<Theme>('light');
+  const [mainTheme, setMainTheme] = useState<ThemeType>('light');
   useEffect(() => {
     const root = window.document.documentElement;
 
@@ -52,7 +52,7 @@ export function ThemeProvider({
   const value = {
     theme,
     mainTheme,
-    setTheme: (theme: Theme) => {
+    setTheme: (theme: ThemeType) => {
       localStorage.setItem(storageKey, theme);
       setTheme(theme);
     },

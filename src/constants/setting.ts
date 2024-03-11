@@ -1,15 +1,7 @@
 import { TFunction } from 'i18next';
-import {
-  Bell,
-  CircleUserRound,
-  FileText,
-  HelpCircle,
-  Languages,
-  Palette,
-  SunMoon,
-} from 'lucide-react';
+import { Bell, CircleUserRound, FileText, HelpCircle, Languages, Palette } from 'lucide-react';
 
-export const settingList = (t: TFunction<'translation', undefined>, mainTheme: string) => {
+export const settingList = (t: TFunction<'translation', undefined>) => {
   return [
     {
       id: 'language',
@@ -17,10 +9,11 @@ export const settingList = (t: TFunction<'translation', undefined>, mainTheme: s
       Icon: Languages,
     },
     {
-      id: 'darkMode',
-      title: mainTheme === 'light' ? t('setting.option.lightMode') : t('setting.option.darkMode'),
-      Icon: SunMoon,
+      id: 'theme',
+      title: t('setting.option.theme'),
+      Icon: Palette,
     },
+
     {
       id: 'account',
       title: t('setting.option.account'),
@@ -31,11 +24,7 @@ export const settingList = (t: TFunction<'translation', undefined>, mainTheme: s
       title: t('setting.option.notifications'),
       Icon: Bell,
     },
-    {
-      id: 'theme',
-      title: t('setting.option.theme'),
-      Icon: Palette,
-    },
+
     {
       id: 'help',
       title: t('setting.option.help'),

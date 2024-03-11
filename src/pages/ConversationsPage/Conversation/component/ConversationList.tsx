@@ -7,7 +7,9 @@ import ChatElement from './ChatElement';
 import { useConversations, useGetMe } from '@/hooks';
 import { usePusher } from '@/context/PusherProvider';
 import { IConversations, IDetailConversation } from '@/types';
-
+import ChatLoading from './ChatLoading';
+import noConversation from '@/assets/images/icons/empty-conversation.png';
+import ErrorComponent from '@/components/ErrorComponent';
 const ConversationList = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
@@ -15,7 +17,7 @@ const ConversationList = () => {
   const { data: currentUser } = useGetMe();
   const { ref, inView } = useInView();
 
-  const { data, isLoading, status, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useConversations();
 
   React.useEffect(() => {
@@ -23,7 +25,6 @@ const ConversationList = () => {
       fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
-  // console.log(queryClient.getQueryData(['conversation']));
 
   React.useEffect(() => {
     if (currentUser?.id) {
@@ -66,20 +67,35 @@ const ConversationList = () => {
     }
   }, [currentUser?.id, pusher, queryClient]);
 
-  if (status === 'loading' || isLoading) {
-    return <p>Loading...</p>;
+  if (isLoading) {
+    return (
+      <div className="flex gap-5 pb-5 flex-col">
+        {Array.from(Array(10)).map((_, index) => (
+          <ChatLoading key={index} />
+        ))}
+      </div>
+    );
   }
 
-  if (status === 'error') {
-    return <p>Error</p>;
+  if (isError) {
+    return <ErrorComponent />;
   }
   return (
-    <Box className="flex gap-5 pb-5 flex-col overflow-y-auto max-h-[750px] pr-4 overflow-x-hidden">
+    <Box className="flex gap-5 pb-5 flex-col overflow-y-auto sm:max-h-[calc(100vh-140px)] xs:max-h-[calc(100vh-200px)] pr-4 overflow-x-hidden min-h-[calc(100vh-300px)]">
       <Text className="text-lg font-semibold">{t('conversation.allConversation')}</Text>
       {data &&
         data.pages?.map((listConversation) =>
-          listConversation?.data?.map((conversation) => <ChatElement conversation={conversation} />)
+          listConversation?.data?.map((conversation) => (
+            <ChatElement conversation={conversation} key={conversation._id || conversation.id} />
+          ))
         )}
+      {data.pages?.[0]?.data?.length === 0 && (
+        <div className="flex gap-2 flex-col items-center justify-center  mt-6">
+          <img src={noConversation} className="max-h-[100px]" />
+          <h2 className="text-lg font-medium text-center">{t('conversation.noConversations')}</h2>
+        </div>
+      )}
+      {isFetchingNextPage && Array.from(Array(5)).map((_, index) => <ChatLoading key={index} />)}
       <div ref={ref} style={{ height: '20px' }} />
     </Box>
   );

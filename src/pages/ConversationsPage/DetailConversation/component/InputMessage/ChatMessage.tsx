@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
-import { useSendMessage, useUploadFile } from '@/hooks';
+import { useSendMessage, useToastError, useUploadFile } from '@/hooks';
 import { cn } from '@/lib/utils';
 import { useConversationStore } from '@/store';
 import React, { KeyboardEvent } from 'react';
@@ -28,9 +28,12 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
     replyMessage,
     deleteAllFiles,
     resetReplyMessage,
+    shouldFocusInput,
   } = useConversationStore((state) => state);
-  const { mutate: sendMessage } = useSendMessage(conversationId!);
-  const { mutate: uploadImage } = useUploadImageMessage();
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+  const { throwError } = useToastError();
+  const { mutateAsync: sendMessage } = useSendMessage(conversationId!);
+  const { mutateAsync: uploadImage } = useUploadImageMessage();
   const [value, setValue] = React.useState('');
   const [isTyping, setIsTyping] = React.useState(false);
   const { getRootProps, getInputProps } = useUploadFile();
@@ -46,7 +49,7 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
         { signal: abortControllerRef.current.signal }
       );
     } catch (error) {
-      console.error('Error sending typing status:', error);
+      throwError(error);
     }
   };
 
@@ -84,9 +87,7 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
     try {
       if (fileUpload.length > 0) {
         const resImages = await handleFileUpload(fileUpload);
-
-        // eslint-disable-next-line no-extra-boolean-cast
-        if (!!value.trim()) {
+        if (value.trim()) {
           sendMessage({
             type: 'image',
             imageList: resImages.map((res) => encodeURI(res.url)),
@@ -112,7 +113,7 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
         replyTo: replyMessage?.id || replyMessage?._id,
       });
     } catch (error) {
-      /* empty */
+      throwError(error);
     } finally {
       setValue(() => '');
       deleteAllFiles();
@@ -143,6 +144,12 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
       addFile(newFiles);
     }
   };
+
+  React.useEffect(() => {
+    if (textareaRef?.current) {
+      textareaRef.current.focus();
+    }
+  }, [shouldFocusInput]);
   return (
     <div className={cn('h-full')}>
       <div>{isOpenGif ? <SelectStickerOrGif /> : null}</div>
@@ -151,8 +158,11 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
 
         <div
           className={cn(
-            'flex flex-col border border-input rounded-2xl  flex-1 text-sm bg-custom_5 bg-[#f1f1f1] px-3 ',
-            fileUpload.length > 0 ? 'flex-col p-3 gap-1' : 'items-center '
+            'flex flex-col border border-input rounded-2xl  flex-1 text-sm bg-custom_5 bg-[#f1f1f1] px-3',
+            fileUpload.length > 0 ? 'flex-col p-3 gap-1' : 'items-center',
+            fileUpload.length === 0 && !isOpenGif
+              ? 'max-w-[calc(100%-140px)]'
+              : 'max-w-[calc(100%-100px)]'
           )}
         >
           <ReplyMessage />
@@ -173,7 +183,7 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
                     alt={`Uploaded ${index}`}
                     className="h-full w-full object-cover  rounded-sm v"
                   />
-                  <div className="absolute h-4 w-4 bg-slate-50 top-[3px] right-[3px] rounded-full shadow-xl flex items-center justify-center cursor-pointer">
+                  <div className="absolute h-4 w-4 bg-muted top-[3px] right-[3px] rounded-full shadow-xl flex items-center justify-center cursor-pointer">
                     <Icons.close
                       className="h-3/4"
                       onClick={() => {
@@ -197,6 +207,8 @@ const ChatMessage: React.FC<ChatMessageProps> = () => {
             )}
             placeholder={t('message.input.placeholder')}
             value={value}
+            autoFocus
+            ref={textareaRef}
           />
         </div>
         {fileUpload.length === 0 && !isOpenGif && <ButtonMore />}

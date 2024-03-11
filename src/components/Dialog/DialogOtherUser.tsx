@@ -1,21 +1,29 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { useGlobalStore } from '@/store';
-import { useCreateConversation, useGetMe, userOtherUser } from '@/hooks';
+import { useConfirmFriendRequest, useCreateConversation, useGetMe, useOtherUser } from '@/hooks';
 import AvatarUser from '../AvatarUser';
 import { Icons } from '../ui/icons';
 import { Text } from '@radix-ui/themes';
 import { Button } from '../ui/button';
 import SkeletonAvatar from '../Skeleton/SkeletonAvatar';
 import SkeletonText from '../Skeleton/SkeletonText';
+import { useCreateFriendRequest } from '@/hooks/useCreateFriendRequest';
+import { useTranslation } from 'react-i18next';
 const DialogOtherUser = () => {
   const { isOpenDialogOtherUser, idOtherUser, handleCloseDialogOtherUser } = useGlobalStore(
     (state) => state
   );
-
+  const { t } = useTranslation();
   const { mutate: createConversation } = useCreateConversation();
+  const { mutate: createFriendRequest } = useCreateFriendRequest();
   const { data: currentUser } = useGetMe();
-  const { data, isLoading } = userOtherUser(idOtherUser!);
+  const { data, isLoading } = useOtherUser(idOtherUser!);
+  const { mutate: confirmFriendRequest } = useConfirmFriendRequest(
+    data?.friendShip?.id!,
+    idOtherUser || undefined
+  );
   return (
     <Dialog open={!!isOpenDialogOtherUser} onOpenChange={handleCloseDialogOtherUser}>
       <DialogContent className="sm:max-w-[425px]">
@@ -48,19 +56,42 @@ const DialogOtherUser = () => {
           </div>
 
           <div className="flex justify-center items-center gap-2 pt-4">
-            <Button>
-              <Icons.userPlus className="w-5 h-5" />
+            <Button
+              onClick={() => {
+                console.log(data);
+
+                if (!data?.friendShip) {
+                  createFriendRequest((data?.data._id || data?.data.id)!);
+                } else if (
+                  data.friendShip.status === 'pending' &&
+                  data?.friendShip?.targetUserId === currentUser?.id
+                ) {
+                  confirmFriendRequest();
+                }
+              }}
+            >
+              {data?.friendShip?.status === 'accept' ? (
+                <Icons.user className="w-5 h-5" />
+              ) : data?.friendShip?.status === 'pending' ? (
+                data?.friendShip?.targetUserId === currentUser?.id ? (
+                  <Icons.userRoundCheck />
+                ) : (
+                  <Icons.circleDashed />
+                )
+              ) : (
+                <Icons.userPlus className="w-5 h-5" />
+              )}
 
               {isLoading || !data ? (
                 <SkeletonText className="w-20 bg-white ml-2" />
               ) : !data?.friendShip ? (
-                <Text className="pl-2">Add friend</Text>
+                <Text className="pl-2">{t('friend.addFriend')}</Text>
               ) : data?.friendShip?.status === 'accept' ? (
-                <Text className="pl-2">Friend</Text>
+                <Text className="pl-2">{t('friend.friend')}</Text>
               ) : data?.friendShip?.targetUserId === currentUser?.id ? (
-                <Text className="pl-2">Confirm</Text>
+                <Text className="pl-2">{t('friend.confirm')}</Text>
               ) : (
-                <Text className="pl-2">Pending</Text>
+                <Text className="pl-2">{t('friend.pending')}</Text>
               )}
             </Button>
 
@@ -73,7 +104,7 @@ const DialogOtherUser = () => {
               }}
             >
               <Icons.messageCircle className="w-5 h-5" />
-              <Text className="pl-2">Message</Text>
+              <Text className="pl-2">{t('friend.message')}</Text>
             </Button>
           </div>
         </div>

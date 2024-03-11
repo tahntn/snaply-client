@@ -1,5 +1,9 @@
 export const Setting = {
   title: 'Settings',
+  cancel: 'Cancel',
+  apply: 'Apply',
+  close: 'Close',
+  submit: 'Submit',
   option: {
     account: 'Account',
     language: 'Language',
@@ -10,4 +14,29 @@ export const Setting = {
     help: 'Help',
     faq: 'Faq',
   },
+  language: {
+    chooseLanguage: 'Choose language :',
+    english: 'English',
+    vietnamese: 'Vietnamese',
+    languageChangedSuccessfully: 'Language changed successfully',
+  },
+
+  featureUnderDevelopment: 'This feature is under development and will be updated soon!',
+  logout: {
+    logout: 'Log out',
+    confirmLogout: 'Are you sure you want to logout?',
+  },
+  account: {
+    account: 'Account',
+  },
+  error: {
+    errorOccurred: 'An error has occurred, please try again later!',
+    sessionExpired: 'Session has expired, please log in again',
+    apiUnavailable: 'API is currently unavailable. Please try again later.',
+    connectionLost: 'Connection lost!',
+  },
+  updateSuccess: 'Update successful',
+  changePassword: 'Change password?',
+  editAvatar: 'Edit Avatar',
+  viewAvatar: 'View Avatar',
 };

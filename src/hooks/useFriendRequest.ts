@@ -9,7 +9,7 @@ interface IProps {
 
 export const useFriendRequest = ({ limit = 5, type }: IProps = {}) => {
   return useInfiniteQuery(
-    ['friendRequest'],
+    [type === 'friendRequests' ? 'friendRequest' : 'friend'],
     async ({ pageParam = 1 }) => {
       const res = await getAxios<IFriendRequest>('/friend/list', {
         page: pageParam,

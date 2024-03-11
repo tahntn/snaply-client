@@ -1,16 +1,16 @@
 import { postAxios } from '@/api';
-import { useToast } from '@/components/ui/use-toast';
 import { storage } from '@/lib/storage';
 import { useAuthStore } from '@/store';
 import { loginBody, signupBody } from '@/types';
 import { useMutation } from '@tanstack/react-query';
-
+import { useToastError } from '.';
 type UserBodyType<T extends 'login' | 'register'> = T extends 'login' ? loginBody : signupBody;
 export const useAuth = (type: 'login' | 'register') => {
-  const { toast } = useToast();
   const { setLogin } = useAuthStore((state) => state);
+  const { throwError } = useToastError();
   return useMutation({
     mutationFn: (user: UserBodyType<typeof type>) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return postAxios<any, any>(`auth/${type}`, user);
     },
     onSuccess: ({ data }) => {
@@ -21,12 +21,6 @@ export const useAuth = (type: 'login' | 'register') => {
         setLogin();
       }
     },
-    onError: (error: any) => {
-      toast({
-        variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
-        description: error.response?.data?.message || 'Đã có lỗi xảy ra vui lòng đăng nhập lại',
-      });
-    },
+    onError: (error) => throwError(error),
   });
 };

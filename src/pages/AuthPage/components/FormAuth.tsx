@@ -4,13 +4,15 @@ import { cn } from '@/lib/utils';
 import React from 'react';
 import FormFieldAuth from './FormFieldAuth';
 import { fieldAuth } from '@/types';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '@/context/ThemeProvider';
 import { useTranslation } from 'react-i18next';
 
 interface FormAuthProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: any;
-  onSubmit: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onSubmit: (data: any) => void;
   fieldAuth: fieldAuth[];
   type: 'login' | 'signup';
 }
@@ -18,6 +20,10 @@ interface FormAuthProps {
 const FormAuth: React.FC<FormAuthProps> = ({ form, onSubmit, fieldAuth, type }) => {
   const { mainTheme } = useTheme();
   const { t } = useTranslation();
+  const location = useLocation();
+  const redirectParam = new URLSearchParams(location.search).get('redirect');
+  const redirectQuery = redirectParam ? `?redirect=${encodeURIComponent(redirectParam)}` : '';
+
   return (
     <div className={cn('flex flex-1 justify-center my-10 ', 'lg:items-center')}>
       <div
@@ -63,7 +69,7 @@ const FormAuth: React.FC<FormAuthProps> = ({ form, onSubmit, fieldAuth, type }) 
             <p className={cn('text-center', 'lg:text-primary-foreground', 'xs:text-sm ')}>
               {type === 'login' ? t('login.prompt.noAccount') : t('signup.prompt.haveAccount')}
               <span className="font-semibold cursor-pointer">
-                <Link to={`/${type === 'login' ? 'signup' : 'login'}`}>
+                <Link to={`/${type === 'login' ? 'signup' : 'login'}${redirectQuery}`}>
                   {' '}
                   {type === 'login' ? t('login.prompt.signup') : t('signup.prompt.login')}
                 </Link>

@@ -17,6 +17,7 @@ export interface IMessage {
   title?: string;
   type: 'text' | 'image' | 'video' | 'file' | 'update' | 'gif' | 'sticker';
   url?: string;
+  replyTo: IMessage;
 }
 
 export interface IMessages {

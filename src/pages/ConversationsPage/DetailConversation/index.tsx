@@ -7,6 +7,7 @@ import ChatMessage from './component/InputMessage/ChatMessage';
 import { useConversationStore } from '@/store';
 import { cn } from '@/lib/utils';
 import HeaderDetailConversation from './component/HeaderDetailConversation';
+import LoadingComponent from '@/components/LoadingComponent';
 
 const DetailConversation = () => {
   const { conversationId } = useParams();
@@ -41,7 +42,10 @@ const DetailConversation = () => {
   }
 
   return (
-    <div className=" md:h-screen sm:h-[calc(100vh)] xs:h-[calc(100vh-64px)]" {...getRootProps()}>
+    <div
+      className=" md:h-screen sm:h-[calc(100vh)] xs:h-[calc(100vh)] xs:pt-[60px]  "
+      {...getRootProps()}
+    >
       <div className="h-full w-full relative" onClick={handleClick}>
         <HeaderDetailConversation data={data} isLoading={isLoading} currentUser={currentUser!} />
         <div
@@ -53,18 +57,18 @@ const DetailConversation = () => {
             paddingBottom: `${heightChatMessage}px`,
           }}
         >
-          <MessageList
-            conversationId={conversationId!}
-            currentUser={currentUser!}
-            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-            participants={data?.participants!}
-          />
+          {isLoading ? (
+            <div className="h-full w-full flex items-center justify-center">
+              <LoadingComponent />
+            </div>
+          ) : (
+            <MessageList
+              conversationId={conversationId!}
+              currentUser={currentUser!}
+              participants={data?.participants}
+            />
+          )}
         </div>
-        {/* {replyMessage?.id && (
-          <div className="h-16 absolute bottom-20 border-t  right-0 left-0  border-card-foreground">
-            <ReplyMessage />
-          </div>
-        )} */}
         <div
           ref={ChatMessageRef}
           className={cn(

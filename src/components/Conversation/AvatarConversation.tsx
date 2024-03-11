@@ -6,15 +6,19 @@ import { useGetMe } from '@/hooks';
 
 interface AvatarConversationProps {
   isLoading: boolean;
-  conversation: IDetailConversation;
+  conversation?: IDetailConversation;
   classNameSkeleton?: string;
   classNameAvatar?: string;
+  children?: React.ReactNode;
+  classNameWrap?: string;
 }
 const AvatarConversation: React.FC<AvatarConversationProps> = ({
   isLoading,
   conversation,
   classNameAvatar,
   classNameSkeleton,
+  children,
+  classNameWrap,
 }) => {
   const { data: currentUser } = useGetMe();
   const targetUser = React.useMemo(() => {
@@ -23,20 +27,25 @@ const AvatarConversation: React.FC<AvatarConversationProps> = ({
       (user) => user._id !== currentUser?.id && user.id !== currentUser?.id
     )!;
   }, [conversation?.participants, currentUser]);
-  return isLoading ? (
-    <SkeletonAvatar className={classNameSkeleton} />
-  ) : conversation.isGroup ? (
-    <AvatarUser
-      name={conversation.nameGroup!}
-      url={conversation.avatarGroup!}
-      classNameAvatar={classNameAvatar}
-    />
-  ) : (
-    <AvatarUser
-      name={targetUser.username!}
-      url={targetUser.avatar!}
-      classNameAvatar={classNameAvatar}
-    />
+  return (
+    <div className={classNameWrap}>
+      {isLoading ? (
+        <SkeletonAvatar className={classNameSkeleton} />
+      ) : conversation?.isGroup ? (
+        <AvatarUser
+          name={conversation!.nameGroup!}
+          url={conversation!.avatarGroup!}
+          classNameAvatar={classNameAvatar}
+        />
+      ) : (
+        <AvatarUser
+          name={targetUser.username!}
+          url={targetUser.avatar!}
+          classNameAvatar={classNameAvatar}
+        />
+      )}
+      {children}
+    </div>
   );
 };
 

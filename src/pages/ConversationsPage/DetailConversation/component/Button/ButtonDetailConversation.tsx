@@ -3,12 +3,15 @@ import { Sheet, SheetContent, SheetHeader, SheetTrigger } from '@/components/ui/
 import { Icons } from '@/components/ui/icons';
 import { useDetailConversation, useGetMe } from '@/hooks';
 import { useParams } from 'react-router-dom';
-import AvatarConversation from '@/components/Conversation/AvatarConversation';
 import NameConversation from '@/components/Conversation/NameConversation';
 import { Separator } from '@/components/ui/separator';
 import AvatarUser from '@/components/AvatarUser';
 import { useTranslation } from 'react-i18next';
-import { Text } from '@radix-ui/themes';
+import { cn } from '@/lib/utils';
+import DialogChangeNameGroup from '@/components/Dialog/DialogChangeNameGroup';
+import ButtonDetailAvatarConversation from './ButtonDetailAvatarConversation';
+import { DialogPinnedMessage } from '@/components/Dialog';
+import AvatarConversation from '@/components/Conversation/AvatarConversation';
 
 const ButtonDetailConversation = () => {
   const { conversationId } = useParams();
@@ -24,18 +27,38 @@ const ButtonDetailConversation = () => {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader className="flex flex-col items-center">
-          <AvatarConversation
-            isLoading={isLoading}
-            conversation={conversation!}
-            classNameAvatar="h-24 w-24  "
-            classNameSkeleton="h-10 w-10"
-          />
-          <NameConversation
-            isLoading={isLoading}
-            conversation={conversation!}
-            classNameText="text-xl font-bold line-clamp-2 text-center"
-            classNameSkeleton="h-5  bg-foreground flex-1"
-          />
+          {conversation?.isGroup ? (
+            <ButtonDetailAvatarConversation isLoading={isLoading} conversation={conversation!} />
+          ) : (
+            <AvatarConversation
+              isLoading={isLoading}
+              conversation={conversation!}
+              classNameAvatar="h-24 w-24  "
+              classNameSkeleton="h-10 w-10"
+              classNameWrap="relative group"
+            ></AvatarConversation>
+          )}
+
+          <div className="w-full relative group">
+            <NameConversation
+              isLoading={isLoading}
+              conversation={conversation!}
+              classNameText="text-xl font-bold line-clamp-2 text-center break-words"
+              classNameSkeleton="h-5  bg-foreground flex-1"
+            />
+
+            <div
+              className={cn(
+                'hidden absolute  top-1/2 -translate-y-1/2  right-[0px]',
+                conversation?.isGroup && 'group-hover:block'
+              )}
+            >
+              <DialogChangeNameGroup
+                nameGroup={conversation?.nameGroup || ''}
+                idConversation={(conversation?._id || conversation?.id)!}
+              />
+            </div>
+          </div>
         </SheetHeader>
         <Separator className="w-full my-5" />
         <div className="max-h-[calc(100vh-240px)] overflow-auto">
@@ -45,7 +68,7 @@ const ButtonDetailConversation = () => {
               {conversation?.participants
                 .filter((item) => item._id !== currentUser?.id && item.id !== currentUser?.id)
                 .map((user) => (
-                  <div className="flex gap-3 items-center">
+                  <div className="flex gap-3 items-center" key={user?._id || user?.id}>
                     <AvatarUser url={user.avatar} name={user.username} />
                     <h4 className="text-xl font-bold">{user.username}</h4>
                   </div>
@@ -57,15 +80,11 @@ const ButtonDetailConversation = () => {
             {t('conversation.detailConversation.otherAction')}
           </h3>
           <ul className="my-4">
-            <li className="flex items-center gap-2">
-              <div className="pt-[4px]">
-                <Icons.pin className="h-5 w-5" />
-              </div>
-              <Text className="text-lg font-medium flex-1 lin">Tin nhắn đã ghim</Text>
-              <Text className="text-lg font-medium ">2</Text>
-              <div className="pt-[4px]">
-                <Icons.chevronRight className="h-6 w-6" />
-              </div>
+            <li>
+              <DialogPinnedMessage
+                conversationId={(conversation?._id || conversation?.id)!}
+                pinnedMessagesCount={conversation?.pinnedMessagesCount}
+              />
             </li>
           </ul>
         </div>

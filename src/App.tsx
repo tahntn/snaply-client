@@ -7,24 +7,23 @@ import { useTranslation } from 'react-i18next';
 import Router from './router';
 import { ThemeProvider } from './context/ThemeProvider';
 import FallbackRenderer from './components/FallbackRenderer';
-import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from './components/ui/tooltip';
 import './App.css';
 import { storage } from './lib/storage';
 import { useAuthStore } from './store';
-import { useToast } from './components/ui/use-toast';
+import { toast } from 'sonner';
 import { axiosInstance } from './api/apiConfig';
 import axios from 'axios';
 import { refreshAccessToken } from './services/auth.service';
 import { useLogout } from './hooks/useSignOut';
 import { DialogPreviewImage } from './components/Dialog';
 import PusherProvider from './context/PusherProvider';
+import { Toaster } from './components/ui/sonner';
 
 function App() {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const { getString } = storage;
   const { setLogin } = useAuthStore((state) => state);
-  const { toast } = useToast();
   const { mutate: logout } = useLogout();
 
   React.useEffect(() => {
@@ -70,9 +69,9 @@ function App() {
     axiosInstance.interceptors.request.use(async (req) => {
       const accessToken = getString('snalpy-access');
       const language = i18n.language;
+      req.headers['Accept-Language'] = language;
       if (accessToken) {
         req.headers['Authorization'] = 'Bearer ' + accessToken;
-        req.headers['Accept-Language'] = language;
       }
       if (req.data instanceof FormData) {
         req.headers['Content-Type'] = 'multipart/form-data';
@@ -102,11 +101,7 @@ function App() {
                 onRrefreshed(newToken.data.token);
               })
               .catch(() => {
-                toast({
-                  variant: 'destructive',
-                  title: 'Uh oh! Something went wrong. token expried',
-                  description: 'Phiên bản đã hết hạn vui lòng đăng nhập lại',
-                });
+                toast.error(t('setting.error.errorOccurred'));
                 logout(refreshToken!);
               });
           }
@@ -126,6 +121,19 @@ function App() {
     );
   }, []);
 
+  React.useEffect(() => {
+    const handleNetworkChange = () => {
+      if (!navigator.onLine) {
+        toast.error(t('setting.error.connectionLost'));
+      }
+    };
+
+    window.addEventListener('offline', handleNetworkChange);
+    return () => {
+      window.removeEventListener('offline', handleNetworkChange);
+    };
+  }, []);
+
   return (
     <PusherProvider>
       <ThemeProvider defaultTheme="light" storageKey="snaply-theme">
@@ -135,7 +143,7 @@ function App() {
               <Router />
             </ErrorBoundary>
           </BrowserRouter>
-          <Toaster />
+          <Toaster position="top-right" richColors />
           <DialogPreviewImage />
           {import.meta.env.VITE_NODE_ENV === 'development' && (
             <ReactQueryDevtools initialIsOpen={true} position="top-left" />

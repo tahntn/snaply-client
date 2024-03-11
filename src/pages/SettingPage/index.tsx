@@ -1,19 +1,20 @@
 import { Icons } from '@/components/ui/icons';
 import { cn } from '@/lib/utils';
 import { Box, Text } from '@radix-ui/themes';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
 import React from 'react';
 import SettingItem from './SettingItem';
 import { settingList } from '@/constants/setting';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/context/ThemeProvider';
 import { useGetMe } from '@/hooks';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useNavigate } from 'react-router-dom';
+import { DialogLanguage, DialogTheme } from '@/components/Dialog';
+import AvatarUser from '@/components/AvatarUser';
+import { Separator } from '@/components/ui/separator';
 
 const SettingPage: React.FC = () => {
   const { t } = useTranslation();
-  const { mainTheme } = useTheme();
   const { data, isLoading } = useGetMe();
   const navigate = useNavigate();
   return (
@@ -30,7 +31,7 @@ const SettingPage: React.FC = () => {
           <Text className="font-bold text-2xl">{t('setting.title')}</Text>
         </Box>
         {/* Avatar */}
-        <Box className="mt-4  flex items-center justify-between p-4 pr-0 box-border w-full cursor-pointer">
+        <Box className="mt-4  flex items-center justify-between p-4 pr-0 box-border w-full ">
           <Box className="flex gap-6 w-full">
             {isLoading ? (
               <div className="flex items-center space-x-4  w-full">
@@ -42,10 +43,12 @@ const SettingPage: React.FC = () => {
               </div>
             ) : (
               <>
-                <Avatar className="!w-[56px] !h-[56px] border border-gray-500">
-                  <AvatarImage src={data?.avatar} />
-                  <AvatarFallback className="uppercase">{data?.username?.[0]}</AvatarFallback>
-                </Avatar>
+                <AvatarUser
+                  url={data?.avatar}
+                  name={data?.username?.[0]}
+                  classNameAvatar="!w-[56px] !h-[56px] "
+                />
+
                 <h2
                   className={`self-center text-xl font-semibold whitespace-nowrap dark:text-white`}
                 >
@@ -60,19 +63,21 @@ const SettingPage: React.FC = () => {
             )}
           </Box>
         </Box>
+        <Separator />
         {/* List options */}
         <Box className="mt-4 flex flex-col ">
-          {settingList(t, mainTheme)?.map((settingItem) => (
+          {settingList(t)?.map((settingItem) => (
             <SettingItem
               key={settingItem.id}
               title={settingItem.title}
               Icon={settingItem.Icon}
-              isDarkMode={settingItem?.id === 'darkMode'}
-              isLanguage={settingItem?.id === 'language'}
+              id={settingItem.id}
             />
           ))}
         </Box>
       </Box>
+      <DialogTheme />
+      <DialogLanguage />
     </Box>
   );
 };

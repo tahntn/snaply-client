@@ -2,7 +2,7 @@ import { getAxios } from '@/api';
 import { IFriendSearch } from '@/types';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-export const useFriends = (q: string, limit: number = 10) => {
+export const useFriends = (q: string, limit: number = 5) => {
   return useInfiniteQuery(
     ['friends', q],
     async ({ pageParam = 1 }) => {

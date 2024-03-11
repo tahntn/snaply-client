@@ -8,6 +8,7 @@ export const Conversation = {
   detailConversation: {
     members: 'Members',
     otherAction: 'Other action',
+    messagePinned: 'Message pinned',
   },
   sentAMessage: 'sent a message.',
   sentPictures: 'sent pictures.',
@@ -16,4 +17,17 @@ export const Conversation = {
   sentAGIF: 'sent a GIF.',
   sentASticker: 'sent a sticker.',
   createdAConversation: 'created a conversation.',
+  noChat: {
+    selectConversation: 'Select a conversation or start a',
+    newOne: 'new one.',
+  },
+  group: {
+    createGroupChat: 'Create group chat',
+    newGroupChat: 'New group chat',
+    changeGroupName: 'Change group name ?',
+    groupName: 'Group name',
+    changeGroupAvatar: 'Change group avatar?',
+    confirmChangeGroupAvatar: 'Are you sure you want to change the group avatar ?',
+  },
+  noConversations: "You don't have any conversations yet",
 };

@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { Separator } from '@/components/ui/separator';
@@ -13,16 +12,23 @@ import ImageMessage from './Message/ImageMessage';
 import GifMessage from './Message/GifMessage';
 import StickerMessage from './Message/StickerMessage';
 import UpdateMessage from './Message/UpdateMessage';
-
+import { DialogPinMessage } from '@/components/Dialog';
+import pinImage from '@/assets/images/icons/pin.png';
+import AvatarUser from '@/components/AvatarUser';
 const MessageItem: React.FC<
-  IMessage & { currentUser: IUser; hasAvatar: boolean; isMessagesNew: boolean }
+  IMessage & {
+    currentUser: IUser;
+    hasAvatar: boolean;
+    isMessagesNew: boolean;
+  }
 > = (props) => {
   const {
-    // conversationId,
+    conversationId,
     createdAt,
     // updatedAt,
-    // id,
-    // isPin,
+    id,
+    _id,
+    isPin,
     senderId,
     title,
     type,
@@ -31,12 +37,12 @@ const MessageItem: React.FC<
     hasAvatar,
     isMessagesNew,
     url,
+    replyTo,
   } = props;
-
-  const setReplyMessage = useConversationStore((state) => state.setReplyMessage);
-
+  const { setReplyMessage, focusInput } = useConversationStore((state) => state);
+  const [open, setOpen] = React.useState(false);
   return (
-    <div className="w-full">
+    <div className="w-full" id={id || _id}>
       {isMessagesNew && (type === 'image' || type === 'text') && (
         <div className="flex w-full justify-center items-center gap-3 px-10 my-4">
           <Separator className="flex-1" />
@@ -53,10 +59,7 @@ const MessageItem: React.FC<
       >
         {/* Avatar */}
         {hasAvatar && currentUser?.id !== senderId?.id && type !== 'update' && (
-          <Avatar>
-            <AvatarImage src={senderId.avatar} />
-            <AvatarFallback className="uppercase">{senderId.username?.[0]}</AvatarFallback>
-          </Avatar>
+          <AvatarUser url={senderId?.avatar} name={senderId.username?.[0]} />
         )}
 
         {/*Info  Message */}
@@ -66,7 +69,8 @@ const MessageItem: React.FC<
             'sm:max-w-[80%]',
             'xs:max-w-[70%]',
             type === 'image' && 'md:max-w-[50%]',
-            type === 'update' && 'w-full sm:max-w-full'
+            type === 'update' && 'w-full sm:max-w-full xs:max-w-full',
+            replyTo?.type && 'md:max-w-[50%]'
           )}
         >
           {/* Name sender */}
@@ -90,9 +94,35 @@ const MessageItem: React.FC<
               type === 'text' && 'bg-custom_2 shadow px-3 py-3  break-words rounded-xl text-md ',
               type === 'text' &&
                 currentUser?.id === senderId?.id &&
-                ' text-background bg-foreground'
+                ' text-background bg-foreground',
+              replyTo?.id && 'mt-[20px]'
             )}
           >
+            {replyTo?.id && (
+              <div
+                className={cn(
+                  'shadow-sm shadow-slate-100 dark:shadow-slate-800 px-3 py-2 rounded-sm mb-3'
+                )}
+              >
+                <Icons.reply className="cursor-pointer h-6 w-6 mb-3" />
+                {replyTo?.type === 'text' && <TextMessage title={replyTo.title!} />}
+                {replyTo.type === 'gif' && (
+                  <GifMessage url={replyTo.url!} className="max-h-[200px]" />
+                )}
+                {replyTo.type === 'sticker' && (
+                  <GifMessage url={replyTo.url!} className="max-h-[200px]" />
+                )}
+                {replyTo.type === 'image' && (
+                  <ImageMessage
+                    imageList={replyTo.imageList!}
+                    classNameWrap={cn(
+                      'flex flex-wrap w-full items-stretch gap-1',
+                      currentUser?.id === senderId?.id && 'justify-end'
+                    )}
+                  />
+                )}
+              </div>
+            )}
             {type === 'update' && (
               <UpdateMessage createdAt={createdAt!} user={senderId} title={title!} />
             )}
@@ -108,14 +138,33 @@ const MessageItem: React.FC<
             )}
             {type === 'gif' && <GifMessage url={url!} />}
             {type === 'sticker' && <StickerMessage url={url!} />}
+            {isPin && (
+              <div className="absolute top-[-10px] right-[-10px]">
+                {/* <Icons.pin className="text-[red]" /> */}
+                <img src={pinImage} className="h-5 w-5" />
+              </div>
+            )}
 
             {/* Action with message */}
             <div
               className={cn(
-                'hidden absolute px-5 group-hover:block top-1/2 transition transform -translate-y-1/2 ',
+                'hidden absolute px-5 group-hover:flex top-1/2 transition transform -translate-y-1/2  gap-2',
                 currentUser?.id === senderId?.id ? 'right-full' : 'left-full'
               )}
             >
+              {(type === 'text' || type === 'image') && (
+                <Button
+                  variant="outline"
+                  className="rounded-full w-8 h-8 py-0 px-0 flex items-center justify-center"
+                  onClick={() => setOpen(true)}
+                >
+                  {isPin ? (
+                    <Icons.pinOff className="text-foreground cursor-pointer h-3 w-3" />
+                  ) : (
+                    <Icons.pin className="text-foreground cursor-pointer h-3 w-3" />
+                  )}
+                </Button>
+              )}
               <Button
                 variant="outline"
                 className="rounded-full w-8 h-8 py-0 px-0 flex items-center justify-center"
@@ -123,6 +172,7 @@ const MessageItem: React.FC<
                   // eslint-disable-next-line @typescript-eslint/no-unused-vars
                   const { hasAvatar, isMessagesNew, ..._props } = props;
                   setReplyMessage(_props);
+                  focusInput();
                 }}
               >
                 <Icons.reply className="text-foreground cursor-pointer h-4 w-4" />
@@ -131,6 +181,13 @@ const MessageItem: React.FC<
           </div>
         </div>
       </div>
+      <DialogPinMessage
+        open={open}
+        setOpen={setOpen}
+        isPin={isPin}
+        conversationId={conversationId}
+        messageId={(id || _id)!}
+      />
     </div>
   );
 };

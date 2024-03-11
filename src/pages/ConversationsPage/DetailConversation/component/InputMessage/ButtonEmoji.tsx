@@ -13,9 +13,13 @@ interface ButtonEmojiProps {
 }
 const ButtonEmoji: React.FC<ButtonEmojiProps> = ({ setValue }) => {
   const { i18n } = useTranslation();
+  const [open, setOpen] = React.useState(false);
   const { mainTheme } = useTheme();
+  const handleEmojiSelect = (emoji: { native: string }) => {
+    setValue((prev) => prev + emoji.native);
+  };
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger>
         <Button className={cn('rounded-2xl bg-custom_5 h-[40px] w-[40px]  text-black p-3 ')}>
           <Icons.smile className="w-full h-full" />
@@ -29,7 +33,7 @@ const ButtonEmoji: React.FC<ButtonEmojiProps> = ({ setValue }) => {
             locale={i18n.language}
             theme={mainTheme}
             previewPosition="none"
-            onEmojiSelect={(emoji: { native: string }) => setValue((prev) => prev + emoji.native)}
+            onEmojiSelect={handleEmojiSelect}
             maxFrequentRows={1}
           />
         </div>
