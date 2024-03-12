@@ -33,14 +33,14 @@ const AvatarConversation: React.FC<AvatarConversationProps> = ({
         <SkeletonAvatar className={classNameSkeleton} />
       ) : conversation?.isGroup ? (
         <AvatarUser
-          name={conversation!.nameGroup!}
-          url={conversation!.avatarGroup!}
+          name={conversation?.nameGroup}
+          url={conversation?.avatarGroup}
           classNameAvatar={classNameAvatar}
         />
       ) : (
         <AvatarUser
-          name={targetUser.username!}
-          url={targetUser.avatar!}
+          name={targetUser?.username}
+          url={targetUser?.avatar}
           classNameAvatar={classNameAvatar}
         />
       )}

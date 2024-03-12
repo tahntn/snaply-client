@@ -172,12 +172,12 @@ const UserList = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
                               <FormLabel className="text-sm font-normal">
                                 <div className="flex items-center gap-3">
                                   <AvatarUser
-                                    url={friendRequest.user.avatar}
-                                    name={friendRequest.user.username}
+                                    url={friendRequest.user?.avatar}
+                                    name={friendRequest.user?.username}
                                     classNameAvatar="w-12 h-12"
                                   />
                                   <h3 className="flex-1 text-xl font-medium">
-                                    {friendRequest.user.username}
+                                    {friendRequest.user?.username}
                                   </h3>
                                 </div>
                               </FormLabel>

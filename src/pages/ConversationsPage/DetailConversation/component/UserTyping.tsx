@@ -13,7 +13,7 @@ const UserTyping: React.FC<UserTypingProps> = ({ listUserTyping }) => {
     <div className="flex items-center gap-4 px-2 py-2">
       <div className="flex space-x-reverse -space-x-3 flex-row-reverse justify-end">
         {listUserTyping.map((user) => (
-          <AvatarUser name={user.username} url={user.avatar} classNameAvatar=" h-10 w-10 " />
+          <AvatarUser name={user?.username} url={user?.avatar} classNameAvatar=" h-10 w-10 " />
         ))}
       </div>
 

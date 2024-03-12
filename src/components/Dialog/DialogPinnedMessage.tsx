@@ -121,9 +121,9 @@ const MessageItem = ({ message }: { message: IMessage }) => {
   return (
     <>
       <div className="flex gap-3 items-end">
-        <AvatarUser name={message.senderId.username?.[0]} url={message.senderId?.avatar} />
+        <AvatarUser name={message.senderId?.username?.[0]} url={message.senderId?.avatar} />
         <div className="flex-1 flex flex-col">
-          <Text className="font-semibold text-xl ">{message.senderId.username}</Text>
+          <Text className="font-semibold text-xl ">{message.senderId?.username}</Text>
           {message.type === 'text' ? (
             <TextMessage title={message.title!} />
           ) : (

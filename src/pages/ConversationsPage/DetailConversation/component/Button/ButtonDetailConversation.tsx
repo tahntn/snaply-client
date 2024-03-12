@@ -69,7 +69,7 @@ const ButtonDetailConversation = () => {
                 .filter((item) => item._id !== currentUser?.id && item.id !== currentUser?.id)
                 .map((user) => (
                   <div className="flex gap-3 items-center" key={user?._id || user?.id}>
-                    <AvatarUser url={user.avatar} name={user.username} />
+                    <AvatarUser url={user?.avatar} name={user?.username} />
                     <h4 className="text-xl font-bold">{user.username}</h4>
                   </div>
                 ))}

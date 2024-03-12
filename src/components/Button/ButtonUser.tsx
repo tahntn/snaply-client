@@ -110,7 +110,7 @@ const ButtonUser = () => {
               </>
             ) : (
               <>
-                <AvatarUser classNameAvatar="h-20 w-20" url={data?.avatar} name={data!.username} />
+                <AvatarUser classNameAvatar="h-20 w-20" url={data?.avatar} name={data?.username} />
                 <h4 className="text-2xl font-semibold">{data?.username}</h4>
               </>
             )}

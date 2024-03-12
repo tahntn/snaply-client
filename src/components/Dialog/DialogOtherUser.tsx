@@ -33,8 +33,8 @@ const DialogOtherUser = () => {
               <SkeletonAvatar className="w-16 h-16" />
             ) : (
               <AvatarUser
-                name={data?.data?.username!}
-                url={data?.data?.avatar!}
+                name={data?.data?.username}
+                url={data?.data?.avatar}
                 classNameAvatar="w-16 h-16"
               />
             )}
