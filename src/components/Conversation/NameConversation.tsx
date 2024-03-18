@@ -25,9 +25,9 @@ const NameConversation: React.FC<NameConversationProps> = ({
   return isLoading ? (
     <SkeletonText className={classNameSkeleton} />
   ) : conversation?.isGroup ? (
-    <p className={classNameText}>{conversation.nameGroup}</p>
+    <p className={classNameText}>{conversation?.nameGroup}</p>
   ) : (
-    <p className={classNameText}>{targetUser.username}</p>
+    <p className={classNameText}>{targetUser?.username}</p>
   );
 };
 
